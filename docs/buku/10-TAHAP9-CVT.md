@@ -37,13 +37,13 @@
 
 ### 2.1 Perbedaan dari motor gear
 
-Pada motor gear, tiap perpindahan gear menjatuhkan putaran mesin. Kalau pita tenaga sempit, mesin jatuh keluar pita dan akselerasi hilang. Karena itu motor gear butuh **pita lebar**.
+Pada motor gear, tiap perpindahan gear menjatuhkan putaran mesin. Kalau rentang rpm bertenaga sempit, mesin jatuh keluar powerband dan akselerasi hilang. Karena itu motor gear butuh **rentang rpm yang lebar**.
 
 CVT tidak punya masalah itu. Rasio berubah kontinu, jadi mesin bisa ditahan **persis di satu titik**.
 
-> **Konsekuensi: pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan lebar pita.**
+> **Konsekuensi: pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan rentang rpm yang lebar.**
 
-Ini memberi kebebasan yang tidak dimiliki motor gear: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat pita sempit tapi puncaknya tinggi.
+Ini memberi kebebasan yang tidak dimiliki motor gear: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat rentang rpm sempit tapi puncaknya tinggi.
 
 ### 2.2 Titik mana yang dipilih
 
@@ -53,7 +53,7 @@ Percepatan berbanding lurus dengan tenaga (lihat Tahap 1). Menahan mesin di tors
 
 ### 2.3 Syaratnya
 
-CVT harus **benar-benar mampu** menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin berpita sempit akan terasa **jauh lebih lambat** daripada mesin standar.
+CVT harus **benar-benar mampu** menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin dengan rentang rpm sempit akan terasa **jauh lebih lambat** daripada mesin standar.
 
 Inilah kenapa banyak mesin yang bagus di dyno mengecewakan di lintasan.
 
@@ -282,7 +282,7 @@ CVT menghasilkan panas besar, dan panas mengurangi cengkeraman belt.
 
 ## 8. Ringkasan Tahap 9
 
-1. **CVT menahan mesin di satu rpm** — karena itu tenaga puncak lebih penting daripada lebar pita.
+1. **CVT menahan mesin di satu rpm** — karena itu tenaga puncak lebih penting daripada rentang rpm yang lebar.
 2. **Setel CVT ke rpm tenaga puncak**, bukan torsi puncak.
 3. **Roller adalah penyetelan paling berpengaruh.** Lebih ringan = rpm ditahan lebih tinggi.
 4. **Kalibrasi rasio total dari data terukur**, jangan dari katalog.

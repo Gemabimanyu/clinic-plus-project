@@ -255,7 +255,7 @@ Rasio throat buang/isap 3 valve justru **sehat** — sebanding dengan 4 valve. Y
 | 10.000 | 238° | ~217° |
 | 12.000 | **285°** | **261°** |
 
-Durasi lebih panjang berarti overlap lebih besar dan pita lebih sempit.
+Durasi lebih panjang berarti overlap lebih besar dan rentang rpm lebih sempit.
 
 **Konsekuensi ke lift:** pada 3 valve, **valve buang butuh lift lebih tinggi daripada valve isap** — kebalikan dari 4 valve. Sebabnya satu valve besar punya keliling total lebih kecil daripada dua valve kecil berluas sama.
 

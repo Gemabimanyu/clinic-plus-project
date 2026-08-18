@@ -88,11 +88,11 @@ Bahasan lengkap di Tahap 2.
 
 **Powerband** adalah rentang putaran di mana mesin menghasilkan tenaga yang berguna. Definisi praktisnya: rentang di mana tenaga berada di atas ~90% dari puncaknya.
 
-### 2.2 Lebar pita versus tinggi puncak
+### 2.2 Rentang rpm lebar versus puncak tinggi
 
 Ini pertukaran mendasar dalam tuning:
 
-| | Pita lebar | Pita sempit |
+| | Rentang rpm lebar | Rentang rpm sempit |
 |---|---|---|
 | Durasi cam | pendek | panjang |
 | Overlap | kecil | besar |
@@ -103,17 +103,17 @@ Ini pertukaran mendasar dalam tuning:
 
 ### 2.3 Kenapa CVT mengubah aturannya
 
-Pada motor gear, setiap pindah gear menjatuhkan putaran mesin. Kalau pitanya sempit, mesin jatuh keluar pita dan akselerasi hilang. Karena itu motor gear butuh pita lebar.
+Pada motor gear, setiap pindah gear menjatuhkan putaran mesin. Kalau rentang rpm-nya sempit, mesin jatuh keluar powerband dan akselerasi hilang. Karena itu motor gear butuh rentang rpm yang lebar.
 
 **CVT tidak punya masalah itu.** Rasio berubah kontinu, sehingga mesin bisa ditahan di satu titik putaran sepanjang akselerasi.
 
 Konsekuensinya sangat besar:
 
-> **Pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan lebar pita.**
+> **Pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan rentang rpm yang lebar.**
 
-Ini memberi kebebasan yang tidak dimiliki motor gear: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat pita sempit tapi puncaknya tinggi.
+Ini memberi kebebasan yang tidak dimiliki motor gear: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat rentang rpm sempit tapi puncaknya tinggi.
 
-**Syaratnya:** CVT harus benar-benar mampu menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin berpita sempit akan terasa jauh lebih lambat daripada mesin standar. Bahasan di Tahap 9.
+**Syaratnya:** CVT harus benar-benar mampu menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin dengan rentang rpm sempit akan terasa jauh lebih lambat daripada mesin standar. Bahasan di Tahap 9.
 
 ### 2.4 Titik mana yang dipilih
 
@@ -320,7 +320,7 @@ Setiap angka di atas dipakai untuk **mengkalibrasi** perhitungan di tahap beriku
 1. Tenaga = torsi × rpm. Keduanya bukan pilihan yang bersaing.
 2. Untuk akselerasi, **tenaga** yang menentukan — bukan torsi.
 3. Titik potong kurva torsi dan tenaga tidak punya arti fisika.
-4. Pada CVT, **tenaga puncak lebih penting daripada lebar pita**.
+4. Pada CVT, **tenaga puncak lebih penting daripada rentang rpm yang lebar**.
 5. Perubahan 2–5% tidak bisa dirasakan tapi menumpuk jadi besar — karena itu dyno wajib.
 6. Satu perubahan per sesi dyno. Ini aturan yang paling sering dilanggar.
 7. Bandingkan hanya run di hari yang sama, dyno yang sama.

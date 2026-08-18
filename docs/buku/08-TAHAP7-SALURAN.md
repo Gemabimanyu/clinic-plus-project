@@ -316,7 +316,7 @@ Kalau harmonik header meleset, pembilasan hilang tepat di rpm puncak, dan tidak 
 
 **Megaphone / kerucut** — pelebaran bertahap memperkuat gelombang negatif dan melebarkan rentang rpm efektif. Sudut total 6–10°.
 
-**Reverse cone** — penyempitan setelah megaphone menghasilkan gelombang positif pantulan yang mencegah muatan segar lolos. Berguna untuk melebarkan pita.
+**Reverse cone** — penyempitan setelah megaphone menghasilkan gelombang positif pantulan yang mencegah muatan segar lolos. Berguna untuk melebarkan powerband.
 
 **Silencer** — pada drag, hambatan silencer harus seminimal mungkin. Perhatikan bahwa silencer yang terlalu longgar bisa merusak tuning gelombang.
 

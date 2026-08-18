@@ -151,7 +151,7 @@ Mesin Contoh A: EX buka 63 BBDC, EX tutup 38 ATDC, IN buka 38 BTDC, IN tutup 63 
 | ICL / ECL | 102,5° ATDC / 102,5° BTDC |
 | LSA | 102,5° |
 
-LSA 102,5° ketat — khas mesin drag yang mengejar puncak, bukan lebar pita.
+LSA 102,5° ketat — khas mesin drag yang mengejar puncak, bukan rentang rpm yang lebar.
 
 ### 4.3 Menskalakan overlap
 

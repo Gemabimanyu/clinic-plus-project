@@ -41,7 +41,7 @@ Kapasitas yang jadi acuan: **125–250 cc**. Prinsipnya berlaku lebih luas, tapi
 
 **Yang TIDAK dibahas:** mesin multi-cylinder, 2 langkah, transmisi manual gear, turbo/supercharger, dan mesin diesel. Sebagian prinsip tetap berlaku, tapi angkanya tidak.
 
-**Kenapa CVT dipisahkan:** transmisi CVT mengubah cara sebuah mesin harus ditala. Pada motor gear, lebar pita tenaga sangat penting karena putaran jatuh tiap kali pindah gear. Pada CVT, mesin bisa ditahan di satu titik putaran sepanjang akselerasi — sehingga **tenaga puncak jauh lebih penting daripada lebar pita**. Ini mengubah pilihan cam, port, dan throttle body secara mendasar.
+**Kenapa CVT dipisahkan:** transmisi CVT mengubah cara sebuah mesin harus ditala. Pada motor gear, rentang rpm bertenaga (powerband) yang lebar sangat penting karena putaran jatuh tiap kali pindah gear. Pada CVT, mesin bisa ditahan di satu titik putaran sepanjang akselerasi — sehingga **tenaga puncak jauh lebih penting daripada rentang rpm yang lebar**. Ini mengubah pilihan cam, port, dan throttle body secara mendasar.
 
 ---
 
@@ -214,9 +214,9 @@ Urutan di bawah disusun berdasarkan **dampak per usaha** dan **ketergantungan an
 - Cara kerja CVT
 - Roller, centrifugal spring, CVT spring
 - Rasio, kecepatan puncak, akselerasi
-- Menyesuaikan CVT ke pita tenaga
+- Menyesuaikan CVT ke powerband
 
-**Kenapa terakhir:** CVT ditala ke pita tenaga mesin. Menala CVT sebelum mesinnya jadi adalah pekerjaan yang harus diulang.
+**Kenapa terakhir:** CVT ditala ke powerband mesin. Menala CVT sebelum mesinnya jadi adalah pekerjaan yang harus diulang.
 
 **Waktu belajar:** 2 minggu. **Bisa dilewati?** Tidak — pada matic, CVT bisa menghilangkan 20–30% tenaga yang sudah dibuat.
 
@@ -891,9 +891,9 @@ LSA = (ICL + ECL) / 2
 
 | LSA | Karakter |
 |---|---|
-| 98–104° | overlap besar, pita sempit, drag |
+| 98–104° | overlap besar, rentang rpm sempit, drag |
 | 104–110° | seimbang |
-| 110–116° | overlap kecil, pita lebar, jalanan |
+| 110–116° | overlap kecil, rentang rpm lebar, jalanan |
 
 **Perbedaan pokok dengan ICL — INI YANG PALING SERING TERTUKAR:**
 
@@ -969,7 +969,7 @@ IVO + EVC                   →   overlap             →   pembilasan
 IVC                         →   DCR                 →   bahan bakar
 durasi × A_throat           →   time-area           →   rpm puncak
 ICL                         →   keseimbangan        →   bawah vs atas
-LSA                         →   karakter dasar      →   lebar pita
+LSA                         →   karakter dasar      →   lebar rentang rpm
 lift vs lift kritis         →   time-area           →   beban valvetrain
 ──────────────────────────────────────────────────────────────
 KOMPRESI                    →   EFEK
@@ -1076,11 +1076,11 @@ Bahasan lengkap di Tahap 2.
 
 **Powerband** adalah rentang putaran di mana mesin menghasilkan tenaga yang berguna. Definisi praktisnya: rentang di mana tenaga berada di atas ~90% dari puncaknya.
 
-### 2.2 Lebar pita versus tinggi puncak
+### 2.2 Rentang rpm lebar versus puncak tinggi
 
 Ini pertukaran mendasar dalam tuning:
 
-| | Pita lebar | Pita sempit |
+| | Rentang rpm lebar | Rentang rpm sempit |
 |---|---|---|
 | Durasi cam | pendek | panjang |
 | Overlap | kecil | besar |
@@ -1091,17 +1091,17 @@ Ini pertukaran mendasar dalam tuning:
 
 ### 2.3 Kenapa CVT mengubah aturannya
 
-Pada motor gear, setiap pindah gear menjatuhkan putaran mesin. Kalau pitanya sempit, mesin jatuh keluar pita dan akselerasi hilang. Karena itu motor gear butuh pita lebar.
+Pada motor gear, setiap pindah gear menjatuhkan putaran mesin. Kalau rentang rpm-nya sempit, mesin jatuh keluar powerband dan akselerasi hilang. Karena itu motor gear butuh rentang rpm yang lebar.
 
 **CVT tidak punya masalah itu.** Rasio berubah kontinu, sehingga mesin bisa ditahan di satu titik putaran sepanjang akselerasi.
 
 Konsekuensinya sangat besar:
 
-> **Pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan lebar pita.**
+> **Pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan rentang rpm yang lebar.**
 
-Ini memberi kebebasan yang tidak dimiliki motor gear: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat pita sempit tapi puncaknya tinggi.
+Ini memberi kebebasan yang tidak dimiliki motor gear: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat rentang rpm sempit tapi puncaknya tinggi.
 
-**Syaratnya:** CVT harus benar-benar mampu menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin berpita sempit akan terasa jauh lebih lambat daripada mesin standar. Bahasan di Tahap 9.
+**Syaratnya:** CVT harus benar-benar mampu menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin dengan rentang rpm sempit akan terasa jauh lebih lambat daripada mesin standar. Bahasan di Tahap 9.
 
 ### 2.4 Titik mana yang dipilih
 
@@ -1308,7 +1308,7 @@ Setiap angka di atas dipakai untuk **mengkalibrasi** perhitungan di tahap beriku
 1. Tenaga = torsi × rpm. Keduanya bukan pilihan yang bersaing.
 2. Untuk akselerasi, **tenaga** yang menentukan — bukan torsi.
 3. Titik potong kurva torsi dan tenaga tidak punya arti fisika.
-4. Pada CVT, **tenaga puncak lebih penting daripada lebar pita**.
+4. Pada CVT, **tenaga puncak lebih penting daripada rentang rpm yang lebar**.
 5. Perubahan 2–5% tidak bisa dirasakan tapi menumpuk jadi besar — karena itu dyno wajib.
 6. Satu perubahan per sesi dyno. Ini aturan yang paling sering dilanggar.
 7. Bandingkan hanya run di hari yang sama, dyno yang sama.
@@ -1575,7 +1575,7 @@ Rasio throat buang/isap 3 valve justru **sehat** — sebanding dengan 4 valve. Y
 | 10.000 | 238° | ~217° |
 | 12.000 | **285°** | **261°** |
 
-Durasi lebih panjang berarti overlap lebih besar dan pita lebih sempit.
+Durasi lebih panjang berarti overlap lebih besar dan rentang rpm lebih sempit.
 
 **Konsekuensi ke lift:** pada 3 valve, **valve buang butuh lift lebih tinggi daripada valve isap** — kebalikan dari 4 valve. Sebabnya satu valve besar punya keliling total lebih kecil daripada dua valve kecil berluas sama.
 
@@ -2198,7 +2198,7 @@ Mesin Contoh A: EX buka 63 BBDC, EX tutup 38 ATDC, IN buka 38 BTDC, IN tutup 63 
 | ICL / ECL | 102,5° ATDC / 102,5° BTDC |
 | LSA | 102,5° |
 
-LSA 102,5° ketat — khas mesin drag yang mengejar puncak, bukan lebar pita.
+LSA 102,5° ketat — khas mesin drag yang mengejar puncak, bukan rentang rpm yang lebar.
 
 ### 4.3 Menskalakan overlap
 
@@ -3600,7 +3600,7 @@ Kalau harmonik header meleset, pembilasan hilang tepat di rpm puncak, dan tidak 
 
 **Megaphone / kerucut** — pelebaran bertahap memperkuat gelombang negatif dan melebarkan rentang rpm efektif. Sudut total 6–10°.
 
-**Reverse cone** — penyempitan setelah megaphone menghasilkan gelombang positif pantulan yang mencegah muatan segar lolos. Berguna untuk melebarkan pita.
+**Reverse cone** — penyempitan setelah megaphone menghasilkan gelombang positif pantulan yang mencegah muatan segar lolos. Berguna untuk melebarkan powerband.
 
 **Silencer** — pada drag, hambatan silencer harus seminimal mungkin. Perhatikan bahwa silencer yang terlalu longgar bisa merusak tuning gelombang.
 
@@ -4266,13 +4266,13 @@ Menyeimbangkan 100% cuma **memindahkan** getaran, tidak menghilangkannya.
 
 ### 2.1 Perbedaan dari motor gear
 
-Pada motor gear, tiap perpindahan gear menjatuhkan putaran mesin. Kalau pita tenaga sempit, mesin jatuh keluar pita dan akselerasi hilang. Karena itu motor gear butuh **pita lebar**.
+Pada motor gear, tiap perpindahan gear menjatuhkan putaran mesin. Kalau rentang rpm bertenaga sempit, mesin jatuh keluar powerband dan akselerasi hilang. Karena itu motor gear butuh **rentang rpm yang lebar**.
 
 CVT tidak punya masalah itu. Rasio berubah kontinu, jadi mesin bisa ditahan **persis di satu titik**.
 
-> **Konsekuensi: pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan lebar pita.**
+> **Konsekuensi: pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan rentang rpm yang lebar.**
 
-Ini memberi kebebasan yang tidak dimiliki motor gear: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat pita sempit tapi puncaknya tinggi.
+Ini memberi kebebasan yang tidak dimiliki motor gear: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat rentang rpm sempit tapi puncaknya tinggi.
 
 ### 2.2 Titik mana yang dipilih
 
@@ -4282,7 +4282,7 @@ Percepatan berbanding lurus dengan tenaga (lihat Tahap 1). Menahan mesin di tors
 
 ### 2.3 Syaratnya
 
-CVT harus **benar-benar mampu** menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin berpita sempit akan terasa **jauh lebih lambat** daripada mesin standar.
+CVT harus **benar-benar mampu** menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin dengan rentang rpm sempit akan terasa **jauh lebih lambat** daripada mesin standar.
 
 Inilah kenapa banyak mesin yang bagus di dyno mengecewakan di lintasan.
 
@@ -4511,7 +4511,7 @@ CVT menghasilkan panas besar, dan panas mengurangi cengkeraman belt.
 
 ## 8. Ringkasan Tahap 9
 
-1. **CVT menahan mesin di satu rpm** — karena itu tenaga puncak lebih penting daripada lebar pita.
+1. **CVT menahan mesin di satu rpm** — karena itu tenaga puncak lebih penting daripada rentang rpm yang lebar.
 2. **Setel CVT ke rpm tenaga puncak**, bukan torsi puncak.
 3. **Roller adalah penyetelan paling berpengaruh.** Lebih ringan = rpm ditahan lebih tinggi.
 4. **Kalibrasi rasio total dari data terukur**, jangan dari katalog.

@@ -533,9 +533,9 @@ LSA = (ICL + ECL) / 2
 
 | LSA | Karakter |
 |---|---|
-| 98–104° | overlap besar, pita sempit, drag |
+| 98–104° | overlap besar, rentang rpm sempit, drag |
 | 104–110° | seimbang |
-| 110–116° | overlap kecil, pita lebar, jalanan |
+| 110–116° | overlap kecil, rentang rpm lebar, jalanan |
 
 **Perbedaan pokok dengan ICL — INI YANG PALING SERING TERTUKAR:**
 
@@ -611,7 +611,7 @@ IVO + EVC                   →   overlap             →   pembilasan
 IVC                         →   DCR                 →   bahan bakar
 durasi × A_throat           →   time-area           →   rpm puncak
 ICL                         →   keseimbangan        →   bawah vs atas
-LSA                         →   karakter dasar      →   lebar pita
+LSA                         →   karakter dasar      →   lebar rentang rpm
 lift vs lift kritis         →   time-area           →   beban valvetrain
 ──────────────────────────────────────────────────────────────
 KOMPRESI                    →   EFEK

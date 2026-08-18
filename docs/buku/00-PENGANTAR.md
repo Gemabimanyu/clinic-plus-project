@@ -17,7 +17,7 @@ Kapasitas yang jadi acuan: **125–250 cc**. Prinsipnya berlaku lebih luas, tapi
 
 **Yang TIDAK dibahas:** mesin multi-cylinder, 2 langkah, transmisi manual gear, turbo/supercharger, dan mesin diesel. Sebagian prinsip tetap berlaku, tapi angkanya tidak.
 
-**Kenapa CVT dipisahkan:** transmisi CVT mengubah cara sebuah mesin harus ditala. Pada motor gear, lebar pita tenaga sangat penting karena putaran jatuh tiap kali pindah gear. Pada CVT, mesin bisa ditahan di satu titik putaran sepanjang akselerasi — sehingga **tenaga puncak jauh lebih penting daripada lebar pita**. Ini mengubah pilihan cam, port, dan throttle body secara mendasar.
+**Kenapa CVT dipisahkan:** transmisi CVT mengubah cara sebuah mesin harus ditala. Pada motor gear, rentang rpm bertenaga (powerband) yang lebar sangat penting karena putaran jatuh tiap kali pindah gear. Pada CVT, mesin bisa ditahan di satu titik putaran sepanjang akselerasi — sehingga **tenaga puncak jauh lebih penting daripada rentang rpm yang lebar**. Ini mengubah pilihan cam, port, dan throttle body secara mendasar.
 
 ---
 
@@ -190,9 +190,9 @@ Urutan di bawah disusun berdasarkan **dampak per usaha** dan **ketergantungan an
 - Cara kerja CVT
 - Roller, centrifugal spring, CVT spring
 - Rasio, kecepatan puncak, akselerasi
-- Menyesuaikan CVT ke pita tenaga
+- Menyesuaikan CVT ke powerband
 
-**Kenapa terakhir:** CVT ditala ke pita tenaga mesin. Menala CVT sebelum mesinnya jadi adalah pekerjaan yang harus diulang.
+**Kenapa terakhir:** CVT ditala ke powerband mesin. Menala CVT sebelum mesinnya jadi adalah pekerjaan yang harus diulang.
 
 **Waktu belajar:** 2 minggu. **Bisa dilewati?** Tidak — pada matic, CVT bisa menghilangkan 20–30% tenaga yang sudah dibuat.
 
