@@ -328,4 +328,31 @@ Sepanjang buku dipakai tiga mesin contoh. Angkanya nyata, diambil dari mesin yan
 
 ---
 
-*Buku ini disusun tanpa gambar. Diagram dan grafik dapat ditambahkan pada revisi berikutnya.*
+## 0.8 Visual diagrams dan interactive guides
+
+**Buku ini kini dilengkapi dengan diagram dan visualisasi interaktif** yang menjelaskan konsep-konsep kompleks dengan visual yang jelas.
+
+### Diagram yang tersedia:
+
+| Diagram | Tahap terkait | File |
+|---|---|---|
+| **Torque vs Power** | Tahap 1 | `visuals/advanced-engine-tuning-visuals.html` |
+| **Engine Cross-Section** | Tahap 2–3 | Artboard: EngineSection |
+| **Valve Timing** | Tahap 4 | Artboard: ValveTiming |
+| **Compression Ratio** | Tahap 5 | Artboard: CompressionRatio |
+| **AFR Curve** | Tahap 6 | Artboard: AFRCurve |
+| **CVT Ratio** | Tahap 9 | Artboard: CVTRatio |
+
+### Cara mengakses:
+
+1. Buka file `../visuals/advanced-engine-tuning-visuals.html` di browser web
+2. Gunakan pan/zoom untuk navigasi antar diagram
+3. Setiap diagram dapat di-ekspor sebagai PNG/PDF untuk presentasi
+
+### Catatan:
+
+Semua diagram dalam canvas ini dapat disesuaikan dengan parameter mesin spesifik Anda (bore, stroke, RPM target, dll.). Lihat `../visuals/README.md` untuk dokumentasi lengkap.
+
+---
+
+*Revisi dengan visual diagrams: Agustus 2026. Diagram interaktif menambah 7 artboard yang menjelaskan konsep-konsep kunci dari Tahap 1 hingga Tahap 9.*
