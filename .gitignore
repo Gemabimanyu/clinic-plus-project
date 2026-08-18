@@ -1,0 +1,31 @@
+# Bukan bagian repo ini -- proyek Flutter/Electron terpisah (Clinic+ platform)
+c+ app v0.1/
+printflow/
+designs/
+android/
+build-src/
+dev/
+turnlight_test/
+
+# SDK/toolchain yang ter-download, bukan hasil kerja
+tools/android-sdk/
+tools/gradle-8.7/
+tools/*.zip
+tools/__pycache__/
+**/__pycache__/
+*.pyc
+
+# CFD: STL & hasil ringkas disimpan, tapi direktori RUN OpenFOAM (mesh/field
+# tiap kasus) terlalu besar dan bisa dibangun ulang dari tools/port_geom.py +
+# tools/cfd_case.py + cfd/run_case.sh
+cfd/run/
+cfd/*.log
+
+.DS_Store
+Thumbs.db
+
+# Cache Flutter/Dart yang nyasar di root, bisa dibangun ulang
+.dart_tool/
+
+# log slicer CLI yang tidak sengaja tertinggal
+00000.log
