@@ -35,7 +35,7 @@ Setiap angka di buku ini adalah **titik awal yang beralasan**, bukan hasil akhir
 | Kualitas pengerjaan porting | ±5–15% |
 | Suhu udara, kelembaban, tekanan udara | ±3–5% |
 | Kualitas bahan bakar antar batch | ±2–5% |
-| Kondisi CVT, rantai keteng, kebocoran | ±5–10% |
+| Kondisi CVT, timing chain, kebocoran | ±5–10% |
 | Model matematis yang menyederhanakan realita | ±5–20% |
 
 Digabungkan, **selisih 10–25% antara hitungan dan kenyataan itu normal**, bukan tanda perhitungannya salah.
@@ -56,7 +56,7 @@ Perhitungan menghemat waktu dan uang dengan menyingkirkan pilihan yang jelas sal
 
 ## 0.3 Peta belajar — urutan yang benar
 
-Ini bagian terpenting dari pengantar. Banyak orang gagal bukan karena kurang ilmu, tapi karena **belajar dalam urutan yang salah** — misalnya menghabiskan bulanan menggerus port padahal knalpotnya salah panjang.
+Ini bagian terpenting dari pengantar. Banyak orang gagal bukan karena kurang ilmu, tapi karena **belajar dalam urutan yang salah** — misalnya menghabiskan bulanan menggerus port padahal exhaust-nya salah panjang.
 
 Urutan di bawah disusun berdasarkan **dampak per usaha** dan **ketergantungan antar topik**.
 

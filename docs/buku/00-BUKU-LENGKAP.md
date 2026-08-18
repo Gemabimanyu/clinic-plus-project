@@ -59,7 +59,7 @@ Setiap angka di buku ini adalah **titik awal yang beralasan**, bukan hasil akhir
 | Kualitas pengerjaan porting | ±5–15% |
 | Suhu udara, kelembaban, tekanan udara | ±3–5% |
 | Kualitas bahan bakar antar batch | ±2–5% |
-| Kondisi CVT, rantai keteng, kebocoran | ±5–10% |
+| Kondisi CVT, timing chain, kebocoran | ±5–10% |
 | Model matematis yang menyederhanakan realita | ±5–20% |
 
 Digabungkan, **selisih 10–25% antara hitungan dan kenyataan itu normal**, bukan tanda perhitungannya salah.
@@ -80,7 +80,7 @@ Perhitungan menghemat waktu dan uang dengan menyingkirkan pilihan yang jelas sal
 
 ## 0.3 Peta belajar — urutan yang benar
 
-Ini bagian terpenting dari pengantar. Banyak orang gagal bukan karena kurang ilmu, tapi karena **belajar dalam urutan yang salah** — misalnya menghabiskan bulanan menggerus port padahal knalpotnya salah panjang.
+Ini bagian terpenting dari pengantar. Banyak orang gagal bukan karena kurang ilmu, tapi karena **belajar dalam urutan yang salah** — misalnya menghabiskan bulanan menggerus port padahal exhaust-nya salah panjang.
 
 Urutan di bawah disusun berdasarkan **dampak per usaha** dan **ketergantungan antar topik**.
 
@@ -1054,7 +1054,7 @@ Cara memahaminya: torsi mesin bisa dilipatgandakan oleh rasio gear. Tenaga tidak
 
 Ini keyakinan yang sangat umum dan **sebagian besar salah**.
 
-Torsi berasal dari tekanan pembakaran yang bekerja pada luas piston, dikali jari-jari engkol:
+Torsi berasal dari tekanan pembakaran yang bekerja pada luas piston, dikali jari-jari crank:
 
 ```
 Torsi ∝ tekanan × luas_piston × (stroke/2)
@@ -1131,7 +1131,7 @@ Tanpa dyno, kamu akan:
 - Membuang perubahan yang sebenarnya menguntungkan
 - Tidak pernah tahu mana dari lima perubahan sekaligus yang berpengaruh
 
-**Stopwatch di lintasan bukan pengganti dyno.** Waktu lintasan dipengaruhi launch, traksi, angin, dan pengendara — variasinya sering lebih besar dari efek yang mau diukur.
+**Stopwatch di lintasan bukan pengganti dyno.** Waktu lintasan dipengaruhi launch, traksi, angin, dan pengendara — variasinya sering lebih besar daripada efek yang mau diukur.
 
 ### 3.2 Jenis dyno
 
@@ -1379,7 +1379,7 @@ Karena tenaga ≈ aliran × rpm, dan overbore unggul di keduanya, keunggulannya 
 
 ### 1.5 Mitos "stroke panjang lebih bertorsi"
 
-Torsi berasal dari tekanan pembakaran yang bekerja pada luas piston dikali jari-jari engkol:
+Torsi berasal dari tekanan pembakaran yang bekerja pada luas piston dikali jari-jari crank:
 
 ```
 Torsi ∝ tekanan × luas_piston × (stroke/2)
@@ -3290,6 +3290,8 @@ Kalau semua sudah terpasang, urutan penyetelan yang benar:
 
 ## 1. Throttle body
 
+*Selanjutnya disingkat TB.*
+
 ### 1.1 Perhitungan aliran
 
 ```
@@ -3307,7 +3309,7 @@ Aturan umum menyebut 105 m/s. Mesin Contoh A berjalan di **61 m/s** dan tidak be
 
 **Kenapa aturan umum meleset:** ditulis untuk mesin bertransmisi gear yang butuh respons part-throttle. Pada CVT yang selalu WOT, respons tidak relevan — yang dikejar restriksi minimum.
 
-### 1.3 Kenapa mengecilkan TB TIDAK menaikkan gas speed
+### 1.3 Kenapa mengecilkan TB TIDAK menaikkan kecepatan gas
 
 Ini kesalahpahaman yang paling sering merugikan.
 
@@ -3326,7 +3328,7 @@ Yang naik cuma kecepatan **di dalam TB itu sendiri**, dan kecepatan di situ tida
 
 **Perbandingan skala:** rugi port 2343 Pa vs rugi TB 559 Pa. Port mendominasi 4:1. Mengutak-atik TB itu mengurus 19% dari masalah.
 
-### 1.4 Kalau mau menaikkan gas speed, ini tuasnya
+### 1.4 Kalau mau menaikkan kecepatan gas, ini tuasnya
 
 | CSA port | v di port |
 |---|---|
@@ -3434,7 +3436,7 @@ Model ini memberi jawaban berbeda dari model gelombang. Pakai keduanya sebagai *
 
 ### 3.1 Koreksi ujung
 
-Panjang efektif kolom udara lebih panjang dari panjang fisiknya:
+Panjang efektif kolom udara lebih panjang daripada panjang fisiknya:
 
 ```
 L_efektif = L_fisik + k × jari-jari
@@ -3485,7 +3487,7 @@ Contoh dari Mesin Contoh A, dalam **luas** bukan diameter:
 
 Sekali ada **pelebaran di tengah jalan**, aliran melambat, lapisan batas menebal, dan sebagian penampang jadi tidak terpakai.
 
-**JANGAN** membuat TB lebih kecil dari port lalu melebar lagi di stack. Itu menciptakan penyempitan-pelebaran yang merugikan dua kali.
+**JANGAN** membuat TB lebih kecil daripada port lalu melebar lagi di stack. Itu menciptakan penyempitan-pelebaran yang merugikan dua kali.
 
 ### 3.4 Volume plenum
 
@@ -3504,7 +3506,7 @@ Yang harus diperiksa:
 - [ ] Manifold dan head benar-benar **sebidang** — tidak ada step
 - [ ] Gasket tidak menonjol ke dalam saluran
 - [ ] Tepi mulut port diberi **radius**, bukan dibiarkan tajam
-- [ ] Diameter manifold sama atau sedikit lebih besar dari port head
+- [ ] Diameter manifold sama atau sedikit lebih besar daripada port head
 - [ ] Tidak ada celah di sambungan yang bisa menghisap udara palsu
 
 **Ini perbaikan paling murah yang paling sering diabaikan.** Sambungan yang meleset 1 mm bisa memakan lebih banyak flow daripada short-turn radius yang digerus berjam-jam.
@@ -3862,7 +3864,7 @@ Mengganti valve ke titanium menaikkan batas floating **4.200 rpm** dengan spring
 |---|---|---|
 | Batang | DLC atau chrome | gesekan turun, aus berkurang |
 | Muka valve buang | thermal barrier | suhu valve turun, umur naik |
-| Payung sisi ruang bakar | thermal barrier | mengurangi transfer panas ke valve |
+| Payung valve, sisi ruang bakar | thermal barrier | mengurangi transfer panas ke valve |
 
 Coating thermal barrier pada valve buang adalah salah satu perbaikan keandalan paling efektif untuk mesin kompresi tinggi.
 

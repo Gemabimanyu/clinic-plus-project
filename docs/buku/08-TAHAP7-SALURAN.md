@@ -6,6 +6,8 @@
 
 ## 1. Throttle body
 
+*Selanjutnya disingkat TB.*
+
 ### 1.1 Perhitungan aliran
 
 ```
@@ -23,7 +25,7 @@ Aturan umum menyebut 105 m/s. Mesin Contoh A berjalan di **61 m/s** dan tidak be
 
 **Kenapa aturan umum meleset:** ditulis untuk mesin bertransmisi gear yang butuh respons part-throttle. Pada CVT yang selalu WOT, respons tidak relevan — yang dikejar restriksi minimum.
 
-### 1.3 Kenapa mengecilkan TB TIDAK menaikkan gas speed
+### 1.3 Kenapa mengecilkan TB TIDAK menaikkan kecepatan gas
 
 Ini kesalahpahaman yang paling sering merugikan.
 
@@ -42,7 +44,7 @@ Yang naik cuma kecepatan **di dalam TB itu sendiri**, dan kecepatan di situ tida
 
 **Perbandingan skala:** rugi port 2343 Pa vs rugi TB 559 Pa. Port mendominasi 4:1. Mengutak-atik TB itu mengurus 19% dari masalah.
 
-### 1.4 Kalau mau menaikkan gas speed, ini tuasnya
+### 1.4 Kalau mau menaikkan kecepatan gas, ini tuasnya
 
 | CSA port | v di port |
 |---|---|
@@ -150,7 +152,7 @@ Model ini memberi jawaban berbeda dari model gelombang. Pakai keduanya sebagai *
 
 ### 3.1 Koreksi ujung
 
-Panjang efektif kolom udara lebih panjang dari panjang fisiknya:
+Panjang efektif kolom udara lebih panjang daripada panjang fisiknya:
 
 ```
 L_efektif = L_fisik + k × jari-jari
@@ -201,7 +203,7 @@ Contoh dari Mesin Contoh A, dalam **luas** bukan diameter:
 
 Sekali ada **pelebaran di tengah jalan**, aliran melambat, lapisan batas menebal, dan sebagian penampang jadi tidak terpakai.
 
-**JANGAN** membuat TB lebih kecil dari port lalu melebar lagi di stack. Itu menciptakan penyempitan-pelebaran yang merugikan dua kali.
+**JANGAN** membuat TB lebih kecil daripada port lalu melebar lagi di stack. Itu menciptakan penyempitan-pelebaran yang merugikan dua kali.
 
 ### 3.4 Volume plenum
 
@@ -220,7 +222,7 @@ Yang harus diperiksa:
 - [ ] Manifold dan head benar-benar **sebidang** — tidak ada step
 - [ ] Gasket tidak menonjol ke dalam saluran
 - [ ] Tepi mulut port diberi **radius**, bukan dibiarkan tajam
-- [ ] Diameter manifold sama atau sedikit lebih besar dari port head
+- [ ] Diameter manifold sama atau sedikit lebih besar daripada port head
 - [ ] Tidak ada celah di sambungan yang bisa menghisap udara palsu
 
 **Ini perbaikan paling murah yang paling sering diabaikan.** Sambungan yang meleset 1 mm bisa memakan lebih banyak flow daripada short-turn radius yang digerus berjam-jam.

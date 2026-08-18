@@ -66,7 +66,7 @@ Cara memahaminya: torsi mesin bisa dilipatgandakan oleh rasio gear. Tenaga tidak
 
 Ini keyakinan yang sangat umum dan **sebagian besar salah**.
 
-Torsi berasal dari tekanan pembakaran yang bekerja pada luas piston, dikali jari-jari engkol:
+Torsi berasal dari tekanan pembakaran yang bekerja pada luas piston, dikali jari-jari crank:
 
 ```
 Torsi ∝ tekanan × luas_piston × (stroke/2)
@@ -143,7 +143,7 @@ Tanpa dyno, kamu akan:
 - Membuang perubahan yang sebenarnya menguntungkan
 - Tidak pernah tahu mana dari lima perubahan sekaligus yang berpengaruh
 
-**Stopwatch di lintasan bukan pengganti dyno.** Waktu lintasan dipengaruhi launch, traksi, angin, dan pengendara — variasinya sering lebih besar dari efek yang mau diukur.
+**Stopwatch di lintasan bukan pengganti dyno.** Waktu lintasan dipengaruhi launch, traksi, angin, dan pengendara — variasinya sering lebih besar daripada efek yang mau diukur.
 
 ### 3.2 Jenis dyno
 

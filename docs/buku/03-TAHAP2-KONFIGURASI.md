@@ -59,7 +59,7 @@ Karena tenaga ≈ aliran × rpm, dan overbore unggul di keduanya, keunggulannya 
 
 ### 1.5 Mitos "stroke panjang lebih bertorsi"
 
-Torsi berasal dari tekanan pembakaran yang bekerja pada luas piston dikali jari-jari engkol:
+Torsi berasal dari tekanan pembakaran yang bekerja pada luas piston dikali jari-jari crank:
 
 ```
 Torsi ∝ tekanan × luas_piston × (stroke/2)

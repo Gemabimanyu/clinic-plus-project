@@ -220,7 +220,7 @@ Mengganti valve ke titanium menaikkan batas floating **4.200 rpm** dengan spring
 |---|---|---|
 | Batang | DLC atau chrome | gesekan turun, aus berkurang |
 | Muka valve buang | thermal barrier | suhu valve turun, umur naik |
-| Payung sisi ruang bakar | thermal barrier | mengurangi transfer panas ke valve |
+| Payung valve, sisi ruang bakar | thermal barrier | mengurangi transfer panas ke valve |
 
 Coating thermal barrier pada valve buang adalah salah satu perbaikan keandalan paling efektif untuk mesin kompresi tinggi.
 
