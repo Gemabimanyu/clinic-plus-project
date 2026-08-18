@@ -10,11 +10,11 @@
 Kapasitas       Vd = π/4 × bore² × stroke
 Ruang bakar     Vc = Vd / (CR − 1)
 Luas piston     A_p = π/4 × bore²
-Luas klep       A_klep = n × π/4 × D_klep²
+Luas valve      A_valve = n × π/4 × D_valve²
 Luas throat     A_throat = n × π/4 × D_throat²
-Luas tirai      A_tirai = n × π × D_klep × lift
-Lift kritis     = A_throat / (n × π × D_klep)
-Lebar seat      = (D_klep − D_throat) / 2
+Luas tirai      A_tirai = n × π × D_valve × lift
+Lift kritis     = A_throat / (n × π × D_valve)
+Lebar seat      = (D_valve − D_throat) / 2
 CSA oval        ≈ 0,92 × lebar × tinggi
 Rasio rod       = panjang_rod / stroke
 ```
@@ -68,7 +68,7 @@ durasi_baru     = durasi_acuan × (A_thr_acuan / A_thr_baru)
                                 × (Vd_baru / Vd_acuan)
                                 × (rpm_baru / rpm_acuan)
 
-luas overlap/cc = n_klep × π × D_klep × lift_TDC / kapasitas
+luas overlap/cc = n_valve × π × D_valve × lift_TDC / kapasitas
 ```
 
 ### A.6 Valvetrain
@@ -78,7 +78,7 @@ Percepatan nose a = (lift/2) × (2π/Φ_cam)² × ω_cam²
                     Φ_cam dalam radian cam = durasi_crank/2
                     ω_cam = 2π × (rpm/2) / 60
 Gaya inersia    F = massa_rakitan × a
-Per dibutuhkan  = F × faktor_aman / 9,81      [kgf], faktor 1,3–1,5
+Spring dibutuhkan = F × faktor_aman / 9,81      [kgf], faktor 1,3–1,5
 ```
 
 ### A.7 Gelombang
@@ -132,16 +132,16 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 | Berkas | Fungsi | Tahap |
 |---|---|---|
 | `konfigurasi.py` | bandingkan square/overbore/overstroke | 2 |
-| `port_design.py` | sizing klep, throat, port, kalibrasi | 3 |
+| `port_design.py` | sizing valve, throat, port, kalibrasi | 3 |
 | `exhaust_check.py` | proporsi ex/in, keputusan durasi ex | 3 |
-| `cam_design.py` | DCR, durasi, overlap, kantong klep, anggaran ruang bakar | 4 |
+| `cam_design.py` | DCR, durasi, overlap, kantong valve, anggaran ruang bakar | 4 |
 | `cam_dari_acuan.py` | urai timing acuan, skalakan ke mesin baru | 4 |
 | `kompresi_terkalibrasi.py` | batas DCR dari mesin terbukti | 5 |
 | `bahan_bakar.py` | energi per kg udara, lambda, pendinginan muatan | 5 |
 | `intake_tune.py` | panjang runner, Helmholtz, wave tuning | 7 |
 | `tract_profile.py` | profil luas sepanjang saluran, perbandingan TB | 7 |
 | `exhaust_system.py` | port buang, header, harmonik panjang | 7 |
-| `valvetrain.py` | percepatan klep, gaya inersia, kebutuhan per | 8 |
+| `valvetrain.py` | percepatan valve, gaya inersia, kebutuhan spring | 8 |
 | `cvt_gearing.py` | rasio, kecepatan, pemilihan gear | 9 |
 | `spek_final.py` | rangkuman spek + beban mekanis | — |
 | `hp_per_liter.py` | tenaga spesifik, perkiraan HP dari lintasan | — |
@@ -160,7 +160,7 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 
 **Data mesin acuan** (yang sudah terbukti jalan)
 - [ ] Bore, stroke, panjang rod
-- [ ] Diameter klep isap dan buang
+- [ ] Diameter valve isap dan buang
 - [ ] **Diameter dalam seat (throat)** isap dan buang
 - [ ] **CSA port di titik tersempit** — isap dan buang
 - [ ] Timing cam lengkap **dan pada lift berapa diukur**
@@ -170,7 +170,7 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 - [ ] Diameter throttle body
 - [ ] **Panjang runner isap**
 - [ ] Diameter dalam header
-- [ ] **Panjang header** — dari klep sampai titik pelebaran
+- [ ] **Panjang header** — dari valve sampai titik pelebaran
 - [ ] RPM tenaga puncak
 - [ ] Hasil terukur (dyno atau lintasan + berat)
 
@@ -178,9 +178,9 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 
 | Data hilang | Akibat |
 |---|---|
-| Throat (bukan diameter klep) | perhitungan port meleset sampai 40% |
+| Throat (bukan diameter valve) | perhitungan port meleset sampai 40% |
 | Lift acuan timing cam | durasi salah baca sampai 20° |
-| Panjang header | harmonik knalpot tidak bisa ditentukan |
+| Panjang header | harmonik exhaust tidak bisa ditentukan |
 | Vc terukur | kompresi meleset 1–2 angka penuh |
 
 ### C.2 Saat merancang
@@ -190,11 +190,11 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 - [ ] Hitung durasi dari time-area, bukan aturan jempol
 - [ ] **Periksa silang ICL** dengan cam acuan
 - [ ] Hitung CSA port dengan **dua jangkar** — kalau berbeda jauh, cari asumsi busuk
-- [ ] Periksa rasio port/throat — jangan sampai port lebih kecil dari throat
+- [ ] Periksa rasio port/throat — jangan sampai port lebih kecil daripada throat
 - [ ] Periksa rasio throat ex/in → tentukan apakah cam simetris
-- [ ] Hitung kantong klep **sebelum** menghitung dome piston
+- [ ] Hitung kantong valve **sebelum** menghitung dome piston
 - [ ] Hitung anggaran volume ruang bakar lengkap
-- [ ] Hitung kebutuhan per klep dari massa rakitan dan rpm sasaran
+- [ ] Hitung kebutuhan valve spring dari massa rakitan dan rpm sasaran
 - [ ] Tentukan panjang runner dan header dari harmonik yang terbukti
 
 ### C.3 Sebelum merakit
@@ -203,11 +203,11 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 - [ ] Piston diukur di gauge point yang benar
 - [ ] Clearance piston sesuai anjuran pabrik piston
 - [ ] Ring gap diukur di bore, ring tegak lurus
-- [ ] **Ring kedua gap-nya lebih besar dari ring atas**
-- [ ] Rakitan klep ditimbang
-- [ ] Per klep diukur dengan tester (seat dan open)
+- [ ] **Ring kedua gap-nya lebih besar daripada ring atas**
+- [ ] Rakitan valve ditimbang
+- [ ] Valve spring diukur dengan tester (seat dan open)
 - [ ] Coil bind clearance ≥ 0,5 mm pada lift maksimum
-- [ ] Kruk as diseimbangkan sesuai massa piston yang dipakai
+- [ ] Crankshaft diseimbangkan sesuai massa piston yang dipakai
 
 ### C.4 Saat merakit
 
@@ -219,7 +219,7 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 
 ### C.5 Sebelum diputar
 
-- [ ] **Cek clay kelegaan klep-piston** — wajib, tanpa pengecualian
+- [ ] **Cek clay kelegaan valve-piston** — wajib, tanpa pengecualian
 - [ ] Kalau rod aluminium, tambah margin 0,25 mm
 - [ ] Verifikasi volume ruang bakar dengan buret
 - [ ] Periksa lebar seat, terutama sisi buang
@@ -228,7 +228,7 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 
 ### C.6 Saat tuning
 
-- [ ] Mekanis sehat dulu — kompresi, kebocoran, celah klep
+- [ ] Mekanis sehat dulu — kompresi, kebocoran, celah valve
 - [ ] Bahan bakar kasar ke λ aman (0,82–0,85)
 - [ ] Cari MBT pengapian, **2° per run**
 - [ ] Haluskan bahan bakar di sekitar rpm puncak
@@ -239,7 +239,7 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 
 ### C.7 Setelah jalan
 
-- [ ] Baca busi setelah run beban penuh (bukan setelah idle)
+- [ ] Baca spark plug setelah run beban penuh (bukan setelah idle)
 - [ ] Periksa kondisi piston setelah beberapa run
 - [ ] Setel CVT ke rpm tenaga puncak
 - [ ] Uji variasi panjang header ±50 mm
@@ -250,12 +250,12 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 
 ## D. Data mesin contoh
 
-### D.1 Mesin Contoh A — 199cc, 2 klep, drag matic
+### D.1 Mesin Contoh A — 199cc, 2 valve, drag matic
 
 | Parameter | Nilai | Tanda |
 |---|---|---|
 | Bore × stroke | 63 × 64 mm = 199,5 cc | [UKUR] |
-| Klep isap / buang | 31 / 27 mm | [UKUR] |
+| Valve isap / buang | 31 / 27 mm | [UKUR] |
 | Throat isap | 29 mm (rasio 0,935) | [UKUR] |
 | Port isap | bundar Ø29,5 mm (683 mm²) | [UKUR] |
 | Port buang | Ø29 mm (660 mm²) | [UKUR] |
@@ -264,7 +264,7 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 | Durasi | 281° / 281° | [HITUNG] |
 | Overlap | 76° | [HITUNG] |
 | ICL / LSA | 102,5° ATDC / 102,5° | [HITUNG] |
-| Lift di TDC | 1,83 mm per klep (3,67 gabungan) | [HITUNG] |
+| Lift di TDC | 1,83 mm per valve (3,67 gabungan) | [HITUNG] |
 | Kompresi statis | 16:1 | [UKUR] |
 | **DCR** | **12,83** | [HITUNG] |
 | Bahan bakar | bensol / avgas 100LL | [UKUR] |
@@ -276,7 +276,7 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 
 | | Nilai |
 |---|---|
-| Luas klep isap / bore | 0,242 |
+| Luas valve isap / bore | 0,242 |
 | Throat per cc | 3,31 mm²/cc |
 | Kecepatan gas port isap | 97 m/s |
 | Kecepatan gas port buang | 101 m/s |
@@ -287,14 +287,14 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 | MPS @10.000 rpm | 21,3 m/s |
 | Perkiraan tenaga | ~28 HP crank, ~140 HP/L |
 
-### D.2 Mesin Contoh B — 150cc, 4 klep, rancangan
+### D.2 Mesin Contoh B — 150cc, 4 valve, rancangan
 
 | Parameter | Nilai |
 |---|---|
 | Bore × stroke × rod | 57,3 × 58 × 95 mm = 149,6 cc |
-| Klep isap / buang | 22 / 19 mm |
+| Valve isap / buang | 22 / 19 mm |
 | Throat isap / buang | 20,2 / 16,7 mm |
-| Luas klep isap / bore | 0,295 |
+| Luas valve isap / bore | 0,295 |
 | Throat per cc | 4,28 mm²/cc |
 | CSA port isap | 615–665 mm², oval 22,7 × 29,5 |
 | CSA port buang | 594–653 mm², Ø setara ~28 mm |
@@ -306,8 +306,8 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 | ICL / LSA | 102,5° / 102,5° |
 | Overlap | 55° |
 | Lift in / ex | 9,0 / 7,6–9,0 mm |
-| Lift di TDC | 0,97 mm per klep isap |
-| Kantong klep | 2,71 mm |
+| Lift di TDC | 0,97 mm per valve isap |
+| Kantong valve | 2,71 mm |
 | CR statis | 14:1 (DCR 12,07, margin +0,76) |
 | Dome piston | usir 2,45 cc |
 | Throttle body | 36 mm |
@@ -317,42 +317,42 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 | Potensi flow | 90,7 CFM @28" |
 | Potensi tenaga | ~41 HP (~274 HP/L) |
 
-### D.3 Mesin Contoh C — 155cc, 3 klep, standar
+### D.3 Mesin Contoh C — 155cc, 3 valve, standar
 
 | Parameter | Nilai |
 |---|---|
 | Bore × stroke | 58 × 58,6 mm = 154,8 cc |
-| Katup | 3 klep (2 isap + 1 buang) |
+| Valve | 3 valve (2 isap + 1 buang) |
 | Pendingin | udara |
 | CR standar | 10,5:1 |
 | Tenaga standar | 12,7 HP @ 7.750 rpm (82 HP/L) |
-| Luas klep isap / bore | 0,262 |
+| Luas valve isap / bore | 0,262 |
 | Rasio throat ex/in | 0,679 |
 | Lift kritis in / ex | 4,59 / 5,03 mm |
-| Klep maksimum yang muat | isap 21,5 mm ×2, buang 26,7 mm ×1 |
-| Potensi flow (klep maks) | 89 CFM @28" |
+| Valve maksimum yang muat | isap 21,5 mm ×2, buang 26,7 mm ×1 |
+| Potensi flow (valve maks) | 89 CFM @28" |
 | Potensi tenaga | ~40 HP |
-| CR disarankan | 12,5–13:1 (bukan 14, karena busi menepi) |
+| CR disarankan | 12,5–13:1 (bukan 14, karena spark plug menepi) |
 
 ---
 
 ## E. Perbandingan mesin balap dunia
 
-Semua dihitung dengan definisi yang sama dari spesifikasi bore/stroke/rpm publik. **Diameter klep dan CSA port tidak dipublikasikan pabrikan** — dipakai proporsi lazim di kelasnya. Ini perkiraan beralasan, bukan data pabrik.
+Semua dihitung dengan definisi yang sama dari spesifikasi bore/stroke/rpm publik. **Diameter valve dan CSA port tidak dipublikasikan pabrikan** — dipakai proporsi lazim di kelasnya. Ini perkiraan beralasan, bukan data pabrik.
 
-| Mesin | MPS | Klep/bore | v throat | v port | HP/L |
+| Mesin | MPS | Valve/bore | v throat | v port | HP/L |
 |---|---|---|---|---|---|
 | F1 V10 3.0L (19.000 rpm) | 25,2 | 0,296 | 105 | 95 | 317 |
 | F1 V8 2.4L (18.000 rpm) | 23,9 | 0,296 | 99 | 90 | 312 |
 | F1 V6 turbo 1.6L | 23,0 | 0,289 | 98 | 89 | 562* |
 | MotoGP 1000 I4 (18.000 rpm) | 29,1 | 0,296 | 121 | 112 | 290 |
-| Drag V8 8,2L NA 2 klep (10.500 rpm) | 32,0 | 0,297 | 133 | 106 | 165 |
+| Drag V8 8,2L NA 2 valve (10.500 rpm) | 32,0 | 0,297 | 133 | 106 | 165 |
 | Mesin Contoh A | 21,3 | 0,242 | 109 | 105 | ~140 |
 | Mesin Contoh B | 23,2 | 0,295 | 97 | 94 | ~274 |
 
 *\*turbo — tidak sebanding dengan yang NA*
 
-**Pengamatan pokok:** kecepatan port semua mesin jatuh di **89–112 m/s**, dan rasio klep/bore semua mesin 4 klep jatuh di **0,289–0,297**.
+**Pengamatan pokok:** kecepatan port semua mesin jatuh di **89–112 m/s**, dan rasio valve/bore semua mesin 4 valve jatuh di **0,289–0,297**.
 
 Batas geometri dan batas mekanisnya universal. Yang membedakan F1 bukan kecepatan gasnya, tapi **stroke pendek** yang memungkinkan rpm tinggi pada kecepatan piston yang sama.
 
@@ -375,15 +375,15 @@ Semua data di Lampiran D yang bertanda [UKUR], plus:
 | Data | Nilai dipakai | Catatan |
 |---|---|---|
 | Rod Mesin Contoh A | 105 mm | pengaruh ke DCR kecil (±0,07) |
-| Throat buang Mesin A | 0,88 × klep | tidak diukur langsung |
+| Throat buang Mesin A | 0,88 × valve | tidak diukur langsung |
 | **Panjang header Mesin A** | tidak diketahui | **paling penting untuk diukur** |
 | Massa motor + rider | 150 kg | menggeser perkiraan HP ±10% |
 | CdA | 0,35 | menggeser perkiraan HP |
 | Tinggi pent-roof | 3,5 mm | menggeser anggaran ruang bakar |
 | Tebal gasket | 0,8 mm | ukur |
 | Deck clearance | 0,5 mm | ukur |
-| Klep & port mesin balap dunia | proporsi lazim | **bukan data pabrik** |
-| Klep Mesin Contoh C | 21 / 26 mm | **bukan data pabrik** |
+| Valve & port mesin balap dunia | proporsi lazim | **bukan data pabrik** |
+| Valve Mesin Contoh C | 21 / 26 mm | **bukan data pabrik** |
 | Kecepatan suara gas buang | 650 m/s | ±8% ketidakpastian |
 | Koefisien rugi butterfly | K = 0,25 | perkiraan |
 | Cf untuk perkiraan flow | 0,62 | bisa berbeda ±15% |
@@ -409,10 +409,10 @@ Setiap kali buku ini bisa memilih antara tabel umum dan pengukuran dari mesin ya
 
 | Yang dikatakan tabel umum | Yang dikatakan mesin nyata | Kerugian kalau ikut tabel |
 |---|---|---|
-| Throat maksimum 0,90 × klep | jalan di 0,935 | **7,4% flow hilang** |
+| Throat maksimum 0,90 × valve | jalan di 0,935 | **7,4% flow hilang** |
 | Kecepatan TB 105 m/s | jalan di 61 m/s | **TB 8 mm terlalu kecil** |
 | DCR maksimum 12,5 untuk bensin | jalan di 12,83 dengan avgas | kompresi diturunkan tanpa perlu |
-| Lift berguna maksimum 0,25 × klep | jalan di 1,6–2,5× lift kritis | cam terlalu jinak |
+| Lift berguna maksimum 0,25 × valve | jalan di 1,6–2,5× lift kritis | cam terlalu jinak |
 
 Empat dari empat. Bukan karena bukunya salah, tapi karena buku itu ditulis untuk populasi mesin lain.
 

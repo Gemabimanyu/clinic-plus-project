@@ -21,7 +21,7 @@ Blokade poros butterfly biasanya **6–8%** dari luas bore.
 
 Aturan umum menyebut 105 m/s. Mesin Contoh A berjalan di **61 m/s** dan tidak bermasalah.
 
-**Kenapa aturan umum meleset:** ditulis untuk mesin bertransmisi gigi yang butuh respons part-throttle. Pada CVT yang selalu WOT, respons tidak relevan — yang dikejar restriksi minimum.
+**Kenapa aturan umum meleset:** ditulis untuk mesin bertransmisi gear yang butuh respons part-throttle. Pada CVT yang selalu WOT, respons tidak relevan — yang dikejar restriksi minimum.
 
 ### 1.3 Kenapa mengecilkan TB TIDAK menaikkan gas speed
 
@@ -64,9 +64,9 @@ Untuk karburator, kecepatan venturi 80–110 m/s pada rpm puncak adalah target y
 
 ### 2.1 Mekanisme
 
-Saat klep isap membuka, gelombang tekanan negatif lari dari klep menuju ujung terbuka (mulut velocity stack). Di ujung terbuka, gelombang memantul sebagai gelombang **positif** dan kembali ke klep.
+Saat valve isap membuka, gelombang tekanan negatif lari dari valve menuju ujung terbuka (mulut velocity stack). Di ujung terbuka, gelombang memantul sebagai gelombang **positif** dan kembali ke valve.
 
-Kalau gelombang positif itu tiba saat klep masih terbuka, ia **mendorong muatan tambahan masuk** — inilah efek tuning yang bisa menaikkan VE di atas 100%.
+Kalau gelombang positif itu tiba saat valve masih terbuka, ia **mendorong muatan tambahan masuk** — inilah efek tuning yang bisa menaikkan VE di atas 100%.
 
 ### 2.2 Model gelombang
 
@@ -209,11 +209,11 @@ Sekali ada **pelebaran di tengah jalan**, aliran melambat, lapisan batas menebal
 V_plenum ≈ 1,0–1,5 × kapasitas mesin
 ```
 
-Untuk mesin 1 silinder di drag, ujung atas rentang — atau **tanpa plenum sama sekali**, dengan velocity stack terbuka ke atmosfer. Ini lazim dan efektif, selama udara yang dihisap tidak panas.
+Untuk mesin 1 cylinder di drag, ujung atas rentang — atau **tanpa plenum sama sekali**, dengan velocity stack terbuka ke atmosfer. Ini lazim dan efektif, selama udara yang dihisap tidak panas.
 
 ### 3.5 Sambungan yang sering merusak
 
-Berdasarkan pengukuran, **bentuk mulut port di bidang flange berpengaruh besar** — sering lebih besar dari rugi tikungan seluruh port.
+Berdasarkan pengukuran, **bentuk mulut port di bidang flange berpengaruh besar** — sering lebih besar daripada rugi tikungan seluruh port.
 
 Yang harus diperiksa:
 
@@ -249,7 +249,7 @@ Data acuan dari Mesin Contoh A: [UKUR]
 | **Rasio port/throat** | **1,49** |
 | Kecepatan gas port buang | 101 m/s |
 
-Perhatikan: port buang 29 mm hampir sama besar dengan port isap 29,5 mm, walau klep buangnya lebih kecil.
+Perhatikan: port buang 29 mm hampir sama besar dengan port isap 29,5 mm, walau valve buangnya lebih kecil.
 
 **Untuk Mesin Contoh B:** dua jangkar memberi **594–653 mm²**, sekitar **28 mm** diameter setara.
 
@@ -271,7 +271,7 @@ Mesin Contoh A: inlet muffler 50 mm terhadap header 30 mm — rasio luas **2,78�
 
 ### 4.4 Panjang header
 
-**Mekanisme:** saat klep buang membuka, gelombang tekanan positif lari menyusuri header. Di ujung terbuka (transisi ke muffler), gelombang memantul sebagai gelombang **negatif** dan kembali ke klep. Kalau tiba saat overlap, ia menarik sisa gas buang keluar dan menarik muatan segar masuk.
+**Mekanisme:** saat valve buang membuka, gelombang tekanan positif lari menyusuri header. Di ujung terbuka (transisi ke muffler), gelombang memantul sebagai gelombang **negatif** dan kembali ke valve. Kalau tiba saat overlap, ia menarik sisa gas buang keluar dan menarik muatan segar masuk.
 
 ```
 t = (180 + EVO_BBDC) / (6 × rpm)          [detik, dari EVO ke TDC]
@@ -293,9 +293,9 @@ Tergantung suhu (~1100 K) dan kekayaan campuran. Panjang header berskala **langs
 | 3 | **351 mm** |
 | 4 | 263 mm |
 
-**Menentukan harmonik:** sama seperti runner isap — ukur panjang header mesin yang sudah terbukti, dari klep buang sampai titik pelebaran, lalu cocokkan.
+**Menentukan harmonik:** sama seperti runner isap — ukur panjang header mesin yang sudah terbukti, dari valve buang sampai titik pelebaran, lalu cocokkan.
 
-### 4.5 Kenapa knalpot layak dicurigai
+### 4.5 Kenapa exhaust layak dicurigai
 
 Perbandingan antara potensi head dan hasil sebenarnya pada Mesin Contoh A:
 
@@ -310,9 +310,9 @@ Kalau head sudah dihitung benar tapi hasilnya jauh di bawah potensi, tersangka u
 
 Kalau harmonik header meleset, pembilasan hilang tepat di rpm puncak, dan tidak ada porting yang bisa menggantikannya.
 
-### 4.6 Bentuk knalpot
+### 4.6 Bentuk exhaust
 
-**Header** — pipa lurus konstan dari klep sampai titik pelebaran. Belokan tajam merugikan; kalau harus membelok, radius minimal 2,5× diameter.
+**Header** — pipa lurus konstan dari valve sampai titik pelebaran. Belokan tajam merugikan; kalau harus membelok, radius minimal 2,5× diameter.
 
 **Megaphone / kerucut** — pelebaran bertahap memperkuat gelombang negatif dan melebarkan rentang rpm efektif. Sudut total 6–10°.
 
@@ -349,7 +349,7 @@ Kalau harmonik header meleset, pembilasan hilang tepat di rpm puncak, dan tidak 
 7. **Luas saluran harus melebar terus-menerus** dari throat ke mulut stack. Jangan ada pelebaran di tengah.
 8. **Radius bellmouth 0,15–0,20 × diameter**, di atas itu jenuh.
 9. **Sambungan manifold yang tidak sebidang** bisa memakan lebih banyak flow daripada porting berjam-jam.
-10. **Port buang 1,49× throat-nya** — jauh lebih besar dari sisi isap.
+10. **Port buang 1,49× throat-nya** — jauh lebih besar daripada sisi isap.
 11. **Panjang header adalah tersangka utama** kalau hasil jauh di bawah potensi head.
 
 **Berikutnya:** Tahap 8 — mekanik dan material, supaya yang sudah dibangun tidak jebol.

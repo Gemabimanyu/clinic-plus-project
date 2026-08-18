@@ -60,7 +60,7 @@ a = (Tenaga_di_roda − rugi) / (massa × kecepatan)
 
 Torsi mesin tidak muncul langsung dalam rumus ini. Torsi di **roda** yang penting, dan torsi di roda = torsi mesin × rasio total. Karena rasio bisa diubah (apalagi dengan CVT), yang tersisa sebagai batasan sejati adalah **tenaga**.
 
-Cara memahaminya: torsi mesin bisa dilipatgandakan oleh rasio gigi. Tenaga tidak bisa — tenaga di roda selalu lebih kecil dari tenaga mesin (karena rugi gesek), tidak pernah lebih besar.
+Cara memahaminya: torsi mesin bisa dilipatgandakan oleh rasio gear. Tenaga tidak bisa — tenaga di roda selalu lebih kecil daripada tenaga mesin (karena rugi gesek), tidak pernah lebih besar.
 
 ### 1.5 Mitos "stroke panjang lebih bertorsi"
 
@@ -74,7 +74,7 @@ Torsi ∝ tekanan × luas_piston × (stroke/2)
 
 Perhatikan: `luas_piston × stroke` adalah **kapasitas**. Jadi untuk kapasitas yang sama, torsi teoretisnya sama — tidak peduli square, overbore, atau overstroke.
 
-**Yang sebenarnya berbeda adalah di putaran berapa torsi puncak terjadi.** Mesin overstroke punya bore kecil, jadi luas klepnya terbatas, jadi napasnya habis di putaran lebih rendah — dan torsi puncaknya turun ke rpm rendah. Itu yang terasa "bertorsi".
+**Yang sebenarnya berbeda adalah di putaran berapa torsi puncak terjadi.** Mesin overstroke punya bore kecil, jadi luas valve-nya terbatas, jadi napasnya habis di putaran lebih rendah — dan torsi puncaknya turun ke rpm rendah. Itu yang terasa "bertorsi".
 
 Kalau dibandingkan **torsi per liter pada rpm puncak masing-masing**, mesin overbore dan overstroke praktis sama.
 
@@ -99,11 +99,11 @@ Ini pertukaran mendasar dalam tuning:
 | LSA | besar (108–116°) | kecil (98–104°) |
 | Panjang runner | sedang | ditala tajam |
 | Puncak tenaga | lebih rendah | lebih tinggi |
-| Cocok untuk | motor bergigi, harian | CVT, drag |
+| Cocok untuk | motor gear, harian | CVT, drag |
 
 ### 2.3 Kenapa CVT mengubah aturannya
 
-Pada motor bergigi, setiap pindah gigi menjatuhkan putaran mesin. Kalau pitanya sempit, mesin jatuh keluar pita dan akselerasi hilang. Karena itu motor bergigi butuh pita lebar.
+Pada motor gear, setiap pindah gear menjatuhkan putaran mesin. Kalau pitanya sempit, mesin jatuh keluar pita dan akselerasi hilang. Karena itu motor gear butuh pita lebar.
 
 **CVT tidak punya masalah itu.** Rasio berubah kontinu, sehingga mesin bisa ditahan di satu titik putaran sepanjang akselerasi.
 
@@ -111,7 +111,7 @@ Konsekuensinya sangat besar:
 
 > **Pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan lebar pita.**
 
-Ini memberi kebebasan yang tidak dimiliki motor bergigi: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat pita sempit tapi puncaknya tinggi.
+Ini memberi kebebasan yang tidak dimiliki motor gear: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat pita sempit tapi puncaknya tinggi.
 
 **Syaratnya:** CVT harus benar-benar mampu menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin berpita sempit akan terasa jauh lebih lambat daripada mesin standar. Bahasan di Tahap 9.
 
@@ -175,7 +175,7 @@ Ada rem yang bisa diatur, sehingga putaran mesin bisa **ditahan** di satu titik 
 
 | | Dyno mesin | Dyno chassis |
 |---|---|---|
-| Yang diukur | tenaga di kruk as | tenaga di roda |
+| Yang diukur | tenaga di crankshaft | tenaga di roda |
 | Perlu bongkar mesin | ya | tidak |
 | Termasuk rugi CVT | tidak | ya |
 | Untuk matic | jarang dipakai | standar |
@@ -252,8 +252,8 @@ Sebelum mengubah apa pun, kumpulkan data ini. Tanpa data ini, seluruh perhitunga
 - [ ] Kapasitas sebenarnya
 - [ ] Volume ruang bakar (diukur dengan buret, bukan dari spesifikasi)
 
-**Kepala silinder**
-- [ ] Diameter klep isap dan buang
+**Cylinder head**
+- [ ] Diameter valve isap dan buang
 - [ ] Diameter dalam seat (throat) isap dan buang
 - [ ] CSA port di titik tersempit — isap dan buang
 - [ ] Lebar seat
@@ -270,14 +270,14 @@ Sebelum mengubah apa pun, kumpulkan data ini. Tanpa data ini, seluruh perhitunga
 
 **Saluran**
 - [ ] Diameter throttle body
-- [ ] Panjang runner isap (dari klep ke mulut)
+- [ ] Panjang runner isap (dari valve ke mulut)
 - [ ] Diameter dalam header
-- [ ] **Panjang header** — dari klep buang ke titik pelebaran
+- [ ] **Panjang header** — dari valve buang ke titik pelebaran
 - [ ] Diameter inlet muffler
 
 **Pengapian dan campuran**
-- [ ] Jenis koil
-- [ ] Busi: merek, heat range, gap
+- [ ] Jenis coil
+- [ ] Spark plug: merek, heat range, gap
 - [ ] Kurva pengapian (kalau bisa dibaca)
 - [ ] AFR pada beban penuh (butuh wideband)
 
@@ -291,9 +291,9 @@ Setiap angka di atas dipakai untuk **mengkalibrasi** perhitungan di tahap beriku
 
 | Data yang hilang | Akibat |
 |---|---|
-| Throat (bukan diameter klep) | seluruh perhitungan port meleset sampai 40% |
+| Throat (bukan diameter valve) | seluruh perhitungan port meleset sampai 40% |
 | Lift acuan timing cam | durasi salah baca sampai 20° |
-| Panjang header | harmonik knalpot tidak bisa ditentukan |
+| Panjang header | harmonik exhaust tidak bisa ditentukan |
 | Volume ruang bakar terukur | kompresi meleset 1–2 angka penuh |
 | AFR beban penuh | tidak tahu apakah aman atau kurang |
 
