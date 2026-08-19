@@ -212,6 +212,21 @@ Urutan di bawah disusun berdasarkan **dampak per usaha** dan **ketergantungan an
 
 ---
 
+### TAHAP 11 — Kalibrasi: membaca mesin nyata
+*Mengubah data lapangan yang berantakan jadi angka yang bisa dipercaya.*
+
+- Membaca cam card dari data yang tidak lengkap atau bertentangan
+- Memprediksi rpm peak power dari spesifikasi (rumus time-area dibalik)
+- Kenapa data mesin sendiri selalu mengalahkan acuan dari mesin lain
+- Mengecek kecukupan throttle body dari spesifikasi
+- **Crank HP vs Wheel HP** — kesalahan paling mudah terjadi di dyno chassis
+
+**Kenapa terakhir:** tahap ini mengasumsikan seluruh Tahap 1–10 sudah dipahami — isinya tentang menerapkan rumus-rumus itu ke data lapangan yang tidak ideal, bukan rumus baru.
+
+**Waktu belajar:** 1 minggu. **Bisa dilewati?** Tidak, kalau kamu akan sering kerja dari data dyno chassis atau spek mesin yang tidak lengkap.
+
+---
+
 ## 0.4 Ringkasan urutan
 
 ```
@@ -225,6 +240,7 @@ Urutan di bawah disusun berdasarkan **dampak per usaha** dan **ketergantungan an
 8. Mekanik           → supaya tidak jebol
 9. CVT               → supaya sampai ke roda
 10. Simulasi         → opsional
+11. Kalibrasi        → membaca data lapangan yang tidak ideal
 ```
 
 **Kesalahan urutan yang paling sering terjadi:**
@@ -324,7 +340,8 @@ Sepanjang buku dipakai tiga mesin contoh. Angkanya nyata, diambil dari mesin yan
 | `09-TAHAP8-MEKANIK.md` | material, ring, clearance, valve spring, massa |
 | `10-TAHAP9-CVT.md` | CVT, rasio, top speed, akselerasi |
 | `11-TAHAP10-SIMULASI.md` | CFD dan validasi |
-| `12-LAMPIRAN.md` | rumus, perkakas, daftar periksa |
+| `12-TAHAP11-KALIBRASI.md` | membaca cam card, prediksi rpm, crank vs wheel HP |
+| `13-LAMPIRAN.md` | rumus, perkakas, daftar periksa |
 
 ---
 
