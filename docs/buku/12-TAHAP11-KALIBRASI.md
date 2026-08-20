@@ -281,6 +281,33 @@ Setelah dihaluskan (taper landai): **K turun ke ~0,012–0,024**.
 
 > **Aturan yang bisa ditarik:** benar secara teknis (menghilangkan pola pelebaran mendadak) tidak otomatis berarti signifikan. **Hitung dulu skalanya** — kalau perbaikan yang "kelihatan jelas salah" ternyata cuma menyumbang < 0,5% terhadap tenaga, itu bukan prioritas, walau tetap sah dikerjakan kalau sedang bongkar untuk alasan lain.
 
+#### Koreksi: Borda-Carnot hanya untuk PELEBARAN
+
+Analisis di atas punya cacat yang baru ketahuan belakangan, dan cacatnya instruktif.
+
+Urutan aliran di kasus ini adalah **plenum → pipa Ø42,5 → TB Ø36 → klep**. Jadi step 42,5 ke 36 itu **penyempitan**, bukan pelebaran. Borda-Carnot dipakai ke arah yang salah.
+
+Rumus yang benar berbeda untuk tiap arah:
+
+```
+pelebaran mendadak   K = (1 − A_kecil/A_besar)²        [pakai v di sisi KECIL]
+penyempitan mendadak K = 0,5 × (1 − A_kecil/A_besar)   [pakai v di sisi KECIL]
+```
+
+Perhatikan bedanya: pelebaran dikuadratkan, penyempitan tidak dan dikali 0,5. Untuk rasio luas yang sama, **pelebaran jauh lebih mahal daripada penyempitan** — itu sebabnya Tahap 7 §3.3 melarang pelebaran di tengah jalan tapi tidak melarang penyempitan bertahap.
+
+Dihitung ulang dengan rumus yang benar, @8.400 rpm:
+
+| | K | v (di TB) | Δp |
+|---|---|---|---|
+| Step tepi tajam | 0,141 | 87,7 m/s | **643 Pa** |
+| Diberi radius/kerucut | 0,05 | 87,7 m/s | 228 Pa |
+| **Selisih** | | | **415 Pa** |
+
+**Kesimpulan prioritasnya tidak berubah** — step ini tetap item menengah, bukan yang terbesar. Tapi angkanya naik beberapa kali lipat dari hitungan pertama, dan itu cukup untuk memindahkannya dari "kerjakan kalau sempat" ke "kerjakan kalau boks memang dibuka".
+
+> **Pelajarannya:** sebelum memilih rumus rugi aliran, **gambar dulu arah alirannya.** Rumus penyempitan dan pelebaran terlihat mirip dan sama-sama memberi angka yang "masuk akal" — tidak ada yang akan meneriakkan kesalahan ke kamu. Satu-satunya pengaman adalah menelusuri jalur udara dari mulut filter sampai klep sebelum menghitung apapun.
+
 ### 7.5 Bentuk lubang sama pentingnya dengan luasnya
 
 Lanjutan kasus yang sama: tutup plenum aftermarket punya lubang inlet 2× slot kotak (masing-masing 87×17mm) menuju filter mesh 265×85mm. Pertanyaan awalnya "apakah lubang ini cukup besar" — tapi luas cuma separuh cerita.
@@ -326,7 +353,319 @@ Chamfer sederhana **memangkas rugi 60%** tanpa menambah luas sama sekali.
 
 ---
 
-## 8. Daftar periksa kalibrasi
+## 8. Menguji kewarasan angka dyno dengan inversi BMEP
+
+### 8.1 Kenapa angka dyno butuh diuji
+
+Sheet dyno terlihat otoritatif. Ada grafik, ada angka desimal, ada nama software. Tapi dyno adalah instrumen dengan banyak parameter yang dimasukkan manusia — konstanta inersia, diameter roller, rasio gigi, faktor koreksi atmosfer — dan **tidak satupun dari parameter itu diverifikasi oleh alatnya sendiri.**
+
+Ada satu uji yang bisa dilakukan siapa saja, tanpa alat tambahan, dari dua angka yang selalu tertulis di sheet: **tenaga dan rpm.**
+
+### 8.2 BMEP — besaran yang tidak bisa dibohongi
+
+BMEP (*brake mean effective pressure*) adalah tekanan rata-rata efektif yang bekerja di atas piston sepanjang langkah usaha. Dia hanya bergantung pada torsi dan kapasitas:
+
+```
+BMEP = 4π × T / Vd                    [4 langkah; T dalam Nm, Vd dalam m³, hasil Pa]
+T    = P / ω = P / (rpm × 2π/60)      [P dalam Watt]
+```
+
+Kenapa ini kuat sebagai alat uji: BMEP punya **plafon fisik yang keras**. Dia dibatasi oleh berapa banyak udara yang bisa masuk silinder dan berapa banyak energi yang bisa dilepas bahan bakar dari udara itu. Mesin aspirasi alami tidak bisa melampauinya, seberapapun bagus porting-nya.
+
+### 8.3 Jangkar: pakai mesin produksi nyata, bukan angka hafalan
+
+Jangan pakai "plafon 15 bar" sebagai angka keramat. Pakai mesin yang bisa kamu cek spesifikasinya sendiri, dan bandingkan **di titik yang setara**.
+
+| Mesin acuan | Kapasitas | Titik | BMEP |
+|---|---|---|---|
+| Yamaha XMAX 300 standar | 292cc | 27,6 PS @ 7.250 (peak power) | **11,5 bar** |
+| Honda CBR250RR | 249,7cc | 38 PS @ 12.500 (peak power) | **10,7 bar** |
+| KTM 690 SMC R | 693cc | 73,5 Nm @ 6.500 (peak torsi) | **13,3 bar** |
+| KTM 690 SMC R | 693cc | 74 hp @ 8.000 (peak power) | **11,9 bar** |
+
+**Perhatikan pola penting:** BMEP di peak power selalu **lebih rendah** daripada di peak torsi, karena VE sudah menurun di rpm yang lebih tinggi. KTM 690 — single NA yang dikembangkan penuh oleh pabrikan — turun dari 13,3 ke 11,9 bar. Jadi kalau menguji angka di peak power, **bandingkan ke angka peak power**, jangan ke peak torsi.
+
+Rentang praktis yang bisa dipakai:
+
+| | BMEP di peak power |
+|---|---|
+| Mesin OEM biasa | 10–12 bar |
+| Tertala baik | 12–13 bar |
+| Balap serius | 13–14 bar |
+| Di atas 15 bar | bukan NA |
+
+### 8.4 Kasus nyata: sheet yang tidak lolos
+
+Data yang diuji — XMAX bore-up, Vd 344,8cc, cam 260°, porting standar dirapikan, dyno inersia Leads:
+
+```
+tertulis di sheet:  40,6 hp @ 6.563 rpm  (peak power)
+                    68,18 Nm @ 2.103 rpm (peak torsi)
+```
+
+Inversi:
+
+| Titik | Torsi | BMEP | vs KTM 690 di titik setara |
+|---|---|---|---|
+| 40,6 hp @ 6.563 rpm | 44,1 Nm | **16,05 bar** | **1,34×** |
+| 68,18 Nm @ 2.103 rpm | 68,2 Nm | **24,85 bar** | **1,86×** |
+
+Keduanya di atas apa yang dicapai single NA terbaik buatan pabrik. Sheet ini tidak lolos uji — dan sekarang pertanyaannya bukan lagi "apakah ada yang salah", melainkan **"yang mana yang salah"**.
+
+### 8.5 Dua bacaan, dan cara memilih
+
+Ketika BMEP kelewat tinggi, hanya ada dua kemungkinan dasar:
+
+| | Konsekuensi |
+|---|---|
+| **(a) Tenaganya benar, rpm-nya meleset** | peak sebenarnya ada di rpm lebih tinggi |
+| **(b) Rpm-nya benar, tenaganya digelembungkan** | tenaga sebenarnya lebih kecil |
+
+Untuk kasus di atas:
+
+| Kalau BMEP-nya | 40,6 hp terjadi di | atau, di 6.563 rpm tenaganya |
+|---|---|---|
+| 11,5 bar | 9.162 rpm | 29,1 hp |
+| 12,0 bar | 8.781 rpm | 30,3 hp |
+| 12,5 bar | 8.429 rpm | 31,6 hp |
+| 13,0 bar | 8.105 rpm | 32,9 hp |
+
+Cara memilih di antara keduanya ada di bagian berikutnya.
+
+---
+
+## 9. Membedakan salah kalibrasi dari salah rasio — khusus dyno matic
+
+### 9.1 Uji pembedanya: apakah faktor errornya konstan?
+
+Ini inti bab ini, dan setahu penulis belum ditulis di tempat lain.
+
+**Hitung faktor kelebihan BMEP di minimal dua titik** yang berjauhan di grafik — biasanya di peak power dan di peak torsi.
+
+```
+faktor = BMEP_terbaca / BMEP_wajar_di_titik_setara
+```
+
+Lalu baca polanya:
+
+| Pola | Artinya |
+|---|---|
+| **Faktor sama di semua titik** | kesalahan **kalibrasi** — konstanta inersia, faktor koreksi atmosfer, atau salah satuan. Menggeser seluruh grafik dengan pengali yang sama |
+| **Faktor membesar ke arah rpm rendah** | kesalahan **rasio** — rpm mesin diturunkan dari rpm roller lewat rasio tetap, padahal rasionya bergeser |
+| Faktor acak, tidak berpola | data mentahnya sendiri berantakan — ulangi run |
+
+**Kenapa uji ini bekerja:** kesalahan kalibrasi bersifat perkalian terhadap seluruh dataset. Kesalahan rasio pada CVT bersifat *progresif*, karena besarnya penyimpangan rasio berubah sepanjang run.
+
+### 9.2 Kasus yang sama, diuji
+
+| Titik | Faktor kelebihan |
+|---|---|
+| Peak power | **1,34×** |
+| Peak torsi | **1,86×** |
+
+Tidak konstan, dan membesar ke arah rpm rendah. **Vonisnya: kesalahan rasio.**
+
+Konfirmasinya ada di header sheet itu sendiri: kolom `Ratio 3.95`. Software menurunkan rpm mesin dari rpm roller dikali angka tetap 3,95. Pada matic tanpa *locked ratio pulley*, rasio itu bergeser terus-menerus sepanjang akselerasi:
+
+- **Di kecepatan tinggi** CVT sudah shift-out penuh, rasio aktual mendekati angka tetap yang diasumsikan → error kecil (1,34×)
+- **Di kecepatan rendah** CVT masih di rasio berat, mesin berputar jauh lebih cepat daripada yang dihitung → error membengkak (1,86×)
+
+Bentuk errornya persis sesuai mekanismenya.
+
+### 9.3 Kenapa tenaganya selamat tapi torsi dan rpm tidak
+
+Pada dyno inersia:
+
+```
+P = I × ω_roller × (dω_roller/dt)
+```
+
+**Tenaga dihitung murni dari percepatan roller.** Rpm mesin tidak muncul sama sekali di rumus itu. Jadi tenaga lolos dari kesalahan rasio.
+
+Torsi lain ceritanya — software menghitungnya sebagai `T = P / ω_mesin`, memakai rpm mesin yang rusak. Jadi torsi ikut rusak.
+
+| Besaran | Nasib pada kesalahan rasio |
+|---|---|
+| Tenaga (hp/kW) | ✅ selamat — dari percepatan roller |
+| Sumbu rpm mesin | ❌ rusak, makin parah ke rpm rendah |
+| Torsi (Nm) | ❌ rusak — turunan dari rpm yang rusak |
+| Posisi peak di sumbu rpm | ❌ tidak bermakna |
+
+**Konsekuensi praktisnya besar:** angka tenaga yang dibanggakan orang biasanya benar. Yang salah adalah *di mana* tenaga itu terjadi — dan justru itulah yang dibutuhkan untuk menala cam, saluran isap, dan setelan CVT.
+
+### 9.4 Cara memperbaikinya
+
+Salah satu dari dua ini menyelesaikannya permanen:
+
+1. **Run dengan locked ratio pulley** — rasio jadi benar-benar tetap, angka di kolom `Ratio` jadi sah. Ini yang paling bersih.
+2. **Umpankan sinyal rpm asli dari pickup pengapian** ke software, jangan biarkan dia menurunkan dari rasio.
+
+Kalau keduanya tidak tersedia, jalan murahnya ada di Tahap 9 §3.1: **tacho yang bisa dibaca saat jalan.** Catat rpm yang ditahan CVT saat akselerasi penuh. Pada matic, angka itu justru lebih berguna daripada seluruh sumbu rpm di sheet dyno — karena di situlah mesin benar-benar bekerja.
+
+### 9.5 Cek silang: apakah rpm hasil koreksi masuk akal?
+
+Jangan berhenti setelah mengoreksi. Uji apakah rpm baru itu wajar untuk mesinnya, pakai besaran yang tidak terlibat di perhitungan tadi:
+
+| rpm | v throat isap | v TB | MPS |
+|---|---|---|---|
+| 7.800 | 77 m/s | 81 m/s | 19,8 m/s |
+| 8.100 | 80 m/s | 85 m/s | 20,5 m/s |
+| 8.500 | 84 m/s | 89 m/s | 21,5 m/s |
+| 8.800 | 87 m/s | 92 m/s | 22,3 m/s |
+
+Semuanya di bawah batas: throat masih di bawah rentang kerja mesin tertala (97–115 m/s, Tahap 7 §1.4), MPS masih di bawah Mesin Contoh A (21,3 m/s). **Rpm hasil koreksi lolos cek silang** — kalau tidak lolos, koreksinya sendiri yang perlu dicurigai.
+
+---
+
+## 10. Merancang plenum dari sasaran, bukan dari acuan pabrikan
+
+### 10.1 Kenapa angka pabrikan tidak boleh jadi sasaran
+
+Aturan plenum di Tahap 7 §3.4 berbunyi `V_plenum ≈ 1,0–1,5 × kapasitas mesin`. Airbox skutik standar berada di **8–15× kapasitas mesin**. Selisihnya sepuluh kali lipat, dan keduanya benar — untuk tujuan yang berbeda.
+
+Aturan Tahap 7 ditulis untuk **plenum balap**: ruang kecil yang langsung menyuapi runner pendek. Airbox OEM adalah **kelas komponen lain**, dan ukurannya adalah harga dari enam kendala yang sebagian besar tidak berlaku bagi pembangun mesin:
+
+| Kendala pabrikan | Mendorong volume besar karena | Berlaku untuk mesin tune? |
+|---|---|---|
+| **Regulasi kebisingan** | boks = filter low-pass akustik; makin besar makin senyap deru induksi. Sering ini kendala yang mengikat, bukan tenaga | Tidak |
+| **Margin filter kotor** | *face velocity* dibuat < 1 m/s padahal media dirancang 1–3 m/s — margin 3–4× agar motor tetap normal dengan filter dekil di 20.000 km | Sebagian |
+| **Sinyal MAP stabil** | riak tekanan = error perhitungan massa udara = error AFR | **Ya — lihat §10.5** |
+| **Karakter rata untuk semua orang** | reservoir-dominant = tidak ada tanjakan/lubang tenaga | Tidak |
+| **Satu kalibrasi untuk semua kondisi** | perilaku reservoir kurang sensitif terhadap ketinggian dan suhu daripada penalaan gelombang | Sebagian |
+| **Volume gratis di skutik** | ruang bawah jok toh menganggur | Ya |
+
+> **Aturan yang bisa ditarik:** sebelum meniru angka pabrikan, tanyakan **kendala apa yang sedang dibayar oleh angka itu.** Kalau kendalanya bukan kendalamu, angkanya bukan sasaranmu.
+
+### 10.2 Dua kriteria volume yang diturunkan dari mesinnya sendiri
+
+Ganti acuan pinjaman dengan dua kriteria yang keduanya memakai data mesin itu sendiri.
+
+**Kriteria 1 — dekopling.** Agar plenum berperan sebagai ujung terbuka yang memantulkan gelombang dengan bersih, volumenya harus jauh lebih besar daripada kolom udara di saluran yang menempel padanya:
+
+```
+V_plenum ≈ 5–10 × volume kolom runner
+volume kolom runner = Σ (luas penampang × panjang) sepanjang saluran ke klep
+```
+
+**Kriteria 2 — responsivitas inlet.** Boks harus sanggup mengisi ulang dirinya lebih cepat daripada mesin mengosongkannya. Kalau tidak, boks itu sendiri jadi hambatan. Syaratnya, Helmholtz sisi inlet harus jauh di atas frekuensi isap:
+
+```
+f_inlet = (c/2π) × √(A_inlet / (V_plenum × L_inlet_efektif))
+f_isap  = rpm / 120                                    [1 silinder, 4 langkah]
+
+syarat:  f_inlet ≥ 3 × f_isap_maksimum
+```
+
+Perhatikan bahwa kriteria 2 **mengikat volume dan luas inlet bersama-sama**: memperbesar boks tanpa memperbesar inlet menurunkan f_inlet dan bisa membuat boks jadi lambat. Ini hubungan yang hilang kalau volume dipilih sebagai angka tunggal.
+
+**Diterapkan ke kasus XMAX 344,8cc** (pipa 240mm Ø42,5 + tract 250mm Ø36 ≈ 595cc kolom runner):
+
+| Kriteria | Hasil |
+|---|---|
+| Dekopling 5–10× | 2,97 – 5,95 L |
+| Responsivitas inlet (inlet 2.958mm², plafon 8.500 rpm) | lolos sampai > 6 L |
+| **Rentang sah** | **3,0 – 6,0 L** |
+
+Hasilnya **rentang, bukan titik.** Itu jawaban yang jujur: di dalam rentang itu volume bukan lagi tuas yang menentukan, dan usaha lebih baik dialihkan ke geometri.
+
+### 10.3 Tumpukan rugi sebagai alat prioritas
+
+Sebelum memutuskan apa yang dikerjakan, susun semua rugi tekanan di satu tabel, di rpm yang sama, dengan kecepatan aliran di titik masing-masing. Ini mengubah perdebatan selera jadi urutan angka.
+
+Kasus XMAX, **@8.400 rpm, aliran puncak**:
+
+| Titik | K | v | Δp |
+|---|---|---|---|
+| **Mulut pipa menonjol ke plenum** | 0,9 | 62,9 m/s | **2.108 Pa** |
+| TB butterfly 36mm — tidak diubah | 0,25 | 87,7 m/s | 1.138 Pa |
+| Mulut pipa rata bertepi tajam | 0,5 | 62,9 m/s | 1.171 Pa |
+| Penyempitan 42,5→36 tepi tajam | 0,141 | 87,7 m/s | 643 Pa |
+| Slot inlet (aliran sudah diredam boks) | 0,5 | 13,9 m/s | 57 Pa |
+| — setelah diperbaiki — | | | |
+| Mulut pipa **dengan bellmouth** | 0,05 | 62,9 m/s | **117 Pa** |
+| Penyempitan **dikerucutkan** | 0,05 | 87,7 m/s | 228 Pa |
+
+```
+total dapat diperbaiki : ~2.400 Pa  = 2,4% tekanan atmosfer
+rugi TB (tidak diubah) :  1.138 Pa
+```
+
+**Temuan yang mengejutkan: mulut pipa di dalam plenum lebih mahal daripada throttle body-nya sendiri.** Komponen yang tidak punya nama, tidak dijual sebagai part, dan tidak pernah disebut di forum — mengalahkan komponen yang paling sering diganti orang.
+
+Ini terjadi karena tabel K sangat menghukum mulut yang menonjol ke dalam ruang (K = 0,8–1,0) dibanding mulut beradius (K = 0,05) — beda **20 kali lipat**, jauh lebih besar daripada selisih K antar ukuran TB.
+
+### 10.4 Ruang bebas mengalahkan volume
+
+Bellmouth hanya bekerja kalau udara bisa mengalir masuk **dari segala arah** ke mulutnya. Bellmouth yang mulutnya rapat ke dinding boks cuma tepi tajam yang mahal.
+
+```
+jarak mulut ke dinding di depannya : ≥ 1,0 × D saluran   (ideal 1,5 × D)
+jarak radial mulut ke dinding      : ≥ 0,5 × D saluran
+radius bellmouth                   : 0,15–0,20 × D       [Tahap 7 §3.2]
+```
+
+> **Aturan prioritas:** kalau harus memilih, **boks lebih kecil dengan ruang bebas yang benar mengalahkan boks lebih besar yang mulut pipanya terjepit.** Ini kebalikan dari naluri kebanyakan orang, yang mengejar liter.
+
+Konsekuensi rancangan: **masukkan pipa lewat muka ujung yang kecil dan arahkan menyusuri sisi terpanjang boks**, bukan menembus muka lebar. Dengan cara itu ruang bebas di depan mulut hampir selalu terpenuhi tanpa memperbesar boks.
+
+Susunan itu juga memberi bonus: filter jadi berada tegak lurus terhadap sumbu bellmouth, sehingga **tidak ada jet udara yang menghantam mulut** — masalah yang muncul kalau filter dipasang persis berhadapan dengan pipa.
+
+### 10.5 Sinyal MAP sebagai kendala rancang — jebakan ECU aftermarket
+
+Ini kendala yang tidak ada di buku manapun, dan akan mengenai siapapun memakai ECU aftermarket pada mesin 1 silinder.
+
+Banyak ECU aftermarket kelas menengah mengunci **tabel dasar RPM vs MAP** dan hanya membuka **tabel koreksi RPM vs TPS**. Artinya seluruh penentuan bahan bakar berjalan lewat sinyal MAP, dan tuner **tidak bisa menulis ulang tabel utamanya.**
+
+Pada mesin 1 silinder ini jadi serius, karena tidak ada silinder lain yang mengisi jeda antar langkah isap — riak tekanan di saluran isap adalah kasus terburuk.
+
+```
+riak per langkah isap = (Vd × VE) / V_plenum
+```
+
+| V plenum | untuk Vd 344,8cc, VE 0,85 | |
+|---|---|---|
+| 3,0 L | 9,8% | |
+| 4,5 L | 6,5% | |
+| 5,0 L | 5,9% | |
+
+**Konsekuensi rancangan:**
+
+- Volume plenum berpindah dari "urusan karakter" jadi **kendala akurasi bahan bakar**
+- Dinding boks harus **kaku dan berusuk** — dinding tipis yang melentur menambah *compliance* yang tidak terhitung dan mengaburkan sinyal
+- Nipel MAP diberi **orifis kecil (Ø0,8–1,0mm) plus volume redam kecil**, agar sensor membaca rata-rata dan bukan denyut sesaat. Nyaris gratis, dan sering jadi perbaikan tuning terbesar per rupiah pada 1 silinder speed-density
+- Kebocoran **antara TB dan klep** = udara yang tidak terbaca MAP = campuran miskin yang tidak bisa dilihat tabel terkunci. Bagian itu wajib kedap. Kebocoran di hulu TB "hanya" memasukkan debu
+
+### 10.6 Jangan pakai aliran puncak di titik yang sudah diredam boks
+
+Kesalahan yang mudah terjadi saat menyusun tumpukan rugi: memakai **aliran puncak** di semua titik.
+
+Aliran puncak (`Q_rata2 / duty × π/2`) berlaku di saluran yang tersambung langsung ke klep. Tapi **plenum ada justru untuk meredam pulsa itu** — di hulu boks, aliran mendekati rata-rata, bukan puncak.
+
+Bedanya besar. Untuk slot inlet XMAX @6.500 rpm:
+
+| Asumsi aliran | v | Δp (K=0,5) |
+|---|---|---|
+| Rata-rata | 5,4 m/s | 8,5 Pa |
+| 2× rata-rata (realistis) | 10,7 m/s | 34 Pa |
+| Puncak — asumsi yang salah | 23,4 m/s | 161 Pa |
+
+Salah asumsi di sini menggelembungkan rugi inlet **5–20×**, dan itu cukup untuk memindahkan pekerjaan yang sepele ke urutan atas daftar prioritas.
+
+> **Aturan:** pakai aliran puncak di **hilir** plenum, aliran mendekati rata-rata di **hulu** plenum. Titik pemisahnya adalah plenum itu sendiri.
+
+### 10.7 Ringkasan urutan merancang plenum
+
+1. Telusuri jalur udara dari mulut filter sampai klep, **gambar arahnya** — ini menentukan rumus rugi mana yang dipakai di tiap step
+2. Susun **tumpukan rugi** di satu rpm, urutkan dari terbesar
+3. Kerjakan **bentuk mulut dan tepi** dulu — hampir selalu paling murah per Pa
+4. Tentukan **rentang volume** dari kriteria dekopling dan responsivitas inlet, bukan dari angka pabrikan
+5. Di dalam rentang itu, **utamakan ruang bebas bellmouth di atas mengejar liter**
+6. Kalau ECU-nya speed-density dengan tabel terkunci, **naikkan volume ke sisi atas rentang** dan redam nipel MAP
+7. Tentukan **panjang saluran** dari rpm kerja sebenarnya — dan pastikan rpm itu sudah lolos uji BMEP di §8
+
+---
+
+## 11. Daftar periksa kalibrasi
 
 Sebelum menerima kesimpulan dari data lapangan:
 
@@ -338,11 +677,17 @@ Sebelum menerima kesimpulan dari data lapangan:
 - [ ] Kalau WHP, **konversi ke crank HP** sebelum dimasukkan ke rumus `Tenaga ≈ CFM × 0,43–0,50`
 - [ ] Rugi drivetrain diasumsikan eksplisit (10/20/30%) dan **ditulis** — jangan diam-diam
 - [ ] **Sebelum melepas atau mengganti komponen saluran** (box, piping, filter), hitung dulu apakah itu mengubah panjang efektif ke ujung terbuka — jangan asumsikan "dilepas = pasti lebih baik"
-- [ ] Kalau ada step diameter di saluran, **hitung K via Borda-Carnot dan bandingkan skalanya** ke komponen lain (TB, tikungan) sebelum memprioritaskan perbaikan
+- [ ] Kalau ada step diameter di saluran, **hitung K dan bandingkan skalanya** ke komponen lain (TB, tikungan) sebelum memprioritaskan perbaikan
+- [ ] **Gambar arah aliran** sebelum memilih rumus rugi — penyempitan dan pelebaran punya rumus berbeda dan sama-sama memberi angka yang "masuk akal"
+- [ ] **Uji BMEP** setiap angka dyno sebelum dipakai sebagai jangkar: `BMEP = 4π × T / Vd`, bandingkan ke mesin produksi nyata **di titik yang setara** (peak power ke peak power)
+- [ ] Kalau BMEP kelewat tinggi, **hitung faktor kelebihannya di ≥2 titik**: konstan = salah kalibrasi, membesar ke rpm rendah = salah rasio
+- [ ] Pada dyno matic, cek apakah ada kolom **`Ratio` tetap** — kalau run tidak memakai *locked ratio pulley*, sumbu rpm dan seluruh kurva torsi tidak bisa dipakai
+- [ ] **Aliran puncak di hilir plenum, aliran mendekati rata-rata di hulu plenum** — jangan pakai puncak di titik yang justru sudah diredam boks
+- [ ] Sebelum meniru angka pabrikan, tanyakan **kendala apa yang sedang dibayar angka itu** — kalau bukan kendalamu, itu bukan sasaranmu
 
 ---
 
-## 9. Ringkasan Tahap 11
+## 12. Ringkasan Tahap 11
 
 1. **Overlap dalam derajat dan lift-di-TDC dalam mm adalah dua hal berbeda** — jangan tertukar.
 2. **Model harmonik untuk memvalidasi cam, bukan sumber kebenaran mutlak** — cam nyata bisa punya ramp lebih agresif dari `sin²`.
@@ -353,5 +698,13 @@ Sebelum menerima kesimpulan dari data lapangan:
 7. **Satu kesalahan unit tidak selalu merusak semua kesimpulan** — periksa rumus mana yang benar-benar terpengaruh.
 8. **Panjang efektif saluran = jarak ke ujung terbuka**, bukan cuma "ada part atau tidak" — melepas komponen bisa memindahkan titik itu, bukan cuma menghilangkan restriksi.
 9. **Hitung skala sebelum memprioritaskan perbaikan.** Sesuatu yang "kelihatan jelas salah" secara teknis bisa ternyata menyumbang < 0,5% terhadap tenaga.
+10. **Gambar arah aliran sebelum memilih rumus rugi.** Penyempitan dan pelebaran punya rumus berbeda, dan keduanya memberi angka yang terlihat masuk akal — tidak ada yang akan meneriakkan kesalahan ke kamu.
+11. **Angka dyno adalah data yang harus diuji, bukan kebenaran yang diterima.** Inversi BMEP menguji sheet manapun dari dua angka yang selalu ada di situ: tenaga dan rpm.
+12. **Bandingkan ke mesin produksi nyata di titik yang setara** — BMEP di peak power selalu lebih rendah daripada di peak torsi.
+13. **Pola faktor error memberi tahu jenis kesalahannya.** Konstan = kalibrasi. Membesar ke rpm rendah = rasio. Ini uji yang bisa dilakukan dari dua titik di sheet.
+14. **Pada dyno inersia matic, tenaga selamat tapi rpm dan torsi bisa rusak** — tenaga dihitung dari percepatan roller dan tidak menyentuh rpm mesin. Yang hilang justru *di mana* tenaga itu terjadi, dan itulah yang dibutuhkan untuk menala.
+15. **Angka pabrikan membayar kendala pabrikan** — kebisingan, margin servis, kalibrasi tunggal untuk semua kondisi. Kalau kendalanya bukan kendalamu, angkanya bukan sasaranmu.
+16. **Volume plenum diturunkan dari dekopling dan responsivitas inlet**, dan hasilnya rentang, bukan titik. Di dalam rentang itu, ruang bebas bellmouth lebih menentukan daripada liter.
+17. **Komponen tanpa nama bisa mengalahkan komponen yang paling sering diganti.** Mulut pipa di dalam plenum ternyata lebih mahal daripada throttle body-nya sendiri.
 
 **Berikutnya:** Lampiran — rumus ringkas, daftar periksa build, dan data mesin contoh.

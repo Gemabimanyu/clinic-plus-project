@@ -220,6 +220,10 @@ Urutan di bawah disusun berdasarkan **dampak per usaha** dan **ketergantungan an
 - Kenapa data mesin sendiri selalu mengalahkan acuan dari mesin lain
 - Mengecek kecukupan throttle body dari spesifikasi
 - **Crank HP vs Wheel HP** — kesalahan paling mudah terjadi di dyno chassis
+- Mendiagnosis efek plenum dan piping dari rasa berkendara
+- **Uji BMEP** — menguji kewarasan sheet dyno dari dua angka yang selalu ada di situ
+- **Membedakan salah kalibrasi dari salah rasio** pada dyno matic tanpa locked pulley
+- Merancang plenum dari sasaran, bukan dari acuan pabrikan
 
 **Kenapa terakhir:** tahap ini mengasumsikan seluruh Tahap 1–10 sudah dipahami — isinya tentang menerapkan rumus-rumus itu ke data lapangan yang tidak ideal, bukan rumus baru.
 
@@ -340,8 +344,9 @@ Sepanjang buku dipakai tiga mesin contoh. Angkanya nyata, diambil dari mesin yan
 | `09-TAHAP8-MEKANIK.md` | material, ring, clearance, valve spring, massa |
 | `10-TAHAP9-CVT.md` | CVT, rasio, top speed, akselerasi |
 | `11-TAHAP10-SIMULASI.md` | CFD dan validasi |
-| `12-TAHAP11-KALIBRASI.md` | membaca cam card, prediksi rpm, crank vs wheel HP |
+| `12-TAHAP11-KALIBRASI.md` | membaca cam card, prediksi rpm, crank vs wheel HP, uji BMEP, rancang plenum |
 | `13-LAMPIRAN.md` | rumus, perkakas, daftar periksa |
+| `build/XMAX-344-BUILD-SPEC.md` | contoh build spec lengkap hasil penerapan metode buku ini |
 
 ---
 

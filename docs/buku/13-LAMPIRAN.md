@@ -41,8 +41,13 @@ K               = (v_teoretis / v_nyata)² − 1
 v_teoretis      = √(2Δp/ρ)      [28"H₂O → 107,6 m/s; 10" → 64,3 m/s]
 CFM             = m³/s × 2118,88
 CFM_28          = CFM_10 × √2,8
-K_pelebaran_mendadak = (1 − A_kecil/A_besar)²      [Borda-Carnot, step diameter di tengah saluran — Tahap 11 §7.4]
+K_pelebaran_mendadak   = (1 − A_kecil/A_besar)²     [Borda-Carnot — step MELEBAR; pakai v sisi kecil]
+K_penyempitan_mendadak = 0,5 × (1 − A_kecil/A_besar)   [step MENYEMPIT; pakai v sisi kecil]
 ```
+
+> **Gambar arah alirannya dulu.** Dua rumus step di atas terlihat mirip dan sama-sama memberi angka yang masuk akal. Untuk rasio luas yang sama, pelebaran jauh lebih mahal daripada penyempitan. Salah arah = salah beberapa kali lipat, tanpa peringatan apapun. Lihat Tahap 11 §7.4.
+
+**Aliran puncak vs rata-rata:** `Q_puncak` berlaku di saluran yang tersambung langsung ke klep. Di **hulu plenum**, pulsa sudah diredam — pakai aliran mendekati rata-rata (≈1–2× `Q_rata2`). Titik pemisahnya adalah plenum itu sendiri. Lihat Tahap 11 §10.6.
 
 ### A.4 Kompresi
 
@@ -93,7 +98,23 @@ Koreksi ujung   L_efektif = L_fisik + k × jari-jari
                     k = 0,61 pipa polos, 0,85 bellmouth
 Helmholtz       f_H = (c/2π) × √(A / (V_eff × L_eff))
                 V_eff = V_cyl × (CR+1) / (2(CR−1))
+Helmholtz inlet f_inlet = (c/2π) × √(A_inlet / (V_plenum × L_inlet_eff))
+                syarat f_inlet ≥ 3 × f_isap_maks     [Tahap 11 §10.2]
+Frekuensi isap  f_isap = rpm / 120                   [1 silinder, 4 langkah]
 ```
+
+### A.7b Plenum
+
+```
+Volume dari dekopling   V_plenum ≈ 5–10 × volume kolom runner
+                        volume kolom runner = Σ (luas penampang × panjang) ke klep
+Riak per langkah isap   = (Vd × VE) / V_plenum        [< 7% untuk ECU speed-density]
+Ruang bebas bellmouth   depan  ≥ 1,0 × D saluran (ideal 1,5×)
+                        radial ≥ 0,5 × D saluran
+Radius bellmouth        R = 0,15–0,20 × D             [Tahap 7 §3.2]
+```
+
+> Aturan `V_plenum ≈ 1,0–1,5 × Vd` di Tahap 7 §3.4 berlaku untuk **plenum balap** yang menyuapi runner pendek. Airbox OEM berada di 8–15 × Vd karena membayar kendala lain — kebisingan, margin filter kotor, kalibrasi tunggal. Jangan campur keduanya. Lihat Tahap 11 §10.1.
 
 ### A.8 Bahan bakar dan pengapian
 
@@ -113,6 +134,34 @@ Tenaga          HP = (Nm × rpm) / 7127
                 kW = (Nm × rpm) / 9549
 Percepatan      a = (P_roda − rugi) / (massa × v)
 ```
+
+### A.9b Uji kewarasan angka dyno
+
+```
+BMEP            = 4π × T / Vd          [4 langkah; T dalam Nm, Vd dalam m³, hasil Pa]
+T dari tenaga   T = P / (rpm × 2π/60)  [P dalam Watt]
+Dyno inersia    P = I × ω_roller × (dω_roller/dt)   [rpm mesin TIDAK muncul di sini]
+```
+
+**Jangkar BMEP dari mesin produksi nyata:**
+
+| Mesin | Titik | BMEP |
+|---|---|---|
+| Yamaha XMAX 300 std (292cc) | peak power | 11,5 bar |
+| Honda CBR250RR (249,7cc) | peak power | 10,7 bar |
+| KTM 690 SMC R (693cc) | peak power | 11,9 bar |
+| KTM 690 SMC R (693cc) | peak torsi | 13,3 bar |
+
+Rentang praktis **di peak power**: OEM 10–12 bar, tertala baik 12–13, balap serius 13–14. Di atas 15 bar = bukan aspirasi alami. BMEP di peak power selalu lebih rendah daripada di peak torsi — **bandingkan di titik yang setara.**
+
+**Kalau BMEP kelewat tinggi, hitung faktor kelebihan di ≥2 titik:**
+
+| Pola faktor | Vonis |
+|---|---|
+| Konstan di semua titik | salah kalibrasi (inersia, faktor koreksi, satuan) |
+| Membesar ke rpm rendah | salah rasio (dyno matic tanpa *locked ratio pulley*) |
+
+Lihat Tahap 11 §8–§9.
 
 ### A.10 Pemuaian termal
 
