@@ -215,7 +215,82 @@ Prediksi **rpm** peak power (bagian 3) tidak memakai HP sama sekali dalam rumusn
 
 ---
 
-## 7. Daftar periksa kalibrasi
+## 7. Studi kasus: mendiagnosis efek plenum dan piping dari rasa berkendara
+
+*Rasa di jok — bukan cuma angka dyno — adalah data. Bagian ini menunjukkan cara menerjemahkan laporan kualitatif jadi angka yang bisa dihitung, memakai rumus gelombang dari Tahap 7.*
+
+### 7.1 Laporan yang jadi bahan kasus
+
+Mesin 345cc (bore 76, stroke 76), panjang valve→TB 250mm, piping TB→plenum 240mm, TB 36mm, pipa dari TB ke plenum 42,5mm. Laporan pengendara:
+
+- **Dengan box+piping terpasang:** tenaga terasa "flat" — narik terus dari bawah tanpa lubang.
+- **Box+piping dilepas:** low-to-mid turun dan TB "ngorok"; mid sedikit turun tanpa ngorok; mid-high sangat enak dan rpm naik lebih cepat; tapi "jambakan" (sentakan torsi) kurang terasa.
+
+### 7.2 Panjang efektif menentukan titik tertala, bukan cuma "ada box atau tidak"
+
+Titik pantul gelombang tekanan (Tahap 7 §2.1) ada di **ujung terbuka** saluran isap. Melepas box+piping tidak cuma "menghilangkan komponen" — itu **memindahkan ujung terbuka** dari mulut plenum ke mulut TB, memendekkan panjang efektif dari 490mm menjadi 250mm.
+
+```
+rpm_tertala = c × durasi / (12 × n × L)
+```
+
+| Konfigurasi | L | h2 | h3 | h4 | h5 |
+|---|---|---|---|---|---|
+| Dengan box+piping | 490mm | 7.893 | 5.262 | 3.946 | 3.157 |
+| Tanpa box+piping | 250mm | 15.470 | 10.313 | 7.735 | 6.188 |
+
+(durasi 260°, c = 357 m/s @45°C dalam saluran)
+
+**Mencocokkan ke laporan:** dengan box, h3 (**~5.260 rpm**) jatuh di low-mid — cocok dengan "flat, narik dari bawah". Tanpa box, dukungan bergeser ke h4–h5 (**~6.200–7.700 rpm**) — cocok dengan "low-mid turun, mid-high sangat enak". **Ini bukan kebetulan** — panjang efektif yang berubah adalah penyebab langsung pergeseran karakter yang dirasakan.
+
+### 7.3 Kenapa "ngorok" cuma muncul di satu sisi, dan kenapa "jambakan" berkurang
+
+**Ngorok tanpa box:** plenum bukan cuma titik pantul gelombang — dia juga peredam pulsa tekanan mentah (termasuk balik dari overlap) sebelum keluar ke udara terbuka. Tanpa itu, pulsa keluar mentah lewat mulut TB yang sempit (36mm, lihat bagian 5) — itu sumber suaranya.
+
+**Jambakan berkurang meski mid-high enak:** harmonik lebih tinggi (h4/h5) secara konsisten memberi penguatan lebih lemah dan lebih halus daripada harmonik rendah (h2/h3) pada sistem nyata (tidak ideal/lossy). RPM naik dan tenaga di sana baik, tapi kenaikannya lebih landai — bukan lonjakan tajam.
+
+> **Pelajaran umum:** modifikasi yang "menghilangkan pembatas" tidak selalu berarti "menghilangkan sesuatu yang buruk". Kadang yang dihilangkan justru komponen yang sedang bekerja sebagai alat tuning aktif — dan hasilnya adalah pertukaran karakter, bukan perbaikan murni.
+
+### 7.4 Mengukur rugi dari step diameter dengan Borda-Carnot
+
+Sambungan TB (36mm) ke pipa plenum (42,5mm) adalah **pelebaran mendadak** — pola yang Tahap 7 §3.3 larang secara kualitatif ("JANGAN ada pelebaran di tengah jalan"). Untuk mengukur seberapa besar, buku ini menambahkan satu rumus di luar tabel K yang sudah ada (Kamus Istilah, Kelompok K):
+
+```
+K_pelebaran_mendadak = (1 − A_kecil/A_besar)²
+```
+
+Rumus ini (Borda-Carnot) melengkapi tabel K yang sudah ada — dipakai khusus untuk **step diameter di tengah saluran**, beda dari kasus mulut/ujung terbuka yang sudah ditabelkan.
+
+**Diterapkan ke kasus ini:**
+```
+A_TB/A_pipa = (36/42,5)² = 0,718
+K = (1 − 0,718)² = 0,080
+```
+
+Setelah dihaluskan (taper landai): **K turun ke ~0,012–0,024**.
+
+**Tapi periksa skalanya sebelum menyimpulkan ini penting:**
+
+| | Rugi tekanan @5.260 rpm |
+|---|---|
+| Step sekarang | 162 Pa |
+| Setelah dihaluskan | 24–49 Pa |
+| **Selisih** | **~113–138 Pa** |
+
+113–138 Pa itu **~0,12% dari tekanan atmosfer** — diterjemahkan ke tenaga, sekitar **0,1–0,15% gain**. Jauh di bawah ambang yang bisa dirasakan (2–5%, Tahap 1). Sebagai pembanding, rugi TB itu sendiri (butterfly WOT, K=0,25) di kecepatan yang sama adalah **~3× lebih besar** dari rugi step ini.
+
+> **Aturan yang bisa ditarik:** benar secara teknis (menghilangkan pola pelebaran mendadak) tidak otomatis berarti signifikan. **Hitung dulu skalanya** — kalau perbaikan yang "kelihatan jelas salah" ternyata cuma menyumbang < 0,5% terhadap tenaga, itu bukan prioritas, walau tetap sah dikerjakan kalau sedang bongkar untuk alasan lain.
+
+### 7.5 Ringkasan studi kasus
+
+1. **Panjang efektif saluran isap = jarak ke ujung terbuka**, bukan cuma "ada part atau tidak". Melepas satu komponen bisa memindahkan titik ujung terbuka, bukan cuma menghilangkan restriksi.
+2. **Cocokkan rentang rpm yang dirasakan pengendara ke tabel harmonik** — ini cara memvalidasi teori tanpa perlu dyno run baru.
+3. **Plenum meredam pulsa, bukan cuma menjadi reservoir volume.** Hilangnya peredaman ini terdengar sebagai suara sebelum terlihat di angka dyno.
+4. **Hitung skala sebelum memprioritaskan perbaikan.** Step diameter yang "kelihatan salah" bisa ternyata menyumbang < 0,5% — valid diperbaiki, tapi bukan prioritas.
+
+---
+
+## 8. Daftar periksa kalibrasi
 
 Sebelum menerima kesimpulan dari data lapangan:
 
@@ -226,10 +301,12 @@ Sebelum menerima kesimpulan dari data lapangan:
 - [ ] **Dyno**: pastikan dulu ini dyno chassis (WHP) atau dyno mesin (crank HP) — cek dari ada/tidaknya roller
 - [ ] Kalau WHP, **konversi ke crank HP** sebelum dimasukkan ke rumus `Tenaga ≈ CFM × 0,43–0,50`
 - [ ] Rugi drivetrain diasumsikan eksplisit (10/20/30%) dan **ditulis** — jangan diam-diam
+- [ ] **Sebelum melepas atau mengganti komponen saluran** (box, piping, filter), hitung dulu apakah itu mengubah panjang efektif ke ujung terbuka — jangan asumsikan "dilepas = pasti lebih baik"
+- [ ] Kalau ada step diameter di saluran, **hitung K via Borda-Carnot dan bandingkan skalanya** ke komponen lain (TB, tikungan) sebelum memprioritaskan perbaikan
 
 ---
 
-## 8. Ringkasan Tahap 11
+## 9. Ringkasan Tahap 11
 
 1. **Overlap dalam derajat dan lift-di-TDC dalam mm adalah dua hal berbeda** — jangan tertukar.
 2. **Model harmonik untuk memvalidasi cam, bukan sumber kebenaran mutlak** — cam nyata bisa punya ramp lebih agresif dari `sin²`.
@@ -238,5 +315,7 @@ Sebelum menerima kesimpulan dari data lapangan:
 5. **Cek kecukupan TB sebelum menyalahkan cam** kalau tenaga mendatar.
 6. **Dyno chassis mengukur WHP, bukan crank HP.** Kenali dari ada/tidaknya roller. Konversi sebelum dipakai di rumus tenaga.
 7. **Satu kesalahan unit tidak selalu merusak semua kesimpulan** — periksa rumus mana yang benar-benar terpengaruh.
+8. **Panjang efektif saluran = jarak ke ujung terbuka**, bukan cuma "ada part atau tidak" — melepas komponen bisa memindahkan titik itu, bukan cuma menghilangkan restriksi.
+9. **Hitung skala sebelum memprioritaskan perbaikan.** Sesuatu yang "kelihatan jelas salah" secara teknis bisa ternyata menyumbang < 0,5% terhadap tenaga.
 
 **Berikutnya:** Lampiran — rumus ringkas, daftar periksa build, dan data mesin contoh.

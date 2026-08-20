@@ -41,6 +41,7 @@ K               = (v_teoretis / v_nyata)² − 1
 v_teoretis      = √(2Δp/ρ)      [28"H₂O → 107,6 m/s; 10" → 64,3 m/s]
 CFM             = m³/s × 2118,88
 CFM_28          = CFM_10 × √2,8
+K_pelebaran_mendadak = (1 − A_kecil/A_besar)²      [Borda-Carnot, step diameter di tengah saluran — Tahap 11 §7.4]
 ```
 
 ### A.4 Kompresi
