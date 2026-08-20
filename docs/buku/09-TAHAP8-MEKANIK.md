@@ -27,7 +27,7 @@ a_TDC = ω² × r × (1 + r/L)
 ω = 2π × rpm / 60,   r = stroke/2,   L = panjang rod
 ```
 
-Percepatan di TDC selalu lebih besar dari di BDC — faktor `(1 + r/L)` menjadi `(1 − r/L)` di BDC.
+Percepatan di TDC selalu lebih besar daripada di BDC — faktor `(1 + r/L)` menjadi `(1 − r/L)` di BDC.
 
 **Mesin Contoh B** (stroke 58, rod 95): [HITUNG]
 
@@ -44,7 +44,7 @@ Percepatan di TDC selalu lebih besar dari di BDC — faktor `(1 + r/L)` menjadi 
 F = massa_bolak_balik × a_TDC
 ```
 
-Massa bolak-balik = piston + ring + pin + klip + ujung kecil rod.
+Massa bolak-balik = piston + ring + pin + clip + ujung kecil rod.
 
 Pada 12.000 rpm:
 
@@ -171,58 +171,58 @@ Dipakai di drag karena sangat ringan dan **menyerap kejut** — melindungi beari
 
 Ujung kecil rod ikut dalam massa bolak-balik; ujung besar ikut dalam massa berputar. Rod yang lebih ringan mengurangi keduanya.
 
-Tapi pengaruhnya lebih kecil dari massa piston, karena hanya sebagian rod yang bolak-balik (kira-kira sepertiganya).
+Tapi pengaruhnya lebih kecil daripada massa piston, karena hanya sebagian rod yang bolak-balik (kira-kira sepertiganya).
 
 ---
 
-## 4. Material klep
+## 4. Material valve
 
 | Material | Densitas | Karakter |
 |---|---|---|
 | **Stainless (21-4N, EV8)** | 7,8 | umum, tahan panas cukup, murah |
-| **Inconel / Nimonic** | 8,2 | tahan panas tinggi — untuk klep buang beban berat |
+| **Inconel / Nimonic** | 8,2 | tahan panas tinggi — untuk valve buang beban berat |
 | **Titanium** | 4,5 | **40% lebih ringan**, mahal, ujung batang harus dikeraskan |
 
-### 4.1 Kenapa massa klep sangat penting
+### 4.1 Kenapa massa valve sangat penting
 
-Percepatan klep di puncak lobe untuk Mesin Contoh B (lift 9 mm, durasi 261°, 12.000 rpm): [HITUNG]
+Percepatan valve di puncak lobe untuk Mesin Contoh B (lift 9 mm, durasi 261°, 12.000 rpm): [HITUNG]
 
 ```
 percepatan = 13.519 m/s² = 1.378 g
 ```
 
-Gaya yang harus ditahan per klep:
+Gaya yang harus ditahan spring per valve:
 
-| Rakitan klep | Massa | Gaya | Per klep dibutuhkan |
+| Rakitan valve | Massa | Gaya | Spring dibutuhkan |
 |---|---|---|---|
 | Stainless + retainer baja | 38 g | 514 N | **73 kgf** |
 | Stainless + retainer titanium | 32 g | 433 N | **62 kgf** |
 | **Titanium + retainer titanium** | **22 g** | **297 N** | **42 kgf** |
 
-**RPM floating dengan per 65 kgf:**
+**RPM floating dengan spring 65 kgf:**
 
 | Rakitan | Floating di |
 |---|---|
 | Stainless 38 g | ~13.400 rpm |
 | **Titanium 22 g** | **~17.600 rpm** |
 
-Mengganti klep ke titanium menaikkan batas floating **4.200 rpm** dengan per yang sama.
+Mengganti valve ke titanium menaikkan batas floating **4.200 rpm** dengan spring yang sama.
 
-### 4.2 Perhatian klep titanium
+### 4.2 Perhatian valve titanium
 
 - **Ujung batang harus dikeraskan** (biasanya dilapis chrome atau DLC) — titanium lunak dan cepat aus di kontak rocker
 - **Seat harus cocok** — titanium tidak boleh langsung ke seat besi cor keras tanpa lapisan
 - **Jangan dipakai untuk buang** kecuali dilapis thermal barrier — titanium tidak tahan panas gas buang sebaik Inconel
 
-### 4.3 Coating pada klep
+### 4.3 Coating pada valve
 
 | Bagian | Coating | Manfaat |
 |---|---|---|
 | Batang | DLC atau chrome | gesekan turun, aus berkurang |
-| Muka klep buang | thermal barrier | suhu klep turun, umur naik |
-| Payung sisi ruang bakar | thermal barrier | mengurangi transfer panas ke klep |
+| Muka valve buang | thermal barrier | suhu valve turun, umur naik |
+| Payung valve, sisi ruang bakar | thermal barrier | mengurangi transfer panas ke valve |
 
-Coating thermal barrier pada klep buang adalah salah satu perbaikan keandalan paling efektif untuk mesin kompresi tinggi.
+Coating thermal barrier pada valve buang adalah salah satu perbaikan keandalan paling efektif untuk mesin kompresi tinggi.
 
 ---
 
@@ -264,7 +264,7 @@ Untuk bore 57,3 mm, balap NA: [HITUNG]
 | Atas | 0,26–0,32 mm |
 | Kedua | 0,29–0,34 mm |
 
-**Ring kedua selalu diberi gap lebih besar dari ring atas.** Kalau lebih kecil, tekanan terperangkap di antara kedua ring dan bisa mengangkat ring atas dari alurnya — *ring flutter*.
+**Ring kedua selalu diberi gap lebih besar daripada ring atas.** Kalau lebih kecil, tekanan terperangkap di antara kedua ring dan bisa mengangkat ring atas dari alurnya — *ring flutter*.
 
 **Gap terlalu kecil:** ring memuai saat panas, kedua ujungnya bertemu (*butting*), ring menekan dinding liner → gores dalam, piston rusak.
 
@@ -286,7 +286,7 @@ Ini bagian yang sering dilakukan sembarangan dan berakibat fatal.
 
 **Urutan pemasangan:**
 
-1. **Ring oli dulu** — expander (pegas) lebih dulu, lalu rail atas dan bawah
+1. **Ring oli dulu** — expander (spring) lebih dulu, lalu rail atas dan bawah
 2. **Ring kedua** — perhatikan tanda "TOP" atau titik, harus menghadap atas
 3. **Ring atas** — perhatikan tanda "TOP"
 
@@ -339,7 +339,7 @@ Gap ring harus **disebar**, tidak boleh sejajar — kalau sejajar, gas punya jal
 
 ### 6.2 Pemuaian rod
 
-Rod memanjang saat panas, dan itu **mengurangi kelegaan klep-piston**.
+Rod memanjang saat panas, dan itu **mengurangi kelegaan valve-piston**.
 
 Rod 95 mm dengan kenaikan suhu 100 K: [HITUNG]
 
@@ -348,9 +348,9 @@ Rod 95 mm dengan kenaikan suhu 100 K: [HITUNG]
 | Baja | 0,114 mm |
 | **Aluminium** | **0,219 mm** |
 
-**Rod aluminium memanjang hampir dua kali lipat.** Ini alasan mesin ber-rod aluminium butuh kelegaan klep lebih besar — tambahkan minimal 0,25 mm dari perhitungan dingin.
+**Rod aluminium memanjang hampir dua kali lipat.** Ini alasan mesin ber-rod aluminium butuh kelegaan valve lebih besar — tambahkan minimal 0,25 mm dari perhitungan dingin.
 
-Kalau kelegaan dihitung saat dingin tanpa memperhitungkan ini, klep bisa menyentuh piston saat mesin panas.
+Kalau kelegaan dihitung saat dingin tanpa memperhitungkan ini, valve bisa menyentuh piston saat mesin panas.
 
 ### 6.3 Pemuaian piston
 
@@ -365,43 +365,43 @@ Liner besi cor memuai:
 Δd = 57,3 × 11e-6 × 150 = 0,095 mm
 ```
 
-Selisihnya **0,103 mm** — piston memuai lebih cepat dari liner. Itulah sebabnya clearance dingin harus cukup besar; kalau tidak, piston macet saat panas.
+Selisihnya **0,103 mm** — piston memuai lebih cepat daripada liner. Itulah sebabnya clearance dingin harus cukup besar; kalau tidak, piston macet saat panas.
 
 Piston 2618 memuai lebih banyak lagi — itulah alasan clearance-nya jauh lebih besar.
 
 ### 6.4 Yang harus diperiksa
 
-- [ ] Kelegaan klep-piston dicek **saat dingin** dengan margin untuk pemuaian
+- [ ] Kelegaan valve-piston dicek **saat dingin** dengan margin untuk pemuaian
 - [ ] Clearance piston sesuai material dan sesuai anjuran pabrik
 - [ ] Ring gap diukur di bore yang sudah pada suhu ruang, bukan bore panas
-- [ ] Kalau pakai rod aluminium, **tambah margin kelegaan klep 0,25 mm**
+- [ ] Kalau pakai rod aluminium, **tambah margin kelegaan valve 0,25 mm**
 
 ---
 
-## 7. Per klep
+## 7. Valve spring
 
 ### 7.1 Fungsinya
 
 Dua hal:
-1. **Menutup klep** dan menjaganya tetap rapat di seat
+1. **Menutup valve** dan menjaganya tetap rapat di seat
 2. **Menjaga follower tetap menempel pada cam** sepanjang siklus
 
 Fungsi kedua yang menentukan batas rpm.
 
 ### 7.2 Floating
 
-Kalau per tidak mampu melawan inersia klep, follower **terlepas dari lobe cam**. Klep tidak lagi mengikuti profil, memantul saat menutup, dan bisa menyentuh piston.
+Kalau spring tidak mampu melawan inersia valve, follower **terlepas dari lobe cam**. Valve tidak lagi mengikuti profil, memantul saat menutup, dan bisa menyentuh piston.
 
 **Gejala:**
 - Tenaga hilang mendadak di atas rpm tertentu
 - Suara valvetrain berubah
 - Kurva dyno turun tajam, bukan melandai
 
-**Akibat kalau dibiarkan:** klep patah, piston bolong, atau rocker hancur.
+**Akibat kalau dibiarkan:** valve patah, piston bolong, atau rocker hancur.
 
 ### 7.3 Menghitung kebutuhan
 
-Percepatan klep di puncak lobe (profil harmonik):
+Percepatan valve di puncak lobe (profil harmonik):
 
 ```
 a = (lift/2) × (2π/Φ_cam)² × ω_cam²
@@ -415,38 +415,38 @@ F_perlu = massa_rakitan × a × faktor_aman
 
 Faktor aman **1,3–1,5**.
 
-**Massa rakitan** = klep + retainer + kuku + sekitar sepertiga massa per.
+**Massa rakitan** = valve + retainer + kuku + sekitar sepertiga massa spring.
 
 ### 7.4 Contoh dan pengaruh variabel
 
 Mesin Contoh B, lift 9 mm, durasi 261°, 12.000 rpm → percepatan **1.378 g**: [HITUNG]
 
-| Rakitan klep | Massa | Per dibutuhkan |
+| Rakitan valve | Massa | Spring dibutuhkan |
 |---|---|---|
 | Stainless + retainer baja | 38 g | 73 kgf |
 | Stainless + retainer titanium | 32 g | 62 kgf |
 | Titanium + retainer titanium | 22 g | 42 kgf |
 
-**Pengaruh lift** (klep 38 g, durasi 261°):
+**Pengaruh lift** (valve 38 g, durasi 261°):
 
-| Lift | Percepatan | Per dibutuhkan |
+| Lift | Percepatan | Spring dibutuhkan |
 |---|---|---|
 | 8,0 mm | 1.225 g | 65 kgf |
 | 9,0 mm | 1.378 g | 73 kgf |
 | 10,0 mm | 1.531 g | 81 kgf |
 | 11,0 mm | 1.684 g | 90 kgf |
 
-**Pengaruh durasi** (klep 38 g, lift 9 mm):
+**Pengaruh durasi** (valve 38 g, lift 9 mm):
 
-| Durasi | Percepatan | Per dibutuhkan |
+| Durasi | Percepatan | Spring dibutuhkan |
 |---|---|---|
 | 240° | 1.630 g | 87 kgf |
 | 261° | 1.378 g | 73 kgf |
 | 290° | 1.116 g | 59 kgf |
 
-**Perhatikan:** durasi lebih pendek dengan lift sama berarti ramp lebih curam → percepatan lebih besar → per lebih kuat. Ini pertukaran yang sering dilupakan saat memilih cam.
+**Perhatikan:** durasi lebih pendek dengan lift sama berarti ramp lebih curam → percepatan lebih besar → spring lebih kuat. Ini pertukaran yang sering dilupakan saat memilih cam.
 
-### 7.5 Mengukur per klep
+### 7.5 Mengukur valve spring
 
 Butuh **spring tester** — alat yang mengukur gaya pada ketinggian tertentu.
 
@@ -454,7 +454,7 @@ Butuh **spring tester** — alat yang mengukur gaya pada ketinggian tertentu.
 
 | | Diukur pada | Fungsi |
 |---|---|---|
-| **Seat pressure** | tinggi terpasang (klep tertutup) | menjaga klep rapat di seat |
+| **Seat pressure** | tinggi terpasang (valve tertutup) | menjaga valve rapat di seat |
 | **Open pressure** | tinggi terpasang − lift maksimum | melawan inersia di puncak lobe |
 
 **Rentang khas mesin kecil balap:**
@@ -466,42 +466,42 @@ Butuh **spring tester** — alat yang mengukur gaya pada ketinggian tertentu.
 
 ### 7.6 Coil bind
 
-**Coil bind** = per tertekan sampai semua lilitannya saling menempel. Kalau ini terjadi saat mesin berjalan, valvetrain akan hancur seketika.
+**Coil bind** = spring tertekan sampai semua lilitannya saling menempel. Kalau ini terjadi saat mesin berjalan, valvetrain akan hancur seketika.
 
 **Cara memeriksa:**
-1. Tekan per sampai semua lilitan menempel, ukur tingginya
-2. Hitung tinggi per pada lift maksimum: `tinggi_terpasang − lift`
+1. Tekan spring sampai semua lilitan menempel, ukur tingginya
+2. Hitung tinggi spring pada lift maksimum: `tinggi_terpasang − lift`
 3. Selisihnya harus **minimal 0,5–1,0 mm**
 
-Kalau kurang, pilihannya: per lebih pendek, retainer berbeda, atau kurangi lift.
+Kalau kurang, pilihannya: spring lebih pendek, retainer berbeda, atau kurangi lift.
 
 ### 7.7 Spring surge
 
-Per punya frekuensi alami sendiri. Kalau frekuensi itu beresonansi dengan harmonik cam, per bergetar hebat (*surge*) dan kehilangan kemampuan mengontrol — walau gaya statisnya cukup.
+Spring punya frekuensi alami sendiri. Kalau frekuensi itu beresonansi dengan harmonik cam, spring bergetar hebat (*surge*) dan kehilangan kemampuan mengontrol — walau gaya statisnya cukup.
 
 **Solusinya:**
 
 | Cara | Penjelasan |
 |---|---|
-| **Per beehive / conical** | diameter berubah → frekuensi alami bervariasi → tidak ada satu frekuensi yang beresonansi |
-| **Per ganda** | per dalam dan luar dengan frekuensi berbeda saling meredam |
-| **Damper** | pegas datar di dalam per untuk meredam |
+| **Spring beehive / conical** | diameter berubah → frekuensi alami bervariasi → tidak ada satu frekuensi yang beresonansi |
+| **Dual spring** | spring dalam dan luar dengan frekuensi berbeda saling meredam |
+| **Damper** | spring datar di dalam spring utama untuk meredam |
 
-Untuk mesin berputaran tinggi, **beehive atau per ganda hampir selalu lebih baik** daripada per tunggal silindris.
+Untuk mesin berputaran tinggi, **beehive atau dual spring hampir selalu lebih baik** daripada single spring silindris.
 
-### 7.8 Memilih per
+### 7.8 Memilih spring
 
 Urutan yang benar:
 
 1. **Tentukan cam dulu** — lift, durasi, dan agresivitas ramp
-2. **Timbang rakitan klep** yang akan dipakai
+2. **Timbang rakitan valve** yang akan dipakai
 3. **Hitung gaya yang dibutuhkan** pada rpm sasaran
-4. **Pilih per** yang open pressure-nya memenuhi, dengan margin
+4. **Pilih spring** yang open pressure-nya memenuhi, dengan margin
 5. **Periksa coil bind** pada lift maksimum
 6. **Periksa tinggi terpasang** — mungkin butuh shim
 7. **Ukur dengan tester**, jangan percaya spesifikasi katalog
 
-**Per yang terlalu kuat juga merugikan:** gesekan valvetrain naik, cam dan rocker cepat aus, dan tenaga terbuang. Jangan memasang per sekuat mungkin — pasang yang **cukup**.
+**Spring yang terlalu kuat juga merugikan:** gesekan valvetrain naik, cam dan rocker cepat aus, dan tenaga terbuang. Jangan memasang spring sekuat mungkin — pasang yang **cukup**.
 
 ---
 
@@ -511,12 +511,12 @@ Urutan yang benar:
 
 | Kategori | Komponen |
 |---|---|
-| **Bolak-balik** | piston, ring, pin, klip, ~1/3 rod |
-| **Berputar** | kruk as, ~2/3 rod, big end bearing |
+| **Bolak-balik** | piston, ring, pin, clip, ~1/3 rod |
+| **Berputar** | crankshaft, ~2/3 rod, big end bearing |
 
 ### 8.2 Pengaruh
 
-**Massa bolak-balik** menghasilkan gaya inersia yang harus ditahan struktur (bagian 1.3), dan menghasilkan getaran yang tidak bisa diseimbangkan sempurna pada 1 silinder.
+**Massa bolak-balik** menghasilkan gaya inersia yang harus ditahan struktur (bagian 1.3), dan menghasilkan getaran yang tidak bisa diseimbangkan sempurna pada 1 cylinder.
 
 **Massa berputar** menyimpan energi kinetik dan mempengaruhi seberapa cepat mesin bisa naik putaran.
 
@@ -534,7 +534,7 @@ balance factor = massa penyeimbang / massa bolak-balik
 
 Menyeimbangkan 100% cuma **memindahkan** getaran, tidak menghilangkannya.
 
-**Penting:** kalau mengganti piston dengan yang lebih ringan, balance factor berubah — kruk as **harus diseimbangkan ulang**. Ini sering dilupakan, dan akibatnya getaran di rpm tinggi yang merusak bearing.
+**Penting:** kalau mengganti piston dengan yang lebih ringan, balance factor berubah — crankshaft **harus diseimbangkan ulang**. Ini sering dilupakan, dan akibatnya getaran di rpm tinggi yang merusak bearing.
 
 ---
 
@@ -545,11 +545,11 @@ Menyeimbangkan 100% cuma **memindahkan** getaran, tidak menghilangkannya.
 - [ ] Piston diukur di gauge point yang benar
 - [ ] Clearance piston sesuai anjuran pabrik
 - [ ] Ring gap diukur di bore, ring dalam posisi tegak lurus
-- [ ] Ring kedua gap-nya lebih besar dari ring atas
-- [ ] Rakitan klep ditimbang
-- [ ] Per klep diukur dengan tester (seat dan open)
+- [ ] Ring kedua gap-nya lebih besar daripada ring atas
+- [ ] Rakitan valve ditimbang
+- [ ] Valve spring diukur dengan tester (seat dan open)
 - [ ] Coil bind clearance ≥ 0,5 mm pada lift maksimum
-- [ ] Kruk as diseimbangkan sesuai massa piston yang dipakai
+- [ ] Crankshaft diseimbangkan sesuai massa piston yang dipakai
 
 **Saat merakit:**
 - [ ] Ujung expander ring oli **bertemu, tidak tumpang tindih**
@@ -559,7 +559,7 @@ Menyeimbangkan 100% cuma **memindahkan** getaran, tidak menghilangkannya.
 - [ ] Semua torsi baut sesuai spesifikasi, urutan benar
 
 **Sebelum diputar:**
-- [ ] **Cek clay kelegaan klep-piston** — margin untuk pemuaian sudah dihitung
+- [ ] **Cek clay kelegaan valve-piston** — margin untuk pemuaian sudah dihitung
 - [ ] Kalau rod aluminium, margin tambahan 0,25 mm
 - [ ] Mesin diputar dengan tangan dua putaran penuh, tanpa hambatan
 - [ ] Tekanan oli terbaca sebelum mesin dinyalakan
@@ -572,13 +572,13 @@ Menyeimbangkan 100% cuma **memindahkan** getaran, tidak menghilangkannya.
 2. **Massa piston adalah tuas paling murah** — turun 40 g memangkas beban rod 33%.
 3. **2618 untuk balap penuh, 4032 untuk campuran** — bedanya di pemuaian dan clearance.
 4. **Coating skirt mengurangi gesekan; coating mahkota menambah margin detonasi.**
-5. **Klep titanium menaikkan batas floating 4.200 rpm** dengan per yang sama.
+5. **Valve titanium menaikkan batas floating 4.200 rpm** dengan spring yang sama.
 6. **Single ring untuk drag, double untuk endurance.**
-7. **Ring kedua gap-nya harus lebih besar dari ring atas** — kalau tidak, ring flutter.
+7. **Ring kedua gap-nya harus lebih besar daripada ring atas** — kalau tidak, ring flutter.
 8. **Ujung expander ring oli harus bertemu, tidak tumpang tindih.** Kesalahan ini sulit didiagnosis setelah dirakit.
-9. **Rod aluminium memanjang 0,219 mm** pada ΔT 100 K — hampir dua kali baja. Tambah margin kelegaan klep.
-10. **Durasi cam lebih pendek butuh per lebih kuat** — ramp lebih curam.
-11. **Per yang terlalu kuat juga merugikan.** Pasang yang cukup, bukan yang terkuat.
-12. **Kalau ganti piston ringan, seimbangkan ulang kruk as.**
+9. **Rod aluminium memanjang 0,219 mm** pada ΔT 100 K — hampir dua kali baja. Tambah margin kelegaan valve.
+10. **Durasi cam lebih pendek butuh spring lebih kuat** — ramp lebih curam.
+11. **Spring yang terlalu kuat juga merugikan.** Pasang yang cukup, bukan yang terkuat.
+12. **Kalau ganti piston ringan, seimbangkan ulang crankshaft.**
 
 **Berikutnya:** Tahap 9 — CVT, tempat 20–30% tenaga bisa hilang tanpa disadari.

@@ -1,0 +1,1187 @@
+<title>Cylinder Sim</title>
+<meta name="description" content="Simulator interaktif untuk merancang valve, throttle body, dan cam mesin 1 cylinder — dari buku Advanced Engine Tuning.">
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #eef0ec;
+    --surface: #ffffff;
+    --surface-2: #f5f6f3;
+    --surface-3: #ebede8;
+    --border: #d8dbd4;
+    --border-strong: #b9bdb4;
+    --text: #1d2023;
+    --text-dim: #5b6066;
+    --text-faint: #868c86;
+    --accent: #c97a1f;
+    --accent-strong: #a8650f;
+    --accent-soft: #f3e0c5;
+    --accent-2: #2a8f84;
+    --accent-2-soft: #d9ede9;
+    --warn: #c13f32;
+    --warn-soft: #f6ded9;
+    --shadow: 0 1px 2px rgba(20, 24, 20, 0.06), 0 4px 16px rgba(20, 24, 20, 0.05);
+    --radius: 10px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15181b;
+      --surface: #1e2226;
+      --surface-2: #262b30;
+      --surface-3: #2d3238;
+      --border: #383e44;
+      --border-strong: #4a5158;
+      --text: #eae7e0;
+      --text-dim: #a3a9ae;
+      --text-faint: #767c81;
+      --accent: #e8963c;
+      --accent-strong: #f5ac5c;
+      --accent-soft: #3a2c19;
+      --accent-2: #57c2b6;
+      --accent-2-soft: #1a3330;
+      --warn: #e2574c;
+      --warn-soft: #3a201d;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #15181b;
+    --surface: #1e2226;
+    --surface-2: #262b30;
+    --surface-3: #2d3238;
+    --border: #383e44;
+    --border-strong: #4a5158;
+    --text: #eae7e0;
+    --text-dim: #a3a9ae;
+    --text-faint: #767c81;
+    --accent: #e8963c;
+    --accent-strong: #f5ac5c;
+    --accent-soft: #3a2c19;
+    --accent-2: #57c2b6;
+    --accent-2-soft: #1a3330;
+    --warn: #e2574c;
+    --warn-soft: #3a201d;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  body {
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Oswald', 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .mono, .num, input, select {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  a { color: var(--accent); }
+
+  ::selection { background: var(--accent-soft); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ===== Shell ===== */
+
+  .shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 20px 80px;
+    width: 100%;
+  }
+
+  @media (max-width: 480px) {
+    .shell { padding: 18px 14px 60px; }
+  }
+
+  .masthead {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-strong);
+    margin-bottom: 24px;
+  }
+
+  .masthead .brand-mark {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .brand-mark .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  h1.title {
+    font-size: 26px;
+    letter-spacing: 0.01em;
+  }
+
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-top: 4px;
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+
+  .book-ref {
+    font-size: 11.5px;
+    color: var(--text-faint);
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  .book-ref b { color: var(--text-dim); font-weight: 600; }
+
+  /* ===== Tabs (selector-switch style) ===== */
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 11px 8px 10px;
+    background: transparent;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-family: 'Oswald', sans-serif;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .tab-btn .tnum {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+  }
+
+  .tab-btn .tlabel {
+    font-size: 13.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .tab-btn:hover { background: var(--surface-2); color: var(--text); }
+
+  .tab-btn.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow);
+  }
+
+  .tab-btn.active .tnum { color: var(--accent); opacity: 1; }
+
+  .panel { display: none; }
+  .panel.active { display: block; animation: fade-in 0.25s ease; }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel.active { animation: none; }
+  }
+
+  /* ===== Layout: control rail + readout ===== */
+
+  .workspace {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+    min-width: 0;
+  }
+
+  @media (max-width: 820px) {
+    .workspace { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  .rail {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 16px;
+    min-width: 0;
+  }
+
+  @media (max-width: 820px) {
+    .rail { position: static; }
+  }
+
+  .rail h3 {
+    font-size: 12.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.09em;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .field label {
+    font-size: 12px;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .field label .unit {
+    font-size: 10.5px;
+    color: var(--text-faint);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  input[type="number"], input[type="text"], select {
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 14px;
+  }
+
+  input[type="number"]:focus, select:focus { border-color: var(--accent); }
+
+  select { appearance: none; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; }
+
+  .seg {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .seg button {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 7px 3px;
+    background: var(--surface-2);
+    border: none;
+    border-right: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .seg button:last-child { border-right: none; }
+  .seg button.on { background: var(--accent); color: #1a1300; font-weight: 600; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .seg button.on { color: #241a08; } }
+  :root[data-theme="dark"] .seg button.on { color: #241a08; }
+
+  .hint {
+    font-size: 11.5px;
+    color: var(--text-faint);
+    margin-top: 10px;
+    line-height: 1.5;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* ===== Readout ===== */
+
+  .readout { display: flex; flex-direction: column; gap: 16px; }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+
+  .stat.hero {
+    background: linear-gradient(155deg, var(--surface) 60%, var(--accent-soft) 180%);
+    border-color: var(--accent);
+  }
+
+  .stat .label {
+    font-size: 10.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    padding-right: 54px;
+  }
+
+  .stat:not(:has(.pill)) .label { padding-right: 0; }
+
+  .stat .value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.1;
+  }
+
+  .stat.hero .value { color: var(--accent-strong); }
+
+  .stat .value .sub { font-size: 13px; color: var(--text-faint); font-weight: 400; margin-left: 3px; }
+
+  .stat .note { font-size: 11px; color: var(--text-faint); margin-top: 5px; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 9px 3px;
+    border-radius: 99px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-family: 'IBM Plex Mono', monospace;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
+  .pill.ok { background: var(--accent-2-soft); color: var(--accent-2); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .pill.neutral { background: var(--surface-3); color: var(--text-faint); }
+
+  .block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .block h3 {
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .block h3 .flag { color: var(--accent); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    font-weight: 500;
+  }
+
+  td.num, th.num { font-family: 'IBM Plex Mono', monospace; text-align: right; font-variant-numeric: tabular-nums; }
+
+  tr:last-child td { border-bottom: none; }
+
+  .table-wrap { overflow-x: auto; }
+
+  .formula {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: var(--text-dim);
+    overflow-x: auto;
+    white-space: pre;
+    margin: 8px 0 0;
+  }
+
+  .prose { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .prose b { color: var(--text); font-weight: 600; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .switch {
+    position: relative;
+    width: 38px;
+    height: 21px;
+    flex-shrink: 0;
+  }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .track {
+    position: absolute; inset: 0;
+    background: var(--surface-3);
+    border: 1px solid var(--border-strong);
+    border-radius: 99px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .switch .track::before {
+    content: "";
+    position: absolute;
+    width: 15px; height: 15px;
+    left: 2px; top: 2px;
+    background: var(--text-faint);
+    border-radius: 50%;
+    transition: transform 0.15s, background 0.15s;
+  }
+  .switch input:checked + .track { background: var(--accent-soft); border-color: var(--accent); }
+  .switch input:checked + .track::before { transform: translateX(17px); background: var(--accent); }
+
+  .add-row-btn {
+    background: var(--surface-2);
+    border: 1px dashed var(--border-strong);
+    border-radius: 8px;
+    color: var(--text-dim);
+    padding: 9px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .add-row-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .row-del {
+    background: none;
+    border: none;
+    color: var(--text-faint);
+    cursor: pointer;
+    font-size: 15px;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .row-del:hover { color: var(--warn); background: var(--warn-soft); }
+
+  .cfg-name {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--border);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 2px 0;
+    width: 100%;
+  }
+  .cfg-name:focus { border-color: var(--accent); outline: none; }
+
+  .mini-input {
+    width: 62px;
+    padding: 5px 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    font-size: 12.5px;
+    text-align: right;
+  }
+
+  .mini-select {
+    padding: 5px 4px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  footer.credit {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11.5px;
+    color: var(--text-faint);
+    text-align: center;
+  }
+</style>
+
+<div class="shell">
+
+  <div class="masthead">
+    <div>
+      <div class="brand-mark"><span class="dot"></span><h1 class="title">Cylinder Sim</h1></div>
+      <div class="subtitle">Kalkulator valve, throttle body &amp; rpm — Advanced Engine Tuning, mesin 1 cylinder CVT</div>
+    </div>
+    <div class="book-ref">Rujukan: <b>Tahap 2–4, 7, 11</b><br>Anchor kalibrasi: <b>Mesin Contoh A/B/C</b></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="ideal" role="tab"><span class="tnum">01</span><span class="tlabel">Valve &amp; TB Ideal</span></button>
+    <button class="tab-btn" data-tab="predict" role="tab"><span class="tnum">02</span><span class="tlabel">Prediksi RPM &amp; HP</span></button>
+    <button class="tab-btn" data-tab="compare" role="tab"><span class="tnum">03</span><span class="tlabel">What-If Compare</span></button>
+  </div>
+
+  <!-- ============ PANEL 1: IDEAL VALVE & TB ============ -->
+  <section class="panel active" id="panel-ideal">
+    <div class="workspace">
+      <div class="rail">
+        <h3>Konfigurasi mesin</h3>
+
+        <div class="field">
+          <label>Bore <span class="unit">mm</span></label>
+          <input type="number" id="id-bore" value="66" step="0.1" min="30" max="150">
+        </div>
+        <div class="field">
+          <label>Stroke <span class="unit">mm</span></label>
+          <input type="number" id="id-stroke" value="58.6" step="0.1" min="20" max="150">
+        </div>
+        <div class="field">
+          <label>Jumlah valve</label>
+          <div class="seg" id="id-nvalve">
+            <button data-v="2" class="on">2</button>
+            <button data-v="3">3</button>
+            <button data-v="4">4</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Agresivitas throat/valve</label>
+          <div class="seg" id="id-aggr">
+            <button data-v="0.86">Konservatif</button>
+            <button data-v="0.90" class="on">Lazim</button>
+            <button data-v="0.935">Agresif</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>RPM sasaran <span class="unit">rpm</span></label>
+          <input type="number" id="id-rpm" value="10200" step="100" min="3000" max="20000">
+        </div>
+
+        <div class="hint">Rasio valve/bore dikalibrasi dari Mesin Contoh A (2v, bore 63), B (4v, bore 57,3), C (3v, bore 58) — diskalakan linear ke bore-mu. Lihat Tahap 2 §4 &amp; Tahap 11 §4.</div>
+      </div>
+
+      <div class="readout">
+        <div class="stat-grid" id="id-stats"></div>
+
+        <div class="block">
+          <h3>Spesifikasi valve &amp; throat</h3>
+          <div class="table-wrap"><table id="id-valve-table"></table></div>
+        </div>
+
+        <div class="block">
+          <h3>Port &amp; throttle body ideal</h3>
+          <div class="table-wrap"><table id="id-port-table"></table></div>
+          <div class="formula" id="id-formula"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 2: PREDICT RPM & HP ============ -->
+  <section class="panel" id="panel-predict">
+    <div class="workspace">
+      <div class="rail">
+        <h3>Spek mesin</h3>
+        <div class="field">
+          <label>Bore <span class="unit">mm</span></label>
+          <input type="number" id="pr-bore" value="76" step="0.1">
+        </div>
+        <div class="field">
+          <label>Stroke <span class="unit">mm</span></label>
+          <input type="number" id="pr-stroke" value="76" step="0.1">
+        </div>
+        <div class="field">
+          <label>Jumlah valve isap</label>
+          <div class="seg" id="pr-nin">
+            <button data-v="1">1</button>
+            <button data-v="2" class="on">2</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Valve isap (per valve) <span class="unit">mm</span></label>
+          <input type="number" id="pr-valve" value="28" step="0.1">
+        </div>
+        <div class="field">
+          <label>Rasio throat/valve</label>
+          <input type="number" id="pr-throatratio" value="0.88" step="0.01" min="0.6" max="0.98">
+        </div>
+        <div class="field">
+          <label>Durasi cam @1mm <span class="unit">deg</span></label>
+          <input type="number" id="pr-durasi" value="260" step="1">
+        </div>
+        <div class="field">
+          <label>Throttle body <span class="unit">mm</span></label>
+          <input type="number" id="pr-tb" value="36" step="0.5">
+        </div>
+
+        <h3 style="margin-top:16px;">Acuan kalibrasi</h3>
+        <div class="field">
+          <label>Pakai acuan</label>
+          <select id="pr-anchor">
+            <option value="A">Mesin Contoh A (drag, 199,5cc)</option>
+            <option value="self">Dyno sendiri (lebih akurat)</option>
+          </select>
+        </div>
+        <div id="pr-self-fields" style="display:none;">
+          <div class="field">
+            <label>RPM real di dyno <span class="unit">rpm</span></label>
+            <input type="number" id="pr-self-rpm" value="6500" step="10">
+          </div>
+          <div class="field">
+            <label>Durasi cam saat itu <span class="unit">deg</span></label>
+            <input type="number" id="pr-self-durasi" value="260" step="1">
+          </div>
+        </div>
+
+        <div class="toggle-row" style="margin-top:14px;">
+          <label style="font-size:12px;color:var(--text-dim);">Punya data dyno (HP)?</label>
+          <label class="switch"><input type="checkbox" id="pr-hasdyno"><span class="track"></span></label>
+        </div>
+        <div id="pr-dyno-fields" style="display:none;">
+          <div class="field">
+            <label>Hasil dyno <span class="unit">HP</span></label>
+            <input type="number" id="pr-dynohp" value="30.5" step="0.1">
+          </div>
+          <div class="field">
+            <label>Jenis dyno</label>
+            <select id="pr-dynotype">
+              <option value="wheel">Chassis / roda (WHP)</option>
+              <option value="crank">Mesin / crank</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Rugi CVT+drivetrain <span class="unit">%</span></label>
+            <input type="number" id="pr-loss" value="20" step="1" min="5" max="40">
+          </div>
+        </div>
+
+        <div class="hint">Metode: rumus time-area (Tahap 4) dibalik untuk cari rpm. Tervalidasi 1,1% selisih pada satu kasus nyata (Tahap 11 §3.2).</div>
+      </div>
+
+      <div class="readout">
+        <div class="stat-grid" id="pr-stats"></div>
+        <div class="block">
+          <h3>Rincian perhitungan</h3>
+          <div class="formula" id="pr-formula"></div>
+        </div>
+        <div class="block" id="pr-tb-block">
+          <h3><span class="flag">▲</span> Cek kecukupan throttle body</h3>
+          <div class="table-wrap"><table id="pr-tb-table"></table></div>
+        </div>
+        <div class="block" id="pr-dyno-block" style="display:none;">
+          <h3>Kalibrasi ulang dari dyno</h3>
+          <div class="prose" id="pr-dyno-note"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 3: WHAT-IF COMPARE ============ -->
+  <section class="panel" id="panel-compare">
+    <div class="block" style="margin-bottom:16px;">
+      <h3>Target kapasitas tetap, konfigurasi beda-beda</h3>
+      <p class="prose">Kunci kapasitas (cc), lalu bandingkan efek mengubah bore, stroke, atau jumlah valve satu per satu — persis pertanyaan "kalau cc sama, naikin bore doang gimana" atau "klep dibesarkan doang gimana".</p>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="field" style="margin-bottom:0;">
+          <label>Kapasitas target <span class="unit">cc</span></label>
+          <input type="number" id="cmp-target-cc" value="199.5" step="0.1">
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label>RPM sasaran acuan <span class="unit">rpm</span></label>
+          <input type="number" id="cmp-target-rpm" value="10000" step="100">
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3>Konfigurasi yang dibandingkan</h3>
+      <div class="table-wrap">
+        <table id="cmp-input-table"></table>
+      </div>
+      <button class="add-row-btn" id="cmp-add">+ Tambah konfigurasi</button>
+    </div>
+
+    <div class="block" style="margin-top:16px;">
+      <h3>Hasil perbandingan</h3>
+      <div class="table-wrap">
+        <table id="cmp-result-table"></table>
+      </div>
+      <div class="hint">Bore/stroke yang kosong otomatis dihitung supaya kapasitas pas ke target. Ratio valve/bore dan rpm ideal pakai metode yang sama seperti tab 01 &amp; 02.</div>
+    </div>
+  </section>
+
+  <footer class="credit">Semua rumus dari buku <i>Advanced Engine Tuning — Panduan Membangun Mesin 1 Cylinder Matic</i>. Hasil adalah estimasi teoretis — validasi selalu di dyno &amp; lintasan.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ CORE ENGINE MATH (dari buku) ============ */
+
+  const ANCHOR_A = { durasi: 281, throatIn: 29.0, Vd: 199.5, rpm: 10000, valveIn: 31.0, valveEx: 27.0, bore: 63, nIntake: 1, ratioValveBore: 0.242, mps: 21.3 };
+  const ANCHOR_B = { bore: 57.3, ratioValveBore: 0.295, valveIn: 22.0, nIntake: 2 };
+  const ANCHOR_C = { bore: 58, ratioValveBore: 0.262, valveInActual: 20.99, valveExMax: 26.7, throatExInRatio: 0.679 };
+
+  const boreArea = (bore) => Math.PI/4 * bore*bore;
+  const Vd_cc = (bore, stroke) => boreArea(bore) * stroke / 1000;
+  const MPS = (stroke, rpm) => 2*stroke/1000*rpm/60;
+
+  // pilih anchor rasio valve/bore sesuai jumlah valve, lalu skalakan linear ke bore target
+  function idealIntakeValve(bore, nValveTotal){
+    const nIntake = nValveTotal === 4 ? 2 : (nValveTotal === 3 ? 2 : 1);
+    let anchor;
+    if (nValveTotal <= 2) anchor = { bore: ANCHOR_A.bore, valveSingle: ANCHOR_A.valveIn, nIntake: 1, ratio: ANCHOR_A.ratioValveBore };
+    else if (nValveTotal === 3) anchor = { bore: ANCHOR_C.bore, valveSingle: ANCHOR_C.valveInActual, nIntake: 2, ratio: ANCHOR_C.ratioValveBore };
+    else anchor = { bore: ANCHOR_B.bore, valveSingle: ANCHOR_B.valveIn, nIntake: 2, ratio: ANCHOR_B.ratioValveBore };
+
+    // metode 1: rasio luas langsung
+    const totalAreaByRatio = anchor.ratio * boreArea(bore);
+    const dByRatio = Math.sqrt((totalAreaByRatio/nIntake)/(Math.PI/4));
+    // metode 2: scaling linear diameter
+    const dByScale = anchor.valveSingle * (bore/anchor.bore);
+    const dFinal = (dByRatio + dByScale)/2;
+    return { valveDiam: dFinal, nIntake, dByRatio, dByScale };
+  }
+
+  function idealExhaustValve(bore, nValveTotal){
+    // exhaust: skalakan dari Mesin C (utk 3v) atau turunkan dr rasio in/ex Mesin A (2v) atau Mesin B (4v)
+    if (nValveTotal === 3){
+      const dScaled = ANCHOR_C.valveExMax * (bore/ANCHOR_C.bore);
+      const proportion = ANCHOR_C.valveInActual/21.5; // actual/max konsisten dgn intake
+      return { valveDiam: dScaled*proportion, nEx: 1 };
+    }
+    if (nValveTotal === 4){
+      // Mesin B: ex/in diameter ratio ~19/22
+      const inD = idealIntakeValve(bore,4).valveDiam;
+      return { valveDiam: inD*(19/22), nEx: 2 };
+    }
+    // 2 valve, pakai rasio Mesin A ex/in = 27/31
+    const inD = idealIntakeValve(bore,2).valveDiam;
+    return { valveDiam: inD*(27/31), nEx: 1 };
+  }
+
+  function throatArea(valveDiam, ratio, n){
+    const throatD = valveDiam*ratio;
+    return { throatD, area: n*(Math.PI/4*throatD*throatD), seat: (valveDiam-throatD)/2 };
+  }
+
+  // rumus time-area dibalik: cari rpm dari durasi+throat+Vd, relatif ke suatu anchor
+  function predictRPM(durasiBaru, throatAreaBaruTotal, VdBaru, anchor){
+    return anchor.rpm * (durasiBaru/anchor.durasi) * (throatAreaBaruTotal/anchor.throatAreaTotal) * (anchor.Vd/VdBaru);
+  }
+
+  function anchorAThroatTotal(){
+    return ANCHOR_A.nIntake*(Math.PI/4*ANCHOR_A.throatIn*ANCHOR_A.throatIn);
+  }
+
+  // CFM & plafon HP
+  function CFM_teoretis(throatAreaTotalMm2, vTeoretis){
+    vTeoretis = vTeoretis || 107.6;
+    const Q = throatAreaTotalMm2*1e-6*vTeoretis;
+    return Q*2118.88;
+  }
+
+  function TBrequired(VdCC, rpm, durasi, vTarget, VE){
+    VE = VE || 0.95;
+    const VdM3 = VdCC*1e-6;
+    const Qrata = VdM3*(rpm/60)/2*VE;
+    const duty = durasi/720;
+    const Qpuncak = Qrata/duty*(Math.PI/2);
+    const D = Math.sqrt(4*Qpuncak/(Math.PI*vTarget*0.93))*1000;
+    return { D, Qpuncak };
+  }
+
+  function TBvelocity(VdCC, rpm, durasi, TBmm, VE){
+    VE = VE || 0.95;
+    const VdM3 = VdCC*1e-6;
+    const Qrata = VdM3*(rpm/60)/2*VE;
+    const duty = durasi/720;
+    const Qpuncak = Qrata/duty*(Math.PI/2);
+    const areaTB = Math.PI/4*(TBmm/1000)*(TBmm/1000)*0.93;
+    return Qpuncak/areaTB;
+  }
+
+  const fmt = (x,d) => { d = (d===undefined)?1:d; return isFinite(x) ? x.toFixed(d) : "–"; };
+  const fmtInt = (x) => isFinite(x) ? Math.round(x).toLocaleString('id-ID') : "–";
+
+  /* ============ TAB SWITCHING ============ */
+
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  function segGroup(container, onChange){
+    container.querySelectorAll('button').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        container.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+        b.classList.add('on');
+        onChange(b.dataset.v);
+      });
+    });
+  }
+  function segVal(container){
+    return container.querySelector('button.on').dataset.v;
+  }
+
+  /* ============ PANEL 1 LOGIC ============ */
+
+  const idBore = document.getElementById('id-bore');
+  const idStroke = document.getElementById('id-stroke');
+  const idNValve = document.getElementById('id-nvalve');
+  const idAggr = document.getElementById('id-aggr');
+  const idRpm = document.getElementById('id-rpm');
+
+  function renderIdeal(){
+    const bore = parseFloat(idBore.value)||0;
+    const stroke = parseFloat(idStroke.value)||0;
+    const nValve = parseInt(segVal(idNValve));
+    const ratio = parseFloat(segVal(idAggr));
+    const rpm = parseFloat(idRpm.value)||0;
+    const Vd = Vd_cc(bore, stroke);
+
+    const intake = idealIntakeValve(bore, nValve);
+    const exhaust = idealExhaustValve(bore, nValve);
+    const thrIn = throatArea(intake.valveDiam, ratio, intake.nIntake);
+    const exRatio = Math.min(ratio - 0.02, 0.90);
+    const thrEx = throatArea(exhaust.valveDiam, exRatio, exhaust.nEx);
+
+    const mps = MPS(stroke, rpm);
+    const ratioVB = (intake.nIntake*(Math.PI/4*intake.valveDiam*intake.valveDiam))/boreArea(bore);
+
+    // port CSA: 2 anchor
+    const CSA_v = boreArea(bore)*mps/97; // 97 m/s = proven Mesin A
+    const CSA_r = 1.035*thrIn.area;
+    const CSA_lo = Math.min(CSA_v,CSA_r), CSA_hi = Math.max(CSA_v,CSA_r);
+
+    const CFM = CFM_teoretis(thrIn.area);
+    const tb = TBrequired(Vd, rpm, 260, 65, 0.95);
+
+    let mpsPill = 'ok', mpsNote = 'aman';
+    if (mps>26){ mpsPill='warn'; mpsNote='ekstrem'; }
+    else if (mps>22){ mpsPill='warn'; mpsNote='sangat tinggi'; }
+    else if (mps>20){ mpsNote='tinggi, wajar drag'; }
+
+    document.getElementById('id-stats').innerHTML = `
+      <div class="stat hero"><span class="pill neutral">Vd</span><div class="label">Kapasitas</div><div class="value">${fmt(Vd,1)}<span class="sub">cc</span></div></div>
+      <div class="stat"><span class="pill ${ratioVB>=0.24&&ratioVB<=0.35?'ok':'warn'}">v/bore</span><div class="label">Rasio valve/bore</div><div class="value">${fmt(ratioVB,3)}</div><div class="note">wajar: 0,24–0,35</div></div>
+      <div class="stat"><span class="pill ${mpsPill}">MPS</span><div class="label">Kecepatan piston</div><div class="value">${fmt(mps,1)}<span class="sub">m/s</span></div><div class="note">${mpsNote}</div></div>
+      <div class="stat"><div class="label">Potensi flow (Cf 0,62)</div><div class="value">${fmt(CFM*0.62,0)}<span class="sub">CFM</span></div><div class="note">≈ ${fmt(CFM*0.62*0.43,1)}–${fmt(CFM*0.62*0.50,1)} HP crank</div></div>
+    `;
+
+    document.getElementById('id-valve-table').innerHTML = `
+      <tr><th>Bagian</th><th class="num">Ukuran</th><th class="num">Throat</th><th class="num">Lebar seat</th></tr>
+      <tr><td>Isap (${intake.nIntake}×)</td><td class="num">${fmt(intake.valveDiam,1)} mm</td><td class="num">${fmt(thrIn.throatD,1)} mm</td><td class="num">${fmt(thrIn.seat,2)} mm</td></tr>
+      <tr><td>Buang (${exhaust.nEx}×)</td><td class="num">${fmt(exhaust.valveDiam,1)} mm</td><td class="num">${fmt(thrEx.throatD,1)} mm</td><td class="num">${fmt(thrEx.seat,2)} mm</td></tr>
+    `;
+
+    document.getElementById('id-port-table').innerHTML = `
+      <tr><th>Parameter</th><th class="num">Nilai</th></tr>
+      <tr><td>CSA port isap (rentang 2 anchor)</td><td class="num">${fmt(CSA_lo,0)}–${fmt(CSA_hi,0)} mm²</td></tr>
+      <tr><td>Ø setara port isap</td><td class="num">${fmt(Math.sqrt(((CSA_lo+CSA_hi)/2)/(Math.PI/4)),1)} mm</td></tr>
+      <tr><td>Throttle body disarankan (v≈65m/s)</td><td class="num">${fmt(tb.D,0)} mm</td></tr>
+      <tr><td>Luas throat isap total</td><td class="num">${fmt(thrIn.area,0)} mm²</td></tr>
+    `;
+
+    document.getElementById('id-formula').textContent =
+`valve isap  = rata2( rasio_luas(${nValve}v) × bore_area , scaling_linear_dari_acuan )
+            = ${fmt(intake.dByRatio,2)} mm (rasio)  /  ${fmt(intake.dByScale,2)} mm (scaling)
+throat      = valve × ${ratio}
+CSA_v       = luas_piston × MPS / 97 m/s
+CSA_r       = 1,035 × luas_throat_total`;
+  }
+
+  segGroup(idNValve, renderIdeal);
+  segGroup(idAggr, renderIdeal);
+  [idBore, idStroke, idRpm].forEach(el=>el.addEventListener('input', renderIdeal));
+
+  /* ============ PANEL 2 LOGIC ============ */
+
+  const prBore = document.getElementById('pr-bore');
+  const prStroke = document.getElementById('pr-stroke');
+  const prNin = document.getElementById('pr-nin');
+  const prValve = document.getElementById('pr-valve');
+  const prThroatRatio = document.getElementById('pr-throatratio');
+  const prDurasi = document.getElementById('pr-durasi');
+  const prTB = document.getElementById('pr-tb');
+  const prAnchor = document.getElementById('pr-anchor');
+  const prSelfFields = document.getElementById('pr-self-fields');
+  const prSelfRpm = document.getElementById('pr-self-rpm');
+  const prSelfDurasi = document.getElementById('pr-self-durasi');
+  const prHasDyno = document.getElementById('pr-hasdyno');
+  const prDynoFields = document.getElementById('pr-dyno-fields');
+  const prDynoHP = document.getElementById('pr-dynohp');
+  const prDynoType = document.getElementById('pr-dynotype');
+  const prLoss = document.getElementById('pr-loss');
+
+  prAnchor.addEventListener('change', ()=>{ prSelfFields.style.display = prAnchor.value==='self' ? 'block':'none'; renderPredict(); });
+  prHasDyno.addEventListener('change', ()=>{ prDynoFields.style.display = prHasDyno.checked ? 'block':'none'; document.getElementById('pr-dyno-block').style.display = prHasDyno.checked ? 'block':'none'; renderPredict(); });
+  segGroup(prNin, renderPredict);
+
+  function renderPredict(){
+    const bore = parseFloat(prBore.value)||0;
+    const stroke = parseFloat(prStroke.value)||0;
+    const nIn = parseInt(segVal(prNin));
+    const valveD = parseFloat(prValve.value)||0;
+    const thrRatio = parseFloat(prThroatRatio.value)||0.88;
+    const durasi = parseFloat(prDurasi.value)||0;
+    const TB = parseFloat(prTB.value)||0;
+    const Vd = Vd_cc(bore, stroke);
+
+    const thr = throatArea(valveD, thrRatio, nIn);
+
+    let anchor;
+    if (prAnchor.value === 'self'){
+      const selfRpm = parseFloat(prSelfRpm.value)||0;
+      const selfDurasi = parseFloat(prSelfDurasi.value)||durasi;
+      anchor = { durasi: selfDurasi, throatAreaTotal: thr.area, Vd: Vd, rpm: selfRpm };
+    } else {
+      anchor = { durasi: ANCHOR_A.durasi, throatAreaTotal: anchorAThroatTotal(), Vd: ANCHOR_A.Vd, rpm: ANCHOR_A.rpm };
+    }
+
+    const rpmPred = predictRPM(durasi, thr.area, Vd, anchor);
+    const mps = MPS(stroke, rpmPred);
+    const ratioVB = (nIn*(Math.PI/4*valveD*valveD))/boreArea(bore);
+
+    const tbVel = TBvelocity(Vd, rpmPred, durasi, TB, 0.95);
+    const tbReq65 = TBrequired(Vd, rpmPred, durasi, 65, 0.95);
+    const tbReq90 = TBrequired(Vd, rpmPred, durasi, 90, 0.95);
+
+    const CFM = CFM_teoretis(thr.area);
+    const HP_lo = CFM*0.55*0.43, HP_hi = CFM*0.55*0.50;
+
+    let tbPill = 'ok', tbNote = 'longgar';
+    if (tbVel>95){ tbPill='warn'; tbNote='mencekik'; }
+    else if (tbVel>75){ tbPill='warn'; tbNote='agresif, mendekati batas'; }
+    else if (tbVel>61){ tbNote='wajar-tinggi'; }
+
+    let statsHTML = `
+      <div class="stat hero"><span class="pill neutral">prediksi</span><div class="label">RPM peak power</div><div class="value">${fmtInt(rpmPred)}<span class="sub">rpm</span></div><div class="note">MPS ${fmt(mps,1)} m/s di titik ini</div></div>
+      <div class="stat"><div class="label">Plafon HP crank</div><div class="value">${fmt(HP_lo,0)}–${fmt(HP_hi,0)}<span class="sub">HP</span></div><div class="note">Cf 0,55, dari head</div></div>
+      <div class="stat"><span class="pill ${ratioVB>=0.24&&ratioVB<=0.35?'ok':'warn'}">v/b</span><div class="label">Rasio valve/bore</div><div class="value">${fmt(ratioVB,3)}</div></div>
+      <div class="stat"><span class="pill ${tbPill}">TB</span><div class="label">Kecepatan di TB</div><div class="value">${fmt(tbVel,0)}<span class="sub">m/s</span></div><div class="note">${tbNote}</div></div>
+    `;
+    document.getElementById('pr-stats').innerHTML = statsHTML;
+
+    document.getElementById('pr-formula').textContent =
+`throat isap total = ${nIn} × (${valveD} × ${thrRatio})² × π/4 = ${fmt(thr.area,0)} mm²
+rpm = ${fmtInt(anchor.rpm)} × (${durasi}/${anchor.durasi}) × (${fmt(thr.area,0)}/${fmt(anchor.throatAreaTotal,0)}) × (${fmt(anchor.Vd,1)}/${fmt(Vd,1)})
+    = ${fmtInt(rpmPred)} rpm`;
+
+    document.getElementById('pr-tb-table').innerHTML = `
+      <tr><th>Target kecepatan</th><th class="num">TB dibutuhkan</th><th class="num">TB aktual</th></tr>
+      <tr><td>61 m/s (acuan proven)</td><td class="num">${fmt(tbReq65.D,0)} mm</td><td class="num" rowspan="3" style="vertical-align:middle;">${fmt(TB,0)} mm</td></tr>
+      <tr><td>90 m/s (agresif)</td><td class="num">${fmt(tbReq90.D,0)} mm</td></tr>
+      <tr><td>Kecepatan aktual di TB sekarang</td><td class="num">${fmt(tbVel,0)} m/s</td></tr>
+    `;
+
+    if (prHasDyno.checked){
+      const dynoHP = parseFloat(prDynoHP.value)||0;
+      const loss = (parseFloat(prLoss.value)||0)/100;
+      const crankHP = prDynoType.value==='wheel' ? dynoHP/(1-loss) : dynoHP;
+      const CFM_real_lo = crankHP/0.50, CFM_real_hi = crankHP/0.43;
+      const CfEff_lo = CFM_real_lo/CFM, CfEff_hi = CFM_real_hi/CFM;
+      document.getElementById('pr-dyno-note').innerHTML = `
+        <table style="margin-top:6px;">
+          <tr><td>HP terbaca dyno</td><td class="num">${fmt(dynoHP,1)} ${prDynoType.value==='wheel'?'WHP':'HP crank'}</td></tr>
+          ${prDynoType.value==='wheel' ? `<tr><td>Dikoreksi ke crank (rugi ${fmt(loss*100,0)}%)</td><td class="num"><b>${fmt(crankHP,1)} HP</b></td></tr>` : ''}
+          <tr><td>Cf efektif sistem tersirat</td><td class="num">${fmt(CfEff_lo,2)}–${fmt(CfEff_hi,2)}</td></tr>
+        </table>
+        <p class="prose" style="margin-top:8px;">${CfEff_hi<0.45 ? 'Cf di bawah "standar pabrikan" (0,55) — cek TB/VE/tune sebelum menyalahkan porting.' : 'Cf ini masuk akal untuk porting standar-baik. Tidak ada indikasi pembatas tersembunyi yang parah.'}</p>
+      `;
+    }
+  }
+
+  [prBore,prStroke,prValve,prThroatRatio,prDurasi,prTB,prSelfRpm,prSelfDurasi,prDynoHP,prLoss].forEach(el=>el.addEventListener('input', renderPredict));
+  prDynoType.addEventListener('change', renderPredict);
+
+  /* ============ PANEL 3 LOGIC ============ */
+
+  let cmpRows = [
+    { name: 'Baseline (square-ish)', bore: 63, stroke: '', nValve: 2, durasi: 281 },
+    { name: 'Bore naik, cc sama', bore: 70, stroke: '', nValve: 2, durasi: 281 },
+    { name: 'Valve dibesarkan (3-valve)', bore: 63, stroke: '', nValve: 3, durasi: 259 },
+  ];
+
+  const cmpTargetCC = document.getElementById('cmp-target-cc');
+  const cmpTargetRPM = document.getElementById('cmp-target-rpm');
+
+  function renderCompareInputs(){
+    let rows = cmpRows.map((r,i)=>`
+      <tr>
+        <td><input class="cfg-name" data-i="${i}" data-f="name" value="${r.name}"></td>
+        <td class="num"><input class="mini-input" data-i="${i}" data-f="bore" type="number" step="0.1" value="${r.bore}"></td>
+        <td class="num"><input class="mini-input" data-i="${i}" data-f="stroke" type="number" step="0.1" placeholder="auto" value="${r.stroke}"></td>
+        <td class="num">
+          <select class="mini-select" data-i="${i}" data-f="nValve">
+            <option value="2" ${r.nValve==2?'selected':''}>2v</option>
+            <option value="3" ${r.nValve==3?'selected':''}>3v</option>
+            <option value="4" ${r.nValve==4?'selected':''}>4v</option>
+          </select>
+        </td>
+        <td class="num"><input class="mini-input" data-i="${i}" data-f="durasi" type="number" step="1" value="${r.durasi}"></td>
+        <td><button class="row-del" data-i="${i}">✕</button></td>
+      </tr>
+    `).join('');
+    document.getElementById('cmp-input-table').innerHTML = `
+      <tr><th>Nama konfigurasi</th><th class="num">Bore mm</th><th class="num">Stroke mm</th><th class="num">Valve</th><th class="num">Durasi°</th><th></th></tr>
+      ${rows}
+    `;
+    document.querySelectorAll('#cmp-input-table input, #cmp-input-table select').forEach(el=>{
+      el.addEventListener('input', (e)=>{
+        const i = parseInt(e.target.dataset.i), f = e.target.dataset.f;
+        let v = e.target.value;
+        if (f!=='name') v = v===''? '' : parseFloat(v);
+        cmpRows[i][f] = v;
+        renderCompareResults();
+      });
+    });
+    document.querySelectorAll('.row-del').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        cmpRows.splice(parseInt(b.dataset.i),1);
+        renderCompareInputs(); renderCompareResults();
+      });
+    });
+  }
+
+  document.getElementById('cmp-add').addEventListener('click', ()=>{
+    cmpRows.push({ name: 'Konfigurasi baru', bore: 63, stroke: '', nValve: 2, durasi: 270 });
+    renderCompareInputs(); renderCompareResults();
+  });
+
+  function renderCompareResults(){
+    const targetCC = parseFloat(cmpTargetCC.value)||0;
+    const targetRPM = parseFloat(cmpTargetRPM.value)||0;
+
+    let rowsHTML = cmpRows.map(r=>{
+      const bore = r.bore;
+      let stroke = r.stroke;
+      if (stroke === '' || !stroke){
+        stroke = targetCC*1000/boreArea(bore);
+      }
+      const Vd = Vd_cc(bore, stroke);
+      const nValve = r.nValve;
+      const intake = idealIntakeValve(bore, nValve);
+      const ratioVB = (intake.nIntake*(Math.PI/4*intake.valveDiam*intake.valveDiam))/boreArea(bore);
+      const thr = throatArea(intake.valveDiam, 0.90, intake.nIntake);
+
+      const anchor = { durasi: ANCHOR_A.durasi, throatAreaTotal: anchorAThroatTotal(), Vd: ANCHOR_A.Vd, rpm: ANCHOR_A.rpm };
+      const rpmPred = predictRPM(r.durasi, thr.area, Vd, anchor);
+      const mps = MPS(stroke, rpmPred);
+      const CFM = CFM_teoretis(thr.area);
+      const HPmid = CFM*0.58*0.465;
+
+      return `<tr>
+        <td>${r.name}</td>
+        <td class="num">${fmt(Vd,1)}</td>
+        <td class="num">${fmt(bore,1)} × ${fmt(stroke,1)}</td>
+        <td class="num">${intake.nIntake}×${fmt(intake.valveDiam,1)}</td>
+        <td class="num">${fmt(ratioVB,3)}</td>
+        <td class="num">${fmtInt(rpmPred)}</td>
+        <td class="num">${fmt(mps,1)}</td>
+        <td class="num">~${fmt(HPmid,0)}</td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('cmp-result-table').innerHTML = `
+      <tr><th>Konfigurasi</th><th class="num">Vd cc</th><th class="num">Bore×Stroke</th><th class="num">Valve isap</th><th class="num">v/bore</th><th class="num">RPM ideal</th><th class="num">MPS</th><th class="num">~HP</th></tr>
+      ${rowsHTML}
+    `;
+  }
+
+  [cmpTargetCC, cmpTargetRPM].forEach(el=>el.addEventListener('input', renderCompareResults));
+
+  /* ============ INIT ============ */
+  renderIdeal();
+  renderPredict();
+  renderCompareInputs();
+  renderCompareResults();
+
+})();
+</script>

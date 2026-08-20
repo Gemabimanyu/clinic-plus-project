@@ -62,7 +62,7 @@ Kurvanya **datar di sekitar puncak** — antara λ 0,80 dan 0,90 selisih torsiny
 
 ### 2.2 Kenapa puncaknya di sisi kaya
 
-Pencampuran udara-bahan bakar di silinder tidak pernah sempurna. Sedikit kelebihan bahan bakar memastikan setiap molekul oksigen menemukan pasangan.
+Pencampuran udara-bahan bakar di cylinder tidak pernah sempurna. Sedikit kelebihan bahan bakar memastikan setiap molekul oksigen menemukan pasangan.
 
 Kelebihan bahan bakar juga **mendinginkan muatan** lewat penguapan, menaikkan kerapatan dan menambah margin detonasi.
 
@@ -86,9 +86,9 @@ Satu persen tenaga jauh lebih murah daripada satu piston.
 **Wideband lambda sensor wajib.** Sensor narrowband bawaan motor hanya akurat di sekitar λ 1,00 — tidak berguna untuk beban penuh.
 
 **Posisi pemasangan:**
-- Di header, 15–30 cm dari klep buang
+- Di header, 15–30 cm dari valve buang
 - Miring ke atas minimal 10° supaya kondensasi tidak menggenang di sensor
-- Jangan terlalu dekat ke ujung knalpot — udara luar bisa masuk dan bikin pembacaan miskin palsu
+- Jangan terlalu dekat ke ujung exhaust — udara luar bisa masuk dan bikin pembacaan miskin palsu
 
 **Peringatan avgas:** bahan bakar bertimbal **memperpendek umur sensor wideband** secara drastis. Sensor bisa mati dalam hitungan jam pemakaian. Pakai untuk sesi tuning saja, lepas setelahnya.
 
@@ -102,7 +102,7 @@ Satu persen tenaga jauh lebih murah daripada satu piston.
 
 | Kondisi | Akibat |
 |---|---|
-| Kurang maju dari MBT | tenaga hilang, EGT naik, panas terbuang ke knalpot |
+| Kurang maju dari MBT | tenaga hilang, EGT naik, panas terbuang ke exhaust |
 | Tepat di MBT | tenaga maksimum |
 | Lebih maju dari MBT | tenaga **turun** dan risiko detonasi naik |
 
@@ -118,12 +118,12 @@ Satu persen tenaga jauh lebih murah daripada satu piston.
 | Campuran lebih miskin | **lebih maju** — bakar lebih lambat |
 | Campuran lebih kaya (dari stoich) | sedikit lebih maju |
 | Squish bagus / turbulensi tinggi | **kurang maju** |
-| Busi di tengah (4 klep) | **kurang maju** dari 2 klep |
+| Spark plug di tengah (4 valve) | **kurang maju** daripada 2 valve |
 | Bore besar | lebih maju — jalur api panjang |
 
 ### 3.3 Rentang khas
 
-Untuk mesin 1 silinder kecil kompresi tinggi pada tenaga puncak:
+Untuk mesin 1 cylinder kecil kompresi tinggi pada tenaga puncak:
 
 | Kompresi | Sudut khas di rpm puncak |
 |---|---|
@@ -132,7 +132,7 @@ Untuk mesin 1 silinder kecil kompresi tinggi pada tenaga puncak:
 | 14–15:1 | 22–28° BTDC |
 | Metanol 15:1+ | 28–36° BTDC (bakar lebih lambat) |
 
-**Perhatikan metanol:** walau kompresinya lebih tinggi, metanol butuh pengapian **lebih maju** karena kecepatan bakarnya lebih lambat dari bensin.
+**Perhatikan metanol:** walau kompresinya lebih tinggi, metanol butuh pengapian **lebih maju** karena kecepatan bakarnya lebih lambat daripada bensin.
 
 ### 3.4 Mencari MBT di dyno
 
@@ -169,9 +169,9 @@ Bukan berapa banyak bahan bakar, tapi **kapan** disemprotkan dalam siklus. Biasa
 
 ### 4.2 Dua strategi
 
-**Injeksi klep tertutup** (*closed-valve injection*)
+**Injeksi valve tertutup** (*closed-valve injection*)
 
-Bahan bakar disemprot ke punggung klep isap yang masih tertutup. Bahan bakar punya waktu menguap sebelum klep membuka.
+Bahan bakar disemprot ke punggung valve isap yang masih tertutup. Bahan bakar punya waktu menguap sebelum valve membuka.
 
 | Kelebihan | Kekurangan |
 |---|---|
@@ -179,9 +179,9 @@ Bahan bakar disemprot ke punggung klep isap yang masih tertutup. Bahan bakar pun
 | Bagus untuk rpm rendah-menengah | sebagian bahan bakar menempel dinding port |
 | Respons throttle lebih halus | pada rpm tinggi waktunya tidak cukup |
 
-**Injeksi klep terbuka** (*open-valve injection*)
+**Injeksi valve terbuka** (*open-valve injection*)
 
-Bahan bakar disemprot saat klep isap sedang terbuka, langsung masuk ke silinder.
+Bahan bakar disemprot saat valve isap sedang terbuka, langsung masuk ke cylinder.
 
 | Kelebihan | Kekurangan |
 |---|---|
@@ -191,9 +191,9 @@ Bahan bakar disemprot saat klep isap sedang terbuka, langsung masuk ke silinder.
 
 ### 4.3 Praktisnya
 
-Pada rpm tinggi, waktu satu siklus sangat pendek sehingga **injeksi klep tertutup menjadi mustahil** — durasi injeksi sudah memakan sebagian besar siklus.
+Pada rpm tinggi, waktu satu siklus sangat pendek sehingga **injeksi valve tertutup menjadi mustahil** — durasi injeksi sudah memakan sebagian besar siklus.
 
-Untuk mesin balap putaran tinggi, injeksi otomatis jatuh ke mode klep terbuka atau campuran keduanya.
+Untuk mesin balap putaran tinggi, injeksi otomatis jatuh ke mode valve terbuka atau campuran keduanya.
 
 **Yang bisa ditala:**
 - Pada rpm rendah-menengah, geser EOI untuk mencari respons terbaik
@@ -205,7 +205,7 @@ Untuk mesin balap putaran tinggi, injeksi otomatis jatuh ke mode klep terbuka at
 
 | Posisi | Karakter |
 |---|---|
-| Dekat klep, menyemprot ke punggung klep | standar pabrikan, pencampuran baik |
+| Dekat valve, menyemprot ke punggung valve | standar pabrikan, pencampuran baik |
 | Lebih jauh di runner | pencampuran lebih baik, pendinginan lebih merata |
 | **Injektor kedua di velocity stack** | dipakai balap — injektor utama untuk rpm rendah, injektor atas untuk rpm tinggi |
 
@@ -213,13 +213,13 @@ Sistem dua injektor (*staged injection*) memberi pendinginan muatan maksimum di 
 
 ---
 
-## 5. Busi
+## 5. Spark plug
 
 ### 5.1 Heat range
 
-**Heat range** menunjukkan seberapa cepat busi membuang panas ke kepala silinder. Bukan seberapa "panas" apinya.
+**Heat range** menunjukkan seberapa cepat spark plug membuang panas ke cylinder head. Bukan seberapa "panas" apinya.
 
-| Busi | Karakter |
+| Spark plug | Karakter |
 |---|---|
 | **Panas** (heat range rendah) | insulator panjang, panas lambat keluar, tahan kotor |
 | **Dingin** (heat range tinggi) | insulator pendek, panas cepat keluar, tahan beban tinggi |
@@ -240,10 +240,10 @@ Sistem dua injektor (*staged injection*) memberi pendinginan muatan maksimum di 
 **Gejala terlalu panas:**
 - Insulator putih bersih atau melepuh
 - Elektroda meleleh atau membulat
-- Pre-ignition (mesin menyala sendiri sebelum busi memercik)
+- Pre-ignition (mesin menyala sendiri sebelum spark plug memercik)
 
 **Gejala terlalu dingin:**
-- Busi basah dan berjelaga
+- Spark plug basah dan berjelaga
 - Misfire di rpm rendah
 - Susah start
 
@@ -269,19 +269,19 @@ Sistem dua injektor (*staged injection*) memberi pendinginan muatan maksimum di 
 | **Platinum** | umur panjang, elektroda sedang |
 | **Iridium** | elektroda sangat halus → tegangan nyala lebih rendah, umur panjang |
 
-**Untuk balap: tembaga.** Umurnya pendek tapi pembuangan panasnya terbaik dan harganya murah — dan busi balap memang harus sering diganti dan dibaca.
+**Untuk balap: tembaga.** Umurnya pendek tapi pembuangan panasnya terbaik dan harganya murah — dan spark plug balap memang harus sering diganti dan dibaca.
 
 Iridium bagus untuk harian karena umurnya panjang, tapi elektroda halusnya lebih rentan terkikis oleh detonasi.
 
-### 5.5 Membaca busi
+### 5.5 Membaca spark plug
 
 Ini keterampilan diagnostik paling murah yang kamu punya.
 
 **Cara yang benar:**
-1. Pasang busi baru
+1. Pasang spark plug baru
 2. Lakukan run beban penuh sampai rpm puncak
-3. **Matikan mesin dan tarik kopling di rpm tinggi** — jangan idle dulu
-4. Lepas busi dan baca segera
+3. **Matikan mesin dan tarik clutch di rpm tinggi** — jangan idle dulu
+4. Lepas spark plug dan baca segera
 
 Kalau mesin dibiarkan idle sebelum dimatikan, jejak beban penuh terhapus.
 
@@ -297,13 +297,13 @@ Kalau mesin dibiarkan idle sebelum dimatikan, jejak beban penuh terhapus.
 
 ---
 
-## 6. Koil pengapian
+## 6. Coil pengapian
 
 ### 6.1 Tiga jenis
 
 **TCI — *Transistor Controlled Ignition* (induktif)**
 
-Energi disimpan dalam medan magnet koil selama *dwell*, lalu dilepas saat arus diputus.
+Energi disimpan dalam medan magnet coil selama *dwell*, lalu dilepas saat arus diputus.
 
 | | |
 |---|---|
@@ -320,19 +320,19 @@ Energi disimpan di kapasitor, dilepas sekaligus.
 |---|---|
 | Durasi percikan | **pendek** (0,1–0,3 ms) |
 | Kecepatan naik tegangan | **sangat cepat** |
-| Kelebihan | tidak terpengaruh busi kotor, tidak butuh dwell |
+| Kelebihan | tidak terpengaruh spark plug kotor, tidak butuh dwell |
 | Kekurangan | durasi pendek — bisa gagal menyalakan muatan yang tidak merata |
 | Umum di | motor 2 langkah, motor lama |
 
-**Smart coil (koil dengan driver terintegrasi)**
+**Smart coil (coil dengan driver terintegrasi)**
 
-Tipe induktif dengan transistor penggerak di dalam koil, dipasang langsung di busi.
+Tipe induktif dengan transistor penggerak di dalam coil, dipasang langsung di spark plug.
 
 | | |
 |---|---|
 | Durasi percikan | panjang |
 | Energi | **tertinggi** |
-| Rugi kabel tegangan tinggi | **tidak ada** — koil menempel di busi |
+| Rugi kabel tegangan tinggi | **tidak ada** — coil menempel di spark plug |
 | Kekurangan | butuh sinyal kontrol dari ECU yang sesuai |
 
 ### 6.2 Mana yang dipilih
@@ -354,8 +354,8 @@ Untuk mesin kompresi tinggi berputaran tinggi, dua hal dibutuhkan **bersamaan**:
 ### 6.3 Yang sering diabaikan
 
 - **Kabel massa.** Sistem pengapian butuh jalur massa yang pendek dan bersih. Massa yang buruk menyebabkan misfire yang sulit dilacak.
-- **Tegangan aki.** Koil induktif sangat sensitif terhadap tegangan. Aki lemah = energi percikan turun drastis di rpm tinggi.
-- **Kabel busi.** Kabel resistif yang tua kehilangan energi. Kalau masih pakai kabel, ganti berkala.
+- **Tegangan aki.** Coil induktif sangat sensitif terhadap tegangan. Aki lemah = energi percikan turun drastis di rpm tinggi.
+- **Kabel spark plug.** Kabel resistif yang tua kehilangan energi. Kalau masih pakai kabel, ganti berkala.
 
 ---
 
@@ -418,7 +418,7 @@ Mengganti ECU asli sepenuhnya.
 | Launch control, shift light, dua map |
 | Dukungan injektor besar dan dua injektor |
 | Knock control (sebagian) |
-| Kontrol koil yang lebih baik |
+| Kontrol coil yang lebih baik |
 
 | Ongkosnya |
 |---|
@@ -431,7 +431,7 @@ Mengganti ECU asli sepenuhnya.
 
 | Kondisi mesin | Cukup dengan |
 |---|---|
-| Knalpot + filter, cam standar | remap standar |
+| Exhaust + filter, cam standar | remap standar |
 | Cam ringan, kompresi naik sedikit | remap atau piggyback |
 | Cam balap, kompresi tinggi, rpm naik | **standalone** |
 | Metanol atau race gas beroksigen | **standalone** |
@@ -451,7 +451,7 @@ ECU tidak menambah udara. Ia cuma mengatur bahan bakar dan pengapian untuk udara
 
 Kalau semua sudah terpasang, urutan penyetelan yang benar:
 
-**1. Pastikan mekanis sehat dulu.** Kompresi tiap silinder, kebocoran, celah klep. Tuning mesin yang bocor cuma menyembunyikan masalah.
+**1. Pastikan mekanis sehat dulu.** Kompresi tiap cylinder, kebocoran, celah valve. Tuning mesin yang bocor cuma menyembunyikan masalah.
 
 **2. Setel bahan bakar kasar** ke λ aman (0,82–0,85) di seluruh rentang. Jangan tuning pengapian dengan campuran yang salah.
 
@@ -477,8 +477,8 @@ Kalau semua sudah terpasang, urutan penyetelan yang benar:
 4. **Memajukan pengapian melewati MBT menurunkan tenaga**, bukan menambah.
 5. **Cari MBT 2° per run.** Kalau detonasi datang duluan, mesinmu knock-limited.
 6. **Metanol butuh pengapian lebih maju** walau kompresinya lebih tinggi.
-7. **Busi: lebih dingin untuk kompresi tinggi, gap lebih kecil, tembaga untuk balap.**
-8. **Baca busi setelah run beban penuh**, jangan setelah idle.
+7. **Spark plug: lebih dingin untuk kompresi tinggi, gap lebih kecil, tembaga untuk balap.**
+8. **Baca spark plug setelah run beban penuh**, jangan setelah idle.
 9. **Smart coil untuk kompresi tinggi.** CDI sendirian sering kurang durasinya.
 10. **ECU standalone dibutuhkan** kalau rpm melewati limit standar atau bahan bakar berganti.
 11. **ECU tidak menambah udara.** Head dulu, ECU terakhir.

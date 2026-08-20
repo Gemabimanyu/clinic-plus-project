@@ -30,7 +30,7 @@ lintasan       → validasi keseluruhan
 
 > **CFD kuat untuk MEMBANDINGKAN, lemah untuk memprediksi angka mutlak tanpa kalibrasi.**
 
-Kalau CFD bilang bellmouth R8 lebih baik 4% dari R5 — percaya arahnya.
+Kalau CFD bilang bellmouth R8 lebih baik 4% daripada R5 — percaya arahnya.
 Kalau CFD bilang "tenaga 18,3 HP" — jangan percaya.
 
 ### 1.3 Akurasi yang realistis
@@ -95,7 +95,7 @@ Sah karena pada Re > 10⁵ koefisien flow praktis tidak tergantung Re.
 
 ### 3.3 Model satu cabang
 
-Port 4 klep bercabang simetris terhadap sekat pemisah. Modelkan **satu cabang saja** dengan bidang simetri di sekat: satu cabang membawa separuh aliran dan separuh CSA.
+Port 4 valve bercabang simetris terhadap sekat pemisah. Modelkan **satu cabang saja** dengan bidang simetri di sekat: satu cabang membawa separuh aliran dan separuh CSA.
 
 Yang hilang cuma rugi di ujung sekat — dan itu sama untuk semua varian, jadi tidak menggeser peringkat.
 
@@ -167,7 +167,7 @@ Ini yang paling merusak: ia membuat **setiap perbaikan yang benar tampak memperb
 
 **Bug 2 — Klasifikasi patch outlet dengan uji jarak sederhana**
 
-Cakram keluar throat tegak lurus **sumbu klep** yang miring 13°, jadi uji terhadap sumbu vertikal hanya menangkap pita tipis; sisa cakram jadi dinding yang menyumbat throat.
+Cakram keluar throat tegak lurus **sumbu valve** yang miring 13°, jadi uji terhadap sumbu vertikal hanya menangkap pita tipis; sisa cakram jadi dinding yang menyumbat throat.
 
 *Penjaga:* klasifikasi pakai arah normal segitiga, dan luas patch outlet wajib ±10% luas throat.
 
@@ -198,7 +198,7 @@ Membuang segitiga bersisi > 3 mm padahal sel background 5 mm punya diagonal 8,7 
 
 **Ongkos tikungan cuma 3,4%.**
 
-Ini temuan desain yang penting: dengan short-turn radius yang wajar, **port bukan pembatasnya**. Cf 0,849 adalah plafon port telanjang; head lengkap dengan klep di lift 9 mm akan turun ke 0,55–0,65.
+Ini temuan desain yang penting: dengan short-turn radius yang wajar, **port bukan pembatasnya**. Cf 0,849 adalah plafon port telanjang; head lengkap dengan valve di lift 9 mm akan turun ke 0,55–0,65.
 
 Artinya usaha menggerus bentuk port memberi hasil kecil dibandingkan **membesarkan throat**.
 
@@ -237,7 +237,7 @@ Setelah tiga angka itu diketahui, perhitunganmu untuk build berikutnya jauh lebi
 - [ ] Grafik dyno lengkap dengan kondisi cuaca
 - [ ] Setelan CVT final
 - [ ] Waktu dan trap lintasan
-- [ ] Kondisi part setelah beberapa run (busi, piston, ring)
+- [ ] Kondisi part setelah beberapa run (spark plug, piston, ring)
 
 Catatan ini adalah **aset paling berharga** yang kamu bangun. Nilainya melebihi mesin itu sendiri.
 

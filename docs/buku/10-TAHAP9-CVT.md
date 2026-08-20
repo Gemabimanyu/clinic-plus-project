@@ -10,24 +10,24 @@
 
 | Bagian | Fungsi |
 |---|---|
-| **Puli primer (drive)** | dua permukaan kerucut, satu bisa bergerak; roller di dalamnya |
+| **Pulley primer (drive)** | dua permukaan kerucut, satu bisa bergerak; roller di dalamnya |
 | **Roller** | pemberat yang terlempar keluar oleh gaya sentrifugal |
-| **V-belt** | menyalurkan tenaga antar puli |
-| **Puli sekunder (driven)** | dua permukaan kerucut + per torsi + torque cam |
-| **Per torsi (contra spring)** | melawan pergeseran rasio |
-| **Kopling sentrifugal** | menghubungkan mesin ke roda pada rpm tertentu |
-| **Per kopling** | menentukan rpm sambungan |
-| **Final gear** | reduksi tetap dari puli sekunder ke roda |
+| **V-belt** | menyalurkan tenaga antar pulley |
+| **Pulley sekunder (driven)** | dua permukaan kerucut + torque spring + torque cam |
+| **Torque spring (contra spring)** | melawan pergeseran rasio |
+| **Centrifugal clutch** | menghubungkan mesin ke roda pada rpm tertentu |
+| **Clutch spring** | menentukan rpm sambungan |
+| **Final gear** | reduksi tetap dari pulley sekunder ke roda |
 
 ### 1.2 Urutan kejadiannya
 
-**Diam:** belt berada di posisi paling dalam pada puli primer, paling luar pada sekunder. Rasio paling berat (reduksi terbesar).
+**Diam:** belt berada di posisi paling dalam pada pulley primer, paling luar pada sekunder. Rasio paling berat (reduksi terbesar).
 
-**RPM naik:** roller terlempar keluar oleh gaya sentrifugal, mendorong permukaan puli primer yang bisa bergerak. Belt terdorong ke posisi lebih luar pada primer.
+**RPM naik:** roller terlempar keluar oleh gaya sentrifugal, mendorong permukaan pulley primer yang bisa bergerak. Belt terdorong ke posisi lebih luar pada primer.
 
 **Belt naik di primer:** karena panjang belt tetap, belt otomatis turun ke posisi lebih dalam pada sekunder. Rasio jadi lebih ringan.
 
-**Per torsi melawan:** menjaga tegangan belt dan menahan rasio agar tidak terlalu cepat berubah.
+**Torque spring melawan:** menjaga tegangan belt dan menahan rasio agar tidak terlalu cepat berubah.
 
 **Hasilnya:** rasio berubah **kontinu**, dan mesin bisa ditahan di satu putaran sepanjang akselerasi.
 
@@ -35,15 +35,15 @@
 
 ## 2. Kenapa CVT mengubah aturan tuning
 
-### 2.1 Perbedaan dari motor bergigi
+### 2.1 Perbedaan dari motor gear
 
-Pada motor bergigi, tiap perpindahan gigi menjatuhkan putaran mesin. Kalau pita tenaga sempit, mesin jatuh keluar pita dan akselerasi hilang. Karena itu motor bergigi butuh **pita lebar**.
+Pada motor gear, tiap perpindahan gear menjatuhkan putaran mesin. Kalau rentang rpm bertenaga sempit, mesin jatuh keluar powerband dan akselerasi hilang. Karena itu motor gear butuh **rentang rpm yang lebar**.
 
 CVT tidak punya masalah itu. Rasio berubah kontinu, jadi mesin bisa ditahan **persis di satu titik**.
 
-> **Konsekuensi: pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan lebar pita.**
+> **Konsekuensi: pada CVT, yang perlu dioptimalkan adalah tenaga di SATU titik putaran, bukan rentang rpm yang lebar.**
 
-Ini memberi kebebasan yang tidak dimiliki motor bergigi: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat pita sempit tapi puncaknya tinggi.
+Ini memberi kebebasan yang tidak dimiliki motor gear: cam durasi panjang, overlap besar, LSA sempit, runner ditala tajam — semua yang membuat rentang rpm sempit tapi puncaknya tinggi.
 
 ### 2.2 Titik mana yang dipilih
 
@@ -53,7 +53,7 @@ Percepatan berbanding lurus dengan tenaga (lihat Tahap 1). Menahan mesin di tors
 
 ### 2.3 Syaratnya
 
-CVT harus **benar-benar mampu** menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin berpita sempit akan terasa **jauh lebih lambat** daripada mesin standar.
+CVT harus **benar-benar mampu** menahan mesin di titik itu. CVT yang salah setelan akan membiarkan putaran jatuh, dan mesin dengan rentang rpm sempit akan terasa **jauh lebih lambat** daripada mesin standar.
 
 Inilah kenapa banyak mesin yang bagus di dyno mengecewakan di lintasan.
 
@@ -81,35 +81,35 @@ Ini penyetelan paling berpengaruh.
 
 **Aturan praktis:** ubah 1 gram per langkah. Perubahan 2 gram sudah terasa jelas.
 
-### 3.2 Per torsi (contra spring)
+### 3.2 Torque spring (contra spring)
 
-| Per | Efek |
+| Spring | Efek |
 |---|---|
 | **Lebih keras** | melawan pergeseran rasio → mesin ditahan di rpm lebih tinggi, cengkeraman belt lebih kuat |
 | **Lebih lunak** | rasio bergeser lebih mudah → rpm lebih rendah |
 
-Per torsi bekerja **bersama** roller. Kombinasi yang umum untuk drag: roller agak ringan + per torsi agak keras.
+Torque spring bekerja **bersama** roller. Kombinasi yang umum untuk drag: roller agak ringan + torque spring agak keras.
 
-**Efek samping per terlalu keras:** belt tertekan sangat kuat, gesekan naik, panas naik, dan tenaga terbuang. Jangan asal keras.
+**Efek samping spring terlalu keras:** belt tertekan sangat kuat, gesekan naik, panas naik, dan tenaga terbuang. Jangan asal keras.
 
-### 3.3 Per kopling
+### 3.3 Clutch spring
 
-Menentukan **rpm sambungan** — di putaran berapa kopling sentrifugal mulai menggigit.
+Menentukan **rpm sambungan** — di putaran berapa centrifugal clutch mulai menggigit.
 
-| Per kopling | Efek |
+| Clutch spring | Efek |
 |---|---|
 | Lebih keras | sambung di rpm lebih tinggi → launch lebih agresif |
 | Lebih lunak | sambung lebih awal → launch lebih halus |
 
-**Untuk drag:** rpm sambungan harus cukup tinggi supaya mesin sudah berada di daerah bertenaga saat kopling menggigit — tapi tidak terlalu tinggi sampai roda spin atau kopling terbakar.
+**Untuk drag:** rpm sambungan harus cukup tinggi supaya mesin sudah berada di daerah bertenaga saat clutch menggigit — tapi tidak terlalu tinggi sampai roda spin atau clutch terbakar.
 
 Titik awal yang wajar: **rpm sambungan sekitar 60–70% dari rpm tenaga puncak**.
 
 ### 3.4 Urutan penyetelan
 
-1. **Per kopling** dulu — tentukan rpm launch
+1. **Clutch spring** dulu — tentukan rpm launch
 2. **Roller** — tentukan rpm yang ditahan saat akselerasi
-3. **Per torsi** — haluskan, dan perbaiki kalau rpm jatuh di tengah akselerasi
+3. **Torque spring** — haluskan, dan perbaiki kalau rpm jatuh di tengah akselerasi
 4. **Ulangi** — ketiganya saling mempengaruhi
 
 **Satu perubahan per run.** Sama seperti di dyno.
@@ -183,7 +183,7 @@ Simulasi akselerasi 500 m dengan 30 HP di roda, massa 150 kg: [HITUNG]
 
 CVT menahan mesin di tenaga puncak apa pun rasionya. Percepatan cuma bergantung pada tenaga yang tersedia, bukan pada rasio.
 
-Ini **berbeda total dari motor bergigi**, di mana pemilihan gear sangat menentukan.
+Ini **berbeda total dari motor gear**, di mana pemilihan gear sangat menentukan.
 
 ### 5.3 Kapan gear jadi penting
 
@@ -191,7 +191,7 @@ Hanya dalam dua kondisi:
 
 **1. Gear terlalu pendek** → mentok limiter sebelum garis finish. Setelah mentok, mesin tidak bisa menambah kecepatan lagi. Ini kerugian yang jelas dan besar.
 
-**2. Gear terlalu panjang** → CVT tidak sempat mencapai rasio tertinggi dalam jarak yang tersedia, atau kopling terlalu lama slip di awal.
+**2. Gear terlalu panjang** → CVT tidak sempat mencapai rasio tertinggi dalam jarak yang tersedia, atau clutch terlalu lama slip di awal.
 
 ### 5.4 Aturan praktis
 
@@ -199,7 +199,7 @@ Hanya dalam dua kondisi:
 
 Dari tabel di atas, i_total sekitar **7,5–8,0** adalah pilihan yang tepat: kecepatan batas 169 km/h, kecepatan finish 160 km/h — mendekati, tapi tidak mentok.
 
-**Margin 5–10% di bawah batas** memberi ruang kalau kondisi lintasan lebih baik dari perkiraan.
+**Margin 5–10% di bawah batas** memberi ruang kalau kondisi lintasan lebih baik daripada perkiraan.
 
 ### 5.5 Cara memverifikasi di lintasan
 
@@ -220,10 +220,10 @@ Kalau rpm naik-turun selama akselerasi, CVT-nya belum benar — bukan mesinnya.
 | Sumber | Besarnya |
 |---|---|
 | Slip belt | 3–15% |
-| Gesekan belt–puli | 3–5% |
+| Gesekan belt–pulley | 3–5% |
 | Gesekan roller di jalur | 1–2% |
 | Final gear | 2–3% |
-| Kopling slip (kalau tidak sempurna) | 0–10% |
+| Clutch slip (kalau tidak sempurna) | 0–10% |
 
 **Total 10–30%** — itulah selisih antara tenaga mesin dan tenaga di roda.
 
@@ -231,15 +231,15 @@ Kalau rpm naik-turun selama akselerasi, CVT-nya belum benar — bukan mesinnya.
 
 **Belt aus atau salah ukuran**
 
-Belt yang aus jadi lebih tipis, sehingga posisinya di puli berubah — rasio tertinggi tidak tercapai. Belt yang terlalu panjang juga sama akibatnya.
+Belt yang aus jadi lebih tipis, sehingga posisinya di pulley berubah — rasio tertinggi tidak tercapai. Belt yang terlalu panjang juga sama akibatnya.
 
 **Cek:** ukur lebar belt dan bandingkan dengan spesifikasi baru. Selisih 1 mm sudah berarti.
 
-**Permukaan puli aus atau tergores**
+**Permukaan pulley aus atau tergores**
 
 Alur bekas belt di permukaan kerucut membuat belt tidak bisa bergeser mulus. Rasio jadi tersendat.
 
-**Cek:** raba permukaan puli. Kalau terasa beralur, ganti atau bubut.
+**Cek:** raba permukaan pulley. Kalau terasa beralur, ganti atau bubut.
 
 **Roller aus tidak merata (peyang)**
 
@@ -247,13 +247,13 @@ Roller yang sudah gepeng di satu sisi tidak bisa berguling dengan lancar. Peruba
 
 **Cek:** roller harus bulat sempurna. Kalau ada bagian rata, ganti semuanya — jangan sebagian.
 
-**Kampas kopling glazing**
+**Clutch pad glazing**
 
-Permukaan kampas yang mengkilap licin menyebabkan slip berkepanjangan.
+Permukaan pad yang mengkilap licin menyebabkan slip berkepanjangan.
 
-**Cek:** permukaan kampas harus kasar merata. Amplas kalau mengkilap, atau ganti.
+**Cek:** permukaan pad harus kasar merata. Amplas kalau mengkilap, atau ganti.
 
-**Puli sekunder macet**
+**Pulley sekunder macet**
 
 Permukaan yang bisa bergerak harus meluncur bebas. Kalau seret karena kotoran atau karat, rasio tidak berubah dengan benar.
 
@@ -273,7 +273,7 @@ CVT menghasilkan panas besar, dan panas mengurangi cengkeraman belt.
 |---|---|
 | Menyetel CVT sebelum mesin final | pekerjaan diulang |
 | Roller berat supaya "torsi bawah kuat" | mesin ditahan di bawah rpm tenaga puncak — lebih lambat |
-| Per torsi sekeras mungkin | gesekan besar, panas, tenaga terbuang |
+| Torque spring sekeras mungkin | gesekan besar, panas, tenaga terbuang |
 | Gear dipendekkan supaya "akselerasi galak" | mentok limiter sebelum finish |
 | Belt murah atau bekas | slip, tenaga hilang tanpa terlihat |
 | Menilai CVT dari rasa, bukan dari data rpm | tidak akan pernah optimal |
@@ -282,14 +282,14 @@ CVT menghasilkan panas besar, dan panas mengurangi cengkeraman belt.
 
 ## 8. Ringkasan Tahap 9
 
-1. **CVT menahan mesin di satu rpm** — karena itu tenaga puncak lebih penting daripada lebar pita.
+1. **CVT menahan mesin di satu rpm** — karena itu tenaga puncak lebih penting daripada rentang rpm yang lebar.
 2. **Setel CVT ke rpm tenaga puncak**, bukan torsi puncak.
 3. **Roller adalah penyetelan paling berpengaruh.** Lebih ringan = rpm ditahan lebih tinggi.
 4. **Kalibrasi rasio total dari data terukur**, jangan dari katalog.
-5. **Selama limiter tidak tersentuh, rasio gear tidak mempengaruhi akselerasi.** Ini berbeda total dari motor bergigi.
+5. **Selama limiter tidak tersentuh, rasio gear tidak mempengaruhi akselerasi.** Ini berbeda total dari motor gear.
 6. **Gear terlalu pendek jelas merugikan** — mentok limiter sebelum garis.
 7. **Pilih gear supaya kecepatan finish mendekati batas**, dengan margin 5–10%.
-8. **CVT bisa memakan 10–30% tenaga.** Belt, puli, roller, dan kampas harus diperiksa.
+8. **CVT bisa memakan 10–30% tenaga.** Belt, pulley, roller, dan pad harus diperiksa.
 9. **RPM yang naik-turun saat akselerasi** berarti CVT belum benar, bukan mesinnya.
 10. **Setel CVT terakhir**, setelah mesin final.
 

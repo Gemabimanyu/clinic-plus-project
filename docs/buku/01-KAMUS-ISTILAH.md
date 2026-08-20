@@ -26,9 +26,9 @@ Faktor 0,92 untuk bentuk superelips — di antara elips murni (0,785) dan kotak 
 
 **Diukur di mana:** di **titik tersempit** sepanjang saluran, bukan di flange dan bukan di bowl. Titik tersempit inilah yang menentukan kecepatan gas dan menjadi pembatas.
 
-Untuk port bercabang (4 klep), yang dipakai adalah CSA **runner bersama** sebelum pecah dua — bukan CSA tiap cabang.
+Untuk port bercabang (4 valve), yang dipakai adalah CSA **runner bersama** sebelum pecah dua — bukan CSA tiap cabang.
 
-**Kenapa penting:** CSA menentukan kecepatan gas, dan kecepatan gas menentukan pengisian silinder. Ini variabel desain port yang paling berpengaruh.
+**Kenapa penting:** CSA menentukan kecepatan gas, dan kecepatan gas menentukan pengisian cylinder. Ini variabel desain port yang paling berpengaruh.
 
 **Rentang khas:** untuk mesin balap kecil, CSA port isap berkisar 0,90–1,10 × luas throat.
 
@@ -43,40 +43,40 @@ Untuk port bercabang (4 klep), yang dipakai adalah CSA **runner bersama** sebelu
 ---
 
 ### Throat
-**Diameter dalam seat klep**
+**Diameter dalam seat valve**
 
 **Satuan:** mm untuk diameter, mm² untuk luas
 
 **Rumus:**
 ```
-A_throat = n_klep × π/4 × D_throat²
+A_throat = n_valve × π/4 × D_throat²
 ```
 
-**Diukur di mana:** lubang paling sempit di dalam seat, tepat di bawah permukaan yang bersentuhan dengan klep. Bukan diameter klep, bukan diameter luar seat.
+**Diukur di mana:** lubang paling sempit di dalam seat, tepat di bawah permukaan yang bersentuhan dengan valve. Bukan diameter valve, bukan diameter luar seat.
 
 **Kenapa penting:** pada lift tinggi, throat adalah **pembatas sesungguhnya**. Membesarkan throat adalah satu-satunya perubahan yang menaikkan plafon flow head — bentuk port tidak bisa melakukannya.
 
 **Rentang khas:**
 
-| Rasio throat/klep | Keterangan |
+| Rasio throat/valve | Keterangan |
 |---|---|
 | 0,85–0,88 | konservatif, umum di buku |
 | 0,88–0,92 | balap lazim |
 | 0,92–0,94 | agresif |
 | > 0,94 | seat sangat tipis, berisiko |
 
-Batasnya lebar seat: `lebar = (D_klep − D_throat) / 2`. Di bawah 0,7 mm berisiko, terutama sisi buang.
+Batasnya lebar seat: `lebar = (D_valve − D_throat) / 2`. Di bawah 0,7 mm berisiko, terutama sisi buang.
 
 **Kesalahpahaman yang umum:**
 
 *Mengira aturan 0,85–0,90 itu hukum mati.* Mesin Contoh A berjalan di **0,935** bertahun-tahun pada kompresi 16:1. Yang menentukan bukan rasionya, tapi lebar seat dalam milimeter dan kualitas materialnya.
 
-*Menyamakan sisi isap dan buang.* Sisi buang selalu butuh seat lebih lebar — seat itulah jalan panas klep buang keluar.
+*Menyamakan sisi isap dan buang.* Sisi buang selalu butuh seat lebih lebar — seat itulah jalan panas valve buang keluar.
 
 ---
 
 ### Bore, Stroke, Rod
-**Diameter silinder, panjang langkah, panjang stang piston**
+**Diameter cylinder, panjang langkah, panjang stang piston**
 
 **Satuan:** mm
 
@@ -89,7 +89,7 @@ Rasio rod   : R = panjang_rod / stroke
 
 **Kenapa penting:**
 
-**Bore** menentukan berapa besar klep yang muat — itu plafon napas mesin. Bore besar juga memperpanjang jalur api, menurunkan toleransi detonasi.
+**Bore** menentukan berapa besar valve yang muat — itu plafon napas mesin. Bore besar juga memperpanjang jalur api, menurunkan toleransi detonasi.
 
 **Stroke** menentukan kecepatan piston pada rpm tertentu. Stroke pendek = rpm tinggi lebih murah secara mekanis.
 
@@ -106,7 +106,7 @@ Rasio rod   : R = panjang_rod / stroke
 
 **Kesalahpahaman yang umum:**
 
-*Mengira rod panjang selalu lebih baik.* Rod pendek memang menaikkan side thrust dan percepatan puncak, tapi juga membuat piston menjauh dari TDC lebih cepat — yang **melonggarkan kelegaan klep** dan **memperpendek waktu untuk detonasi berkembang**.
+*Mengira rod panjang selalu lebih baik.* Rod pendek memang menaikkan side thrust dan percepatan puncak, tapi juga membuat piston menjauh dari TDC lebih cepat — yang **melonggarkan kelegaan valve** dan **memperpendek waktu untuk detonasi berkembang**.
 
 ---
 
@@ -166,7 +166,7 @@ MGV = (luas piston / CSA) × MPS
 
 Buku ini memakai **konvensi port** kecuali disebut lain.
 
-**Kenapa penting:** MGV menentukan **momentum muatan** yang masuk silinder. Momentum itu yang terus mengisi silinder bahkan setelah piston melewati BDC — efek ram yang menaikkan efisiensi volumetrik.
+**Kenapa penting:** MGV menentukan **momentum muatan** yang masuk cylinder. Momentum itu yang terus mengisi cylinder bahkan setelah piston melewati BDC — efek ram yang menaikkan efisiensi volumetrik.
 
 Terlalu rendah: momentum tidak cukup, pengisian lemah.
 Terlalu tinggi: restriksi mencekik, rugi tekanan melonjak (rugi berskala dengan v²).
@@ -203,7 +203,7 @@ Cf = Q_nyata / (A_acuan × √(2Δp/ρ))
 | Acuan | Nilai khas head bagus |
 |---|---|
 | Luas **throat** | 0,55–0,70 |
-| Luas **payung klep** | 0,45–0,55 |
+| Luas **payung valve** | 0,45–0,55 |
 | Luas **tirai** pada lift tertentu | bervariasi |
 
 Buku ini selalu memakai **luas throat**.
@@ -218,7 +218,7 @@ Buku ini selalu memakai **luas throat**.
 | 0,55 | standar pabrikan |
 | 0,62 | porting bagus |
 | 0,70 | porting sangat bagus |
-| 0,85–0,95 | saluran tanpa klep |
+| 0,85–0,95 | saluran tanpa valve |
 
 ---
 
@@ -252,7 +252,7 @@ K = (v_teoretis / v_nyata)² − 1
 
 **Satuan:** fraksi atau persen
 
-**Definisi:** perbandingan massa udara yang benar-benar terjebak di silinder terhadap massa udara yang mengisi kapasitas silinder pada kondisi atmosfer.
+**Definisi:** perbandingan massa udara yang benar-benar terjebak di cylinder terhadap massa udara yang mengisi kapasitas cylinder pada kondisi atmosfer.
 
 **Kenapa penting:** VE adalah **hasil akhir** dari semua yang dibahas di buku ini.
 
@@ -285,7 +285,7 @@ CR = (Vd + Vc) / Vc
 
 **Vc mencakup apa saja — INI SERING SALAH:**
 ```
-Vc = pent-roof + gasket + deck clearance + kantong klep − dome piston
+Vc = pent-roof + gasket + deck clearance + kantong valve − dome piston
 ```
 
 **Kenapa penting:** CR menentukan **rasio ekspansi**, dan itu menentukan efisiensi termal:
@@ -304,9 +304,9 @@ Vc = pent-roof + gasket + deck clearance + kantong klep − dome piston
 
 **Kesalahpahaman yang umum:**
 
-*Melupakan kantong klep.* Kesalahan paling mahal. Empat kantong sedalam 2,7 mm menambah 1,58 cc — pada target Vc 11,50 cc itu **14% anggaran**.
+*Melupakan kantong valve.* Kesalahan paling mahal. Empat kantong sedalam 2,7 mm menambah 1,58 cc — pada target Vc 11,50 cc itu **14% anggaran**.
 
-**Urutan yang benar:** tentukan cam dulu → hitung kantong klep → baru hitung dome atau papasan.
+**Urutan yang benar:** tentukan cam dulu → hitung kantong valve → baru hitung dome atau papasan.
 
 *Mengira CR statis menentukan detonasi.* Tidak. Yang menentukan adalah DCR.
 
@@ -326,7 +326,7 @@ dengan posisi piston:
 s(θ) = r(1 − cos θ) + L − √(L² − (r sin θ)²)     θ = 180° + IVC_ABDC
 ```
 
-**Kenapa penting:** **DCR yang menentukan detonasi, bukan CR.** Kompresi baru mulai setelah klep isap menutup.
+**Kenapa penting:** **DCR yang menentukan detonasi, bukan CR.** Kompresi baru mulai setelah valve isap menutup.
 
 **Kesalahpahaman yang umum:**
 
@@ -363,7 +363,7 @@ Timing cam selalu dirujuk ke **overlap TDC**.
 
 Dipakai untuk: IVO (biasanya BTDC), EVC (biasanya ATDC), ICL (selalu ATDC), pengapian (selalu BTDC).
 
-"IVO 28° BTDC" = klep isap mulai membuka 28 derajat crank **sebelum** piston sampai TDC.
+"IVO 28° BTDC" = valve isap mulai membuka 28 derajat crank **sebelum** piston sampai TDC.
 
 ---
 
@@ -372,13 +372,13 @@ Dipakai untuk: IVO (biasanya BTDC), EVC (biasanya ATDC), ICL (selalu ATDC), peng
 
 Dipakai untuk: EVO (biasanya BBDC), IVC (biasanya ABDC).
 
-"IVC 53° ABDC" = klep isap menutup 53 derajat **setelah** piston melewati BDC.
+"IVC 53° ABDC" = valve isap menutup 53 derajat **setelah** piston melewati BDC.
 
 **Kenapa IVC selalu ABDC:** momentum muatan masih mendorong masuk walau piston sudah mulai naik. Menutup tepat di BDC membuang momentum itu.
 
 ---
 
-## KELOMPOK 5 — KEJADIAN KATUP
+## KELOMPOK 5 — KEJADIAN VALVE
 
 ---
 
@@ -413,7 +413,7 @@ Cam yang sama bisa disebut "300 derajat" atau "260 derajat". **Selalu tanyakan p
 
 ### EVO / EVC — *Exhaust Valve Open / Close*
 
-**EVO — kenapa penting:** menentukan kapan *blowdown* dimulai. Terlalu awal membuang kerja ekspansi; terlalu telat menambah rugi pemompaan. EVO juga titik lahir gelombang tekanan untuk tuning knalpot.
+**EVO — kenapa penting:** menentukan kapan *blowdown* dimulai. Terlalu awal membuang kerja ekspansi; terlalu telat menambah rugi pemompaan. EVO juga titik lahir gelombang tekanan untuk tuning exhaust.
 
 **EVC — kenapa penting:** bersama IVO menentukan overlap.
 
@@ -453,7 +453,7 @@ durasi_baru = durasi_acuan × (A_thr_acuan / A_thr_baru)
 
 **Kesalahpahaman yang umum:**
 
-*Mengira rpm tinggi selalu butuh durasi panjang.* Yang benar: rpm tinggi **dan luas klep tetap** butuh durasi panjang. Mesin Contoh B butuh durasi **lebih pendek** (261° vs 281°) walau rpm-nya lebih tinggi, karena head-nya bernapas 29% lebih lega per cc.
+*Mengira rpm tinggi selalu butuh durasi panjang.* Yang benar: rpm tinggi **dan luas valve tetap** butuh durasi panjang. Mesin Contoh B butuh durasi **lebih pendek** (261° vs 281°) walau rpm-nya lebih tinggi, karena head-nya bernapas 29% lebih lega per cc.
 
 ---
 
@@ -476,14 +476,14 @@ overlap = IVO_BTDC + EVC_ATDC
 
 **Cara menskalakannya dengan benar:** yang dipertahankan adalah **luas tirai overlap per cc**:
 ```
-luas_per_cc = n_klep × π × D_klep × lift_di_TDC / kapasitas
+luas_per_cc = n_valve × π × D_valve × lift_di_TDC / kapasitas
 ```
 
 **Kesalahpahaman yang umum:**
 
-*Menskalakan lift overlap lewat diameter klep saja.* Untuk head 4 klep ini keliru dua kali lipat, karena dua klep isap memberi luas tirai jauh lebih besar per milimeter lift.
+*Menskalakan lift overlap lewat diameter valve saja.* Untuk head 4 valve ini keliru dua kali lipat, karena dua valve isap memberi luas tirai jauh lebih besar per milimeter lift.
 
-*Ambiguitas angka "lift overlap".* Angka yang beredar sering tidak jelas: lift satu klep atau gabungan in + ex? Contoh: angka "3,6 mm" pada Mesin Contoh A ternyata **gabungan** (1,83 mm per klep). Kalau ditafsirkan sebagai satu klep, target overlap jadi dua kali terlalu besar.
+*Ambiguitas angka "lift overlap".* Angka yang beredar sering tidak jelas: lift satu valve atau gabungan in + ex? Contoh: angka "3,6 mm" pada Mesin Contoh A ternyata **gabungan** (1,83 mm per valve). Kalau ditafsirkan sebagai satu valve, target overlap jadi dua kali terlalu besar.
 
 **Cara memastikan:** hitung dari sudut, bukan dari angka lift. Sudut tidak ambigu.
 
@@ -533,9 +533,9 @@ LSA = (ICL + ECL) / 2
 
 | LSA | Karakter |
 |---|---|
-| 98–104° | overlap besar, pita sempit, drag |
+| 98–104° | overlap besar, rentang rpm sempit, drag |
 | 104–110° | seimbang |
-| 110–116° | overlap kecil, pita lebar, jalanan |
+| 110–116° | overlap kecil, rentang rpm lebar, jalanan |
 
 **Perbedaan pokok dengan ICL — INI YANG PALING SERING TERTUKAR:**
 
@@ -553,12 +553,12 @@ Kalau cam-mu LSA 102° dan ingin overlap lebih kecil, memutar sprocket **tidak a
 
 **Rumus lift kritis:**
 ```
-lift_kritis = A_throat / (n_klep × π × D_klep)
+lift_kritis = A_throat / (n_valve × π × D_valve)
 ```
 
 **Artinya:** di bawah lift kritis, **luas tirai** yang membatasi. Di atasnya, **throat** yang membatasi.
 
-**Kenapa mesin balap tetap memakai lift jauh di atas lift kritis:** yang dibayar bukan flow puncak, tapi **time-area**. Menahan klep tinggi lebih lama mengisi silinder lebih banyak.
+**Kenapa mesin balap tetap memakai lift jauh di atas lift kritis:** yang dibayar bukan flow puncak, tapi **time-area**. Menahan valve tinggi lebih lama mengisi cylinder lebih banyak.
 
 **Rentang khas kelipatan:**
 
@@ -570,14 +570,14 @@ lift_kritis = A_throat / (n_klep × π × D_klep)
 
 **Kesalahpahaman yang umum:**
 
-*Mempercayai aturan "lift maksimum berguna = 0,25 × diameter klep".* Benar untuk **flow puncak steady**, salah untuk mesin balap.
+*Mempercayai aturan "lift maksimum berguna = 0,25 × diameter valve".* Benar untuk **flow puncak steady**, salah untuk mesin balap.
 
 *Menyamakan kebutuhan lift sisi isap dan buang:*
 
 | Arsitektur | Lift kritis in | Lift kritis ex | Konsekuensi |
 |---|---|---|---|
-| 4 klep | 4,64 mm | 3,68 mm | klep buang butuh lift **lebih rendah** |
-| 3 klep | 4,59 mm | 5,03 mm | klep buang butuh lift **lebih tinggi** |
+| 4 valve | 4,64 mm | 3,68 mm | valve buang butuh lift **lebih rendah** |
+| 3 valve | 4,59 mm | 5,03 mm | valve buang butuh lift **lebih tinggi** |
 
 ---
 
@@ -611,7 +611,7 @@ IVO + EVC                   →   overlap             →   pembilasan
 IVC                         →   DCR                 →   bahan bakar
 durasi × A_throat           →   time-area           →   rpm puncak
 ICL                         →   keseimbangan        →   bawah vs atas
-LSA                         →   karakter dasar      →   lebar pita
+LSA                         →   karakter dasar      →   lebar rentang rpm
 lift vs lift kritis         →   time-area           →   beban valvetrain
 ──────────────────────────────────────────────────────────────
 KOMPRESI                    →   EFEK

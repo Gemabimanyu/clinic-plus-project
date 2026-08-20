@@ -40,18 +40,18 @@ Perbedaan antara DCR dan rasio ekspansi adalah alasan **kompresi statis tinggi t
 Volume ruang bakar bukan cuma "ruang di head":
 
 ```
-Vc_total = V_pentroof + V_gasket + V_deck + V_kantong_klep − V_dome_piston
+Vc_total = V_pentroof + V_gasket + V_deck + V_kantong_valve − V_dome_piston
 ```
 
 | Komponen | Rumus |
 |---|---|
-| Pent-roof | luas_bore × tinggi_efektif (3–4 mm untuk 4 klep) |
+| Pent-roof | luas_bore × tinggi_efektif (3–4 mm untuk 4 valve) |
 | Gasket | luas_bore × tebal_gasket |
 | Deck | luas_bore × jarak piston di bawah deck di TDC |
-| Kantong klep | n_kantong × luas_kantong × kedalaman × ~0,40 |
+| Kantong valve | n_kantong × luas_kantong × kedalaman × ~0,40 |
 | Dome piston | negatif — mengurangi volume |
 
-Faktor 0,40 pada kantong klep karena bentuknya cekungan dangkal, bukan silinder penuh.
+Faktor 0,40 pada kantong valve karena bentuknya cekungan dangkal, bukan cylinder penuh.
 
 ### 2.2 Contoh nyata
 
@@ -62,7 +62,7 @@ Mesin Contoh B, bore 57,3 mm, target CR 14:1 pada 149,6 cc → Vc harus **11,50 
 | Pent-roof (3,5 mm) | 9,03 cc |
 | Gasket 0,8 mm | 2,06 cc |
 | Deck 0,5 mm | 1,29 cc |
-| 4 kantong klep 2,71 mm | 1,58 cc |
+| 4 kantong valve 2,71 mm | 1,58 cc |
 | **Total** | **13,95 cc** |
 
 → CR tanpa dome: **11,72:1**, bukan 14:1.
@@ -71,11 +71,11 @@ Mesin Contoh B, bore 57,3 mm, target CR 14:1 pada 149,6 cc → Vc harus **11,50 
 
 ### 2.3 Pelajaran
 
-**Kantong klep ikut menambah volume ruang bakar.** Pada contoh di atas 14% anggaran; dengan overlap lebih besar bisa 20%.
+**Kantong valve ikut menambah volume ruang bakar.** Pada contoh di atas 14% anggaran; dengan overlap lebih besar bisa 20%.
 
-Akibatnya nyata: head dipapas untuk mengejar kompresi, lalu kantong klep digerus untuk cam baru, dan sebagian kompresi yang baru didapat langsung hilang lagi.
+Akibatnya nyata: head dipapas untuk mengejar kompresi, lalu kantong valve digerus untuk cam baru, dan sebagian kompresi yang baru didapat langsung hilang lagi.
 
-> **Urutan yang benar: cam dulu → kantong klep → baru dome atau papasan.**
+> **Urutan yang benar: cam dulu → kantong valve → baru dome atau papasan.**
 
 ### 2.4 Cara mengukur Vc yang benar
 
@@ -83,8 +83,8 @@ Jangan pakai angka dari spesifikasi. Ukur.
 
 1. Pasang piston di TDC persis (pakai dial indicator)
 2. Pasang head dengan gasket yang akan dipakai, kencangkan sesuai torsi
-3. Pasang klep dan busi
-4. Isi ruang bakar lewat lubang busi dengan buret berisi minyak ringan atau alkohol
+3. Pasang valve dan spark plug
+4. Isi ruang bakar lewat lubang spark plug dengan buret berisi minyak ringan atau alkohol
 5. Baca volume yang masuk sampai penuh tanpa gelembung
 6. Itulah Vc sebenarnya
 
@@ -153,7 +153,7 @@ Harganya: konsumsi volume **2,45 kali** lipat. Sistem bahan bakar harus dibesark
 | Batas DCR praktis | **12,8** — terbukti di Mesin Contoh A |
 | Cocok untuk | balap kompresi tinggi dengan bensin |
 
-Catatan penting: **timbal pada avgas melapisi elektroda busi dan sensor lambda.** Kalau memakai wideband untuk tuning, umurnya jauh lebih pendek. Busi juga perlu lebih sering diperiksa.
+Catatan penting: **timbal pada avgas melapisi elektroda spark plug dan sensor lambda.** Kalau memakai wideband untuk tuning, umurnya jauh lebih pendek. Spark plug juga perlu lebih sering diperiksa.
 
 **Race gas beroksigen**
 
@@ -182,7 +182,7 @@ Bensin balap yang mengandung oksigen dalam molekulnya. Oktan sangat tinggi, dan 
 
 **Nitrometana**
 
-Bukan untuk mesin konversi. Butuh piston, rod, kruk as, dan sistem bahan bakar yang dirancang khusus. Tekanan pembakaran berlipat kali lipat bensin.
+Bukan untuk mesin konversi. Butuh piston, rod, crankshaft, dan sistem bahan bakar yang dirancang khusus. Tekanan pembakaran berlipat kali lipat bensin.
 
 Disebutkan di sini untuk kelengkapan, bukan sebagai pilihan yang realistis untuk mesin matic.
 
@@ -261,7 +261,7 @@ Batas DCR bukan angka tunggal untuk satu bahan bakar.
 | Faktor | Sebabnya |
 |---|---|
 | Bore lebih kecil | jalur api lebih pendek |
-| Busi di tengah (4 klep) | jalur api merata |
+| Spark plug di tengah (4 valve) | jalur api merata |
 | RPM lebih tinggi | waktu untuk detonasi berkembang lebih pendek |
 | Pendingin cair | suhu dinding lebih stabil |
 | Campuran lebih kaya | pendinginan muatan |
@@ -273,13 +273,13 @@ Batas DCR bukan angka tunggal untuk satu bahan bakar.
 | Faktor | Sebabnya |
 |---|---|
 | Bore besar | jalur api panjang |
-| Ruang bakar asimetris (2/3 klep) | busi menepi |
+| Ruang bakar asimetris (2/3 valve) | spark plug menepi |
 | Dome piston tinggi | jalur api panjang, titik panas |
 | Suhu udara masuk tinggi | muatan panas |
 | Beban berkelanjutan | akumulasi panas |
 | Deposit karbon | titik panas dan menaikkan CR efektif |
 
-**Penerapan:** head 3 klep punya busi menepi dan ruang bakar asimetris, jadi disarankan **1 angka DCR lebih rendah** dari 4 klep pada bahan bakar yang sama.
+**Penerapan:** head 3 valve punya spark plug menepi dan ruang bakar asimetris, jadi disarankan **1 angka DCR lebih rendah** daripada 4 valve pada bahan bakar yang sama.
 
 ---
 
@@ -287,9 +287,9 @@ Batas DCR bukan angka tunggal untuk satu bahan bakar.
 
 ### 5.1 Apa yang terjadi
 
-Pembakaran normal: api menyebar dari busi secara teratur ke seluruh ruang bakar.
+Pembakaran normal: api menyebar dari spark plug secara teratur ke seluruh ruang bakar.
 
-Detonasi: sebagian muatan di ujung ruang bakar (*end gas*) menyala **sendiri** karena tekanan dan suhu, sebelum api dari busi sampai. Dua front api bertabrakan, menghasilkan gelombang kejut.
+Detonasi: sebagian muatan di ujung ruang bakar (*end gas*) menyala **sendiri** karena tekanan dan suhu, sebelum api dari spark plug sampai. Dua front api bertabrakan, menghasilkan gelombang kejut.
 
 ### 5.2 Kerusakan yang ditimbulkan
 
@@ -314,12 +314,12 @@ Berurutan dari ringan ke berat:
 | Suhu udara masuk tinggi | isolasi manifold, perbaiki aliran udara |
 | Pendinginan buruk | perbaiki radiator/sirip, cek aliran |
 | Deposit karbon | bersihkan ruang bakar |
-| Busi terlalu panas | ganti heat range lebih dingin |
+| Spark plug terlalu panas | ganti heat range lebih dingin |
 | Bahan bakar oktan turun | ganti batch, cek penyimpanan |
 
 ### 5.4 Cara mendeteksi
 
-**Membaca busi** — cara paling murah dan cukup andal:
+**Membaca spark plug** — cara paling murah dan cukup andal:
 
 | Tanda | Artinya |
 |---|---|
@@ -352,7 +352,7 @@ Berurutan dari ringan ke berat:
 
 ### 6.1 Apa itu
 
-Bahan bakar yang tidak terbakar mengalir turun di dinding silinder, melewati ring, dan mencampur dengan oli di bak.
+Bahan bakar yang tidak terbakar mengalir turun di dinding cylinder, melewati ring, dan mencampur dengan oli di bak.
 
 ### 6.2 Akibatnya
 
@@ -388,14 +388,14 @@ Fuel dilution adalah **masalah utama** pada metanol, bukan masalah sampingan.
 ## 7. Ringkasan Tahap 5
 
 1. **DCR menentukan detonasi, bukan CR.** DCR murni geometri + timing, tidak bergantung rpm.
-2. **Kantong klep ikut menambah volume ruang bakar** — 14–20% anggaran. Hitung cam dulu.
+2. **Kantong valve ikut menambah volume ruang bakar** — 14–20% anggaran. Hitung cam dulu.
 3. **Ukur Vc dengan buret**, jangan pakai angka spesifikasi. Selisihnya bisa 1–2 cc.
 4. **Oktan tinggi tidak menambah tenaga** — ia memberi izin menaikkan kompresi dan memajukan pengapian.
 5. **Bensin, avgas, dan race gas non-oksigenat praktis sama** potensi tenaganya (98–100%).
 6. **Metanol +19% energi per kg udara** plus pendinginan 228 K, dengan ongkos konsumsi 2,45×.
 7. **Pakai lambda, bukan AFR** — target lambda hampir sama untuk semua bahan bakar (0,74–0,89).
 8. **Kalibrasi batas DCR ke mesinmu sendiri.** Tabel oktan umum terlalu konservatif.
-9. **Detonasi ringan bisa berlangsung lama tanpa terdengar.** Baca busi dan piston.
+9. **Detonasi ringan bisa berlangsung lama tanpa terdengar.** Baca spark plug dan piston.
 10. **Kalau ragu: mundurkan 2°, perkaya 0,02 lambda.**
 
 **Berikutnya:** Tahap 6 — pengapian dan campuran, bagian paling murah untuk menambah tenaga dan paling cepat merusak mesin.
