@@ -281,12 +281,48 @@ Setelah dihaluskan (taper landai): **K turun ke ~0,012–0,024**.
 
 > **Aturan yang bisa ditarik:** benar secara teknis (menghilangkan pola pelebaran mendadak) tidak otomatis berarti signifikan. **Hitung dulu skalanya** — kalau perbaikan yang "kelihatan jelas salah" ternyata cuma menyumbang < 0,5% terhadap tenaga, itu bukan prioritas, walau tetap sah dikerjakan kalau sedang bongkar untuk alasan lain.
 
-### 7.5 Ringkasan studi kasus
+### 7.5 Bentuk lubang sama pentingnya dengan luasnya
+
+Lanjutan kasus yang sama: tutup plenum aftermarket punya lubang inlet 2× slot kotak (masing-masing 87×17mm) menuju filter mesh 265×85mm. Pertanyaan awalnya "apakah lubang ini cukup besar" — tapi luas cuma separuh cerita.
+
+**Cek luas dulu:**
+
+| Bagian | Luas | Setara Ø |
+|---|---|---|
+| Slot inlet (2×) | 2.958 mm² | Ø61,4mm |
+| Muka filter | 22.525 mm² | Ø169mm |
+
+Keduanya **sudah lebih dari cukup** dibanding rekomendasi minimal (Ø55–60mm, bagian 5). Tapi slotnya berbentuk **kotak bertepi tajam** — pola yang sama dengan "mulut rata bertepi tajam" di tabel K (Kamus Istilah), K=0,5, jauh dari mulut yang dibulatkan (K=0,05).
+
+**Bandingkan rugi tiga titik pembatas dalam satu sistem** (@8.400 rpm):
+
+| Titik | K | Rugi tekanan |
+|---|---|---|
+| Slot inlet (tepi tajam, sekarang) | 0,5 | 320 Pa |
+| Step TB→pipa (36→42,5mm) | 0,08 | 432 Pa |
+| **Throttle body (butterfly, WOT)** | **0,25** | **1.351 Pa** |
+
+TB tetap pembatas terbesar (~4× rugi slot inlet), meski slotnya sendiri belum ideal.
+
+**Efek membulatkan tepi slot, tanpa mengubah luas:**
+
+| Bentuk tepi | K | Rugi @8.400rpm |
+|---|---|---|
+| Tajam (sekarang) | 0,5 | 320 Pa |
+| Radius kecil / chamfer | 0,2 | 128 Pa |
+| Bellmouth penuh | 0,05 | 32 Pa |
+
+Chamfer sederhana **memangkas rugi 60%** tanpa menambah luas sama sekali.
+
+> **Pelajaran tambahan:** ketika luas sudah cukup, **bentuk tepi jadi tuas yang lebih murah daripada memperbesar lubang lagi**. Ini kebalikan dari asumsi umum "kalau kurang tenaga, perbesar lubangnya" — kadang yang kurang bukan luasnya, tapi kehalusan bentuknya.
+
+### 7.6 Ringkasan studi kasus
 
 1. **Panjang efektif saluran isap = jarak ke ujung terbuka**, bukan cuma "ada part atau tidak". Melepas satu komponen bisa memindahkan titik ujung terbuka, bukan cuma menghilangkan restriksi.
 2. **Cocokkan rentang rpm yang dirasakan pengendara ke tabel harmonik** — ini cara memvalidasi teori tanpa perlu dyno run baru.
 3. **Plenum meredam pulsa, bukan cuma menjadi reservoir volume.** Hilangnya peredaman ini terdengar sebagai suara sebelum terlihat di angka dyno.
 4. **Hitung skala sebelum memprioritaskan perbaikan.** Step diameter yang "kelihatan salah" bisa ternyata menyumbang < 0,5% — valid diperbaiki, tapi bukan prioritas.
+5. **Bentuk tepi lubang bisa jadi tuas lebih murah daripada memperbesar luasnya** — cek keduanya, jangan cuma luas.
 
 ---
 
