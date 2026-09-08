@@ -1,8 +1,8 @@
 # XMAX 344cc — Build Spec Final
 
-**Dokumen kerja.** Semua angka di sini diturunkan dari spesifikasi dan pengukuran mesin ini sendiri, memakai metode di *Advanced Engine Tuning* Tahap 7 (Saluran), Tahap 9 (CVT), dan Tahap 11 (Kalibrasi).
+**Dokumen kerja.** Semua angka di sini diturunkan dari spesifikasi dan pengukuran mesin ini sendiri, memakai metode di *Advanced Engine Tuning* Tahap 4 (Camshaft), Tahap 7 (Saluran), Tahap 9 (CVT), dan Tahap 11 (Kalibrasi).
 
-Terakhir diperbarui: 20 Agustus 2026
+Terakhir diperbarui: 7 September 2026 — revisi setelah pengukuran CAD/3D-scan menggantikan asumsi geometri awal.
 
 ---
 
@@ -38,16 +38,17 @@ Terakhir diperbarui: 20 Agustus 2026
 | Durasi | **260°** |
 | Status | sudah dimodifikasi |
 
-### 1.4 Saluran isap
+### 1.4 Saluran isap — geometri terkoreksi CAD
 
 | | |
 |---|---|
-| Panjang klep → ujung TB | **250 mm** |
+| Panjang klep → ujung TB | **206 mm** (CAD; asumsi awal 250mm ternyata meleset) |
 | Throttle body | **36 mm** (standar, tidak diubah) |
-| Piping TB → boks plenum | **240 mm** |
-| Diameter pipa di TB | **42,5 mm** |
-| **Panjang total tract** | **490 mm** |
-| Volume plenum | ~3,0 L (tutup aftermarket, lebih kecil dari standar) |
+| Pipa TB → boks plenum | **227 mm** (CAD, sudah dibuat/prototipe) |
+| Bentuk pipa | **sudah tirus** — mulut Ø65,8mm di plenum, mengerucut menerus ke ujung TB |
+| Ujung pipa di TB | rencana direvisi **42,5 → 40mm** untuk menghapus step menuju spigot TB |
+| **Panjang total tract** | **433 mm fisik** (≈460mm efektif dengan koreksi ujung) |
+| Volume plenum | **4,5 L terukur** (tutup aftermarket) |
 | Filter mesh | 265 × 85 mm (22.525 mm²) |
 | Lubang inlet | 2 slot kotak 87 × 17 mm (2.958 mm² total) |
 
@@ -63,9 +64,9 @@ Terakhir diperbarui: 20 Agustus 2026
 
 ---
 
-## 2. Data dyno — dan mengapa harus dibaca ulang
+## 2. Data dyno — koreksi dan validasi lapangan
 
-### 2.1 Yang tertulis di sheet
+### 2.1 Yang tertulis di sheet awal
 
 Leads dyno inersia, 3,3 kg·m², roller Ø267 mm, **tanpa locked ratio pulley**.
 
@@ -82,161 +83,109 @@ Kolom Ratio:  3,95 (tetap)
 | 40,6 hp @ 6.563 rpm | 44,1 Nm | **16,05 bar** | 1,34× |
 | 68,18 Nm @ 2.103 rpm | 68,2 Nm | **24,85 bar** | 1,86× |
 
-Single NA yang dikembangkan penuh oleh pabrikan mencapai 11,9 bar di peak power dan 13,3 bar di peak torsi. Kedua angka di atas melampauinya.
+Faktor kelebihannya **tidak konstan** (1,34× vs 1,86×, membesar ke rpm rendah) — tanda tangan **rasio CVT yang bergeser** sementara software memakai `Ratio 3,95` yang tetap, bukan kesalahan kalibrasi (lihat Tahap 11 §9).
 
-### 2.3 Vonis: kesalahan rasio, bukan kesalahan kalibrasi
-
-Faktor kelebihannya **tidak konstan** — 1,34× di peak power, 1,86× di peak torsi, membesar ke arah rpm rendah.
-
-Kesalahan kalibrasi (inersia, faktor koreksi) akan memberi faktor yang **sama** di kedua titik. Yang membesar progresif ke rpm rendah adalah tanda tangan **rasio CVT yang bergeser** sementara software memakai `Ratio 3.95` yang tetap.
-
-### 2.4 Apa yang bisa dan tidak bisa dipakai
+### 2.3 Apa yang bisa dipakai
 
 | Besaran | Status |
 |---|---|
 | **Tenaga 40,6 hp** | ✅ dipakai — dihitung dari percepatan roller, tidak menyentuh rpm mesin |
-| Sumbu Engine RPM | ❌ dibuang |
-| Torsi 68,18 Nm | ❌ dibuang — turunan dari rpm yang rusak |
-| Posisi peak di 6.563 rpm | ❌ dibuang |
+| Sumbu Engine RPM, torsi, posisi peak | ❌ dibuang — turunan dari rasio yang rusak |
 
-### 2.5 Peak power sebenarnya
+### 2.4 Peak power sebenarnya: **7.800 – 8.800 rpm**
 
-| Kalau BMEP-nya | 40,6 hp terjadi di |
-|---|---|
-| 11,5 bar | 9.162 rpm |
-| 12,0 bar | 8.781 rpm |
-| 12,5 bar | 8.429 rpm |
-| 13,0 bar | 8.105 rpm |
+Diturunkan dari uji BMEP (rentang 11,5–13,0 bar terhadap 40,6 hp). Cek silang kecepatan port/piston di rentang itu semua di bawah batas mesin tertala (Tahap 3/8). **Lolos.**
 
-**Rentang kerja: 7.800 – 8.800 rpm.** Diasumsikan 40,6 hp sudah crank-corrected oleh software (lazim di Leads). Kalau ternyata WHP mentah, peak bergeser ke ~9.800–10.000 rpm — tinggi untuk cam 260°, jadi bacaan crank lebih mungkin.
+### 2.5 Validasi lapangan — cocok dengan pipa 227mm yang sudah dibuat
 
-### 2.6 Cek silang — rentang itu wajar
+Setelah pipa 227mm terpasang dan diuji **tanpa boks**, laporan pengendara: tendangan tenaga masuk **7.000–8.500 rpm**, jauh berbeda dari sebelum pipa dipasang.
 
-| rpm | v throat isap | v TB | MPS |
+Prediksi gelombang untuk kondisi tanpa boks (ujung bebas, k=0,61):
+
+```
+L efektif = 433 + 0,61 × 32,9 = 453 mm
+h2        = 7.781 rpm
+```
+
+**Terukur: pusat pita 7.750 rpm. Selisih 0,4%.** Lebar pita prediksi (±10% dari titik tertala) = 7.003–8.559 rpm, terukur 7.000–8.500 — kedua metrik cocok.
+
+Dengan boks terpasang (ujung ter-flange, k=0,82): **h2 = 7.674–8.408 rpm**, tergantung koreksi ujung persis — tetap di dalam rentang kerja 7.800–8.800 dari uji BMEP. **Dua metode independen (BMEP dan gelombang) saling menumpuk.**
+
+> **Pelajaran yang menonaktifkan rekomendasi lama:** perbedaan rasa berkendara yang besar antara "sebelum" dan "sesudah" pipa terpasang adalah efek berpindah dari harmonik **h4 ke h2** — bukan efek boks. Rpm-nya nyaris sama; yang berubah kekuatan denyutnya. Jangan salah atribusi efek boks vs efek pipa saat mengevaluasi hasil.
+
+---
+
+## 3. Tumpukan rugi — dengan geometri terukur, bukan diasumsikan
+
+**@8.400 rpm, aliran puncak** (`ρ` = 1,184 kg/m³, VE 0,85). Ini revisi total dari versi pertama dokumen ini, yang salah mengasumsikan pipa lurus Ø42,5mm dengan step tajam ke TB.
+
+| Titik | v | Δp | Bisa diubah? |
 |---|---|---|---|
-| 7.800 | 77 m/s | 81 m/s | 19,8 m/s |
-| 8.100 | 80 m/s | 85 m/s | 20,5 m/s |
-| 8.500 | 84 m/s | 89 m/s | 21,5 m/s |
-| 8.800 | 87 m/s | 92 m/s | 22,3 m/s |
+| TB butterfly 36 mm | 87,7 m/s | **1.138 Pa** | ❌ TB tetap standar |
+| Mulut pipa Ø65,8, menonjol ke plenum | 26,2 m/s | 367 Pa | ✅ radius |
+| Kerucut TB 40→36 (spigot 32mm) | 71,0 m/s | 182 Pa | ✅ dihaluskan |
+| Step sambungan 42,5→40 | 71,0 m/s | 170 Pa | ✅ dihapus (revisi ujung pipa) |
+| Gesek sepanjang pipa tirus | — | 100 Pa | tetap |
+| Slot inlet (aliran teredam boks) | 13,9 m/s | 57 Pa | ✅ radius tepi |
 
-Semua di bawah batas. Throat masih di bawah rentang kerja mesin tertala (97–115 m/s), MPS masih di bawah Mesin Contoh A (21,3 m/s @ 10.000 rpm). **Lolos.**
+```
+Total dapat diperbaiki  : ~520 Pa  ≈ 0,5% tekanan atmosfer
+Rugi TB (tidak diubah)  : 1.138 Pa — tetap yang terbesar
+```
+
+**TB tetap penyempitan terbesar.** Klaim versi awal dokumen ini ("mulut pipa mengalahkan TB") gugur begitu geometri sebenarnya diukur — kecepatan di mulut Ø65,8mm cuma 26,2 m/s, bukan 62,9 m/s yang dihitung dari asumsi Ø42,5mm lurus. Lihat Tahap 11 §10.3 untuk pelajaran lengkapnya.
 
 ---
 
-## 3. Tumpukan rugi — di mana restriksi sebenarnya
+## 4. Yang dikerjakan — urut nilai, dan hasilnya kecil
 
-**@8.400 rpm, aliran puncak** (`ρ` = 1,184 kg/m³, VE 0,85):
+### 4.1 Revisi ujung pipa ke TB: 42,5 → 40mm langsung
 
-| Titik | K | v | Δp | Bisa diubah? |
-|---|---|---|---|---|
-| **Mulut pipa menonjol ke plenum** | 0,9 | 62,9 m/s | **2.108 Pa** | ✅ ya |
-| TB butterfly 36 mm | 0,25 | 87,7 m/s | 1.138 Pa | ❌ TB tetap standar |
-| Mulut pipa rata bertepi tajam | 0,5 | 62,9 m/s | 1.171 Pa | ✅ ya |
-| Penyempitan 42,5 → 36 tepi tajam | 0,141 | 87,7 m/s | 643 Pa | ✅ ya |
-| Slot inlet (aliran teredam boks) | 0,5 | 13,9 m/s | 57 Pa | ✅ ya |
+Menghapus step 42,5→40 (170 Pa) dengan memperpanjang tirus pipa langsung ke Ø40, menyatu dengan spigot TB. **Nilai: ~170 Pa.**
 
-**Setelah diperbaiki:**
-
-| Titik | K | Δp |
-|---|---|---|
-| Mulut pipa dengan bellmouth | 0,05 | 117 Pa |
-| Penyempitan dikerucutkan | 0,05 | 228 Pa |
-| Slot inlet diradius | 0,2 | 23 Pa |
-
-```
-Total dapat diperbaiki  : ~2.400 Pa  = 2,4% tekanan atmosfer
-Rugi TB (tidak diubah)  :  1.138 Pa
-```
-
-**Yang bisa diperbaiki lebih besar daripada rugi throttle body itu sendiri.**
-
-> ⚠️ Angka mulut pipa mengasumsikan pipanya saat ini **menonjol masuk ke dalam boks** (K = 0,9). **Ini harus diperiksa langsung dulu.** Kalau ternyata sudah rata (K = 0,5) hematnya jadi ~1.050 Pa; kalau sudah beradius, item ini hilang dari daftar.
-
----
-
-## 4. Yang akan diubah
-
-### 4.1 Prioritas 1 — Bellmouth di mulut pipa plenum
+### 4.2 Bellmouth di mulut pipa
 
 | | |
 |---|---|
-| Radius | **7,5 mm** (0,18 × 42,5 → Cf ~0,97) |
-| Bentuk | torus penuh, menyatu mulus ke bore pipa, **tanpa step** |
-| OD mulut jadi | ~62 mm |
-| Ruang bebas depan | **≥ 42 mm** ke dinding seberang (ideal 64 mm) |
-| Ruang bebas radial | **≥ 21 mm** ke segala arah |
-| Nilai | **~1.990 Pa** @8.400 rpm |
+| Radius | **R8** pada mulut Ø65,8mm |
+| Nilai | ~250 Pa (dari K=0,9 menonjol ke K=0,05) |
+| Kendala | tinggi bagian depan boks cuma **100mm** — OD mulut+bellmouth (Ø86mm) nyaris mentok |
+| Opsi A | **penampang oval** CSA-setara (50×86,6mm), radius R8 penuh keliling, celah vertikal naik 7,1→15mm, ongkos gesek +6 Pa |
+| Opsi B | **bellmouth menyatu ke dinding boks** (flanged inlet) — tidak ada bibir untuk diputari, rugi masuk turun lagi ke ~16 Pa, dan ukurannya justru lebih kecil dari opsi berdiri bebas (mulut dalam 66×102,6mm, bukan OD 86mm) |
 
-**Ruang bebas ini wajib.** Bellmouth yang mulutnya rapat ke dinding hanya tepi tajam yang mahal.
+**Opsi B direkomendasikan** kalau ruang depan boks memang mentok rangka — bukan kompromi, tapi konfigurasi yang secara aerodinamis lebih baik untuk kasus ruang sempit ini.
 
-### 4.2 Prioritas 2 — Kerucut 42,5 → 36 masuk TB
+### 4.3 Material manifold: PPS-CF (bukan aluminium)
+
+| | Efek |
+|---|---|
+| Jalur panas dari head (efek sirip) | aluminium menyalurkan panas ~100mm ke hilir; PPS-CF berhenti di ~6mm |
+| Estimasi penurunan IAT | **~1,3 K** |
+| Estimasi gain | **+0,17 hp** |
+
+Kecil, tapi PPS-CF tetap material yang benar untuk part yang menempel head — suhu kerja tinggi, stabil dimensi, dan sekalian menghapus efek sirip. **Pipa juga sebaiknya PPS-CF untuk versi permanen** (bukan PETG/ABS — PETG melunak ~80°C, terlalu dekat suhu ruang mesin; ABS diserang uap bensin dari reversion). PETG cukup untuk prototipe pengujian bentuk saja.
+
+### 4.4 Boks: **dipertahankan, tidak dibongkar untuk volume**
+
+Volume terukur **4,5 L** sudah lolos kedua kriteria (Tahap 11 §10.2):
+
+| Kriteria | Hasil di 4,5 L |
+|---|---|
+| Dekopling (≥5× volume kolom runner ~785cc) | 5,7× ✅ |
+| Riak MAP (target <7%) | 6,5% ✅ |
+
+Tidak ada alasan membongkar boks demi volume. Yang layak dikerjakan kalau boks toh dibuka: radius bibir mulut pipa (§4.2) dan orifis peredam MAP (§4.5).
+
+### 4.5 Nipel MAP diberi peredam
 
 | | |
 |---|---|
-| Bentuk | kerucut landai atau radius generous, bukan step |
-| K | 0,141 → 0,05 |
-| Nilai | **415 Pa** @8.400 rpm |
+| Orifis | Ø0,8 – 1,0 mm di jalur selang |
+| Alasan | 1 silinder speed-density = kasus riak terburuk, tabel dasar terkunci |
 
-### 4.3 Prioritas 3 — Boks plenum
+### 4.6 Piping: **panjang 227mm dipertahankan**
 
-| | |
-|---|---|
-| **Volume** | **3,0 – 6,0 L** (rentang sah dari kriteria dekopling + responsivitas inlet) |
-| Sasaran | sisi atas rentang, **4,5–5,0 L**, karena ECU speed-density tabel terkunci |
-| Riak yang dicapai | 9,8% → **5,9–6,5%** |
-| **Prioritas** | **ruang bebas bellmouth di atas mengejar liter** |
-| Proporsi | dimensi internal terpanjang ≤ ~400 mm |
-| **Orientasi pipa** | masuk lewat **muka ujung kecil**, mengarah menyusuri sisi terpanjang |
-| Filter | di muka lebar, tegak lurus sumbu bellmouth — tidak boleh menyemprot langsung ke mulut |
-| Dinding | **kaku dan berusuk** — lenturan mengaburkan sinyal MAP |
-
-Dimensi internal usulan (sesuaikan packaging, pertahankan urutan prioritasnya):
-
-```
-                    filter 265 x 85  (muka atas)
-        ┌──────────────────────────────────────────┐
-        │  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░            │
-   ═════╡)                                         │   internal:
-  pipa  │ ^bellmouth R7,5                          │   300 (P) x 155 (L) x 110 (T)
-  Ø42,5 │  mulut masuk ~28mm ke dalam boks         │   = 5,1 liter
-        │                                          │
-        └──────────────────────────────────────────┘
-        │←────────── 300mm, sumbu pipa ───────────→│
-
-   ruang bebas: radial 46/24mm, depan ~270mm  ✅
-```
-
-### 4.4 Prioritas 4 — Nipel MAP diberi peredam
-
-| | |
-|---|---|
-| Orifis | **Ø0,8 – 1,0 mm** di jalur selang |
-| Volume redam | kecil, setelah orifis |
-| Alasan | 1 silinder speed-density = kasus riak terburuk, dan tabel dasarmu terkunci |
-| Nilai | bukan tenaga — tapi menentukan apakah tenaga itu terbakar dengan AFR benar |
-
-### 4.5 Prioritas 5 — Tepi slot inlet
-
-| | |
-|---|---|
-| Luas | **tidak diubah** — 2.958 mm² sudah lolos uji responsivitas sampai > 6 L |
-| Tindakan | radiuskan tepinya, R ≥ 3 mm |
-| Nilai | ~34 Pa |
-
-Kerjakan hanya karena boks memang sudah terbuka.
-
-### 4.6 Piping — **tidak diubah**
-
-| Tala h2 ke | L total | Pipa |
-|---|---|---|
-| 7.800 rpm | 496 mm | **246 mm** |
-| 8.100 rpm | 477 mm | 227 mm |
-| 8.400 rpm | 460 mm | 210 mm |
-| 8.800 rpm | 439 mm | 189 mm |
-
-**Pipa 240 mm yang terpasang sekarang sudah berada di dalam rentang** — setara menala h2 ke ~7.900 rpm.
-
-**Tindakan:** pertahankan 240 mm, tapi **buat bisa ditukar** (siapkan 240 / 210 / 190 mm). Potong ke ~210 mm hanya kalau tacho jalan menunjukkan CVT menahan di 8.400+.
+227mm bukan angka sembarang — ia menala h2 ke ~8.100 rpm, tengah rentang kerja 7.800–8.800 yang divalidasi dua metode independen (§2.4–2.5). **Jangan diubah** kecuali data baru (tacho jalan atau dyno locked-pulley) menggeser rentang kerja.
 
 ---
 
@@ -244,54 +193,35 @@ Kerjakan hanya karena boks memang sudah terbuka.
 
 | Tidak dikerjakan | Alasan |
 |---|---|
-| Memperbesar throttle body | keputusan yang sudah diambil; rugi 1.138 Pa, lebih kecil dari yang bisa dihemat di plenum |
-| Memperbesar luas slot inlet | sudah lolos uji responsivitas inlet sampai > 6 L |
-| Mengejar volume plenum > 6 L | di luar rentang dekopling; mengorbankan ruang bebas bellmouth demi liter adalah pertukaran yang rugi |
-| Memperpendek tract ke ~180 mm | rekomendasi lama yang berdasar plafon TB karangan; TB tidak pernah mentok, cuma pelan-pelan makin mahal |
-| Memperpanjang piping ke 345 mm | rekomendasi lama yang menala ke 6.500 rpm — rpm yang mesin ini tidak pernah datangi |
-| Velocity stack panjang di dalam boks | menambah panjang efektif, menggeser tangga harmonik turun, melawan sasaran |
+| Memperbesar throttle body ke 44mm | hanya +0,13 hp; TB tetap penyempitan terbesar tapi bukan prioritas dibanding item lain |
+| Downdraft tanpa pipa | neraca rugi tikungan vs rugi masuk tipis (~140–420 Pa), membayar turun satu orde harmonik (h2→h3) — tidak sepadan |
+| Melepas boks secara permanen | kehilangan udara dingin (tiap +10°C ≈ −1,3 hp) jauh lebih besar dari untung rugi saluran (~130 Pa ≈ 0,03 hp) |
+| Membesarkan volume plenum | sudah lolos kedua kriteria di 4,5 L; menambah volume cuma menggeser resonansi airbox ke arah yang tidak pasti (dua model berselisih 65%) |
+| Mengejar cam durasi lebih panjang tanpa alasan lain | plafon HP dikunci oleh luas throat (Tahap 4 §3.5) — durasi tanpa upgrade valve cuma memindahkan rpm, bukan menaikkan plafon |
 
 ---
 
-## 6. Yang masih perlu diukur
+## 6. Perkiraan gain — jujur soal skalanya
+
+| Sumber | Perkiraan |
+|---|---|
+| Manifold PPS-CF (efek sirip mati) | +0,17 hp |
+| Bellmouth + hapus step + bore halus | +0,15 hp |
+| **Total dari seluruh pekerjaan saluran isap** | **~+0,3 hp (≈0,8%)** — di dalam derau dyno |
+| **Boks dipasang kembali (kalau sedang dilepas)** | **+1,3 – 3,7 hp** — bergantung suhu ruang mesin |
+
+**Saluran isap sudah mendekati selesai.** Nilai terbesar yang tersisa di area ini bukan di detail pipa — itu di memastikan boks selalu terpasang. Untuk tenaga lebih lanjut, tuasnya pindah ke luar saluran isap: rasio kompresi, cam, porting throat, sistem buang, dan penyetelan CVT ke rentang kerja 7.800–8.800 rpm yang baru diketahui (roller/per CVT kemungkinan masih disetel untuk asumsi peak lama di ~6.500 rpm).
+
+---
+
+## 7. Yang masih perlu diukur
 
 | # | Yang diukur | Cara | Mengunci apa |
 |---|---|---|---|
-| 1 | **Bentuk mulut pipa di dalam plenum** | buka boks, lihat langsung: menonjol / rata-tajam / beradius? | apakah item Prioritas 1 bernilai 1.990 / 1.050 / 0 Pa |
-| 2 | **Rpm tahan CVT** saat akselerasi penuh | tacho yang bisa dibaca saat jalan (Tahap 9 §3.1) | panjang pipa final |
-| 3 | **Volume plenum aktual** | isi air/beras lalu takar | posisi di rentang 3–6 L |
-| 4 | **Run dyno locked ratio pulley** | atau umpankan rpm asli dari pickup pengapian | seluruh sumbu rpm dan kurva torsi |
-
-Nomor 1 dan 2 murah dan mengunci dua keputusan terbesar. Nomor 4 menyelesaikan semuanya permanen.
+| 1 | **Rpm tahan CVT** saat akselerasi penuh | tacho yang bisa dibaca saat jalan (Tahap 9 §3.1) | apakah roller/per CVT perlu disetel ulang ke 7.800–8.800 rpm |
+| 2 | **Run dyno dengan locked ratio pulley** | atau umpankan rpm asli dari pickup pengapian | seluruh sumbu rpm dan kurva torsi terkonfirmasi permanen |
+| 3 | Ruang bebas riil di depan boks (untuk opsi bellmouth §4.2) | ukur dari CAD/scan | Opsi A (oval) vs Opsi B (menyatu dinding) |
 
 ---
 
-## 7. Urutan kerja
-
-1. **Periksa mulut pipa** (nomor 1 di atas) — sebelum apapun dibeli atau dipotong
-2. **Ukur rpm tahan CVT** dengan tacho jalan
-3. Bangun boks: **bellmouth + ruang bebas** dulu, volume mengikuti
-4. Kerucutkan peralihan 42,5 → 36
-5. Pasang orifis peredam MAP
-6. Radiuskan tepi slot inlet
-7. Pasang, jalankan, lalu **pakai tabel RPM vs TPS** (yang masih 100 semua) sebagai koreksi bahan bakar
-8. Run dyno ulang — **dengan locked ratio pulley kali ini**
-
----
-
-## 8. Ringkasan angka
-
-| | Sekarang | Setelah |
-|---|---|---|
-| Kapasitas | 344,8 cc | tidak berubah |
-| Throttle body | 36 mm | tidak berubah |
-| Panjang tract | 490 mm | tidak berubah (pipa jadi bisa ditukar) |
-| Volume plenum | ~3,0 L | 4,5 – 5,0 L |
-| Riak MAP | 9,8% | 5,9 – 6,5% |
-| Rugi saluran yg dapat diperbaiki | ~2.808 Pa | ~368 Pa |
-| Perkiraan gain di rpm atas | — | **~2,4% VE** |
-| Peak power sebenarnya | 40,6 hp @ 7.800–8.800 rpm | penalaan tetap di rentang itu |
-
----
-
-*Metode: Advanced Engine Tuning — Tahap 7 §1.2 (kecepatan TB), §3.2 (bellmouth), §3.4 (volume plenum); Tahap 9 §2–3 (rpm kerja CVT); Tahap 11 §7 (studi kasus plenum), §8–9 (uji BMEP & rasio), §10 (rancang plenum dari sasaran).*
+*Metode: Advanced Engine Tuning — Tahap 3 §1 (plafon CFM & batas domainnya), Tahap 4 §3.4–3.5 (konstanta time-area, invarian bore-up), Tahap 7 (saluran & bellmouth), Tahap 9 §2–3 (rpm kerja CVT), Tahap 11 §7–10 (studi kasus plenum, uji BMEP, diagnosis rasio, rancang plenum dari sasaran).*

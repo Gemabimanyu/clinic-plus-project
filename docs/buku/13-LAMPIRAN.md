@@ -77,6 +77,18 @@ durasi_baru     = durasi_acuan × (A_thr_acuan / A_thr_baru)
 luas overlap/cc = n_valve × π × D_valve × lift_TDC / kapasitas
 ```
 
+**Konstanta time-area mutlak** (tak perlu mesin acuan — Tahap 4 §3.4):
+
+```
+K = A_throat[mm²] × durasi[°] / (Vd[cc] × rpm)   =   8,0 / v_throat_sasaran
+
+rpm_peak = A_throat × durasi × v_throat_sasaran / (8,0 × Vd)
+```
+
+`v_throat_sasaran` adalah pilihan rancangan: ~86 m/s kepala jalanan, ~97 tertala baik, 104–115 kepala balap. Tervalidasi pada tiga mesin tak berhubungan (K × v = 8,01 di ketiganya).
+
+**Konsekuensi:** untuk kepala yang sama dibesarkan kapasitasnya tanpa mengganti valve, plafon HP **tidak ikut naik** — Vd habis dibagi dari rumus tenaga tersubstitusi. Cam oversize cuma memindahkan rpm tempat plafon lama itu dicapai (Tahap 4 §3.5).
+
 ### A.6 Valvetrain
 
 ```
@@ -161,7 +173,16 @@ Rentang praktis **di peak power**: OEM 10–12 bar, tertala baik 12–13, balap 
 | Konstan di semua titik | salah kalibrasi (inersia, faktor koreksi, satuan) |
 | Membesar ke rpm rendah | salah rasio (dyno matic tanpa *locked ratio pulley*) |
 
-Lihat Tahap 11 §8–§9.
+**Uji jepitan BMEP × MPS** — keduanya harus lolos di rpm yang sama:
+
+```
+BMEP ≤ B_maks(bahan bakar)   ⟹   rpm ≥ ...   (dibalik dari rumus BMEP)
+MPS  ≤ v_maks(mekanis)        ⟹   rpm ≤ v_maks × 60000 / (2 × stroke)
+```
+
+Kalau rentang rpm dari kedua syarat **tidak beririsan**, angka dyno itu mustahil dengan bahan bakar yang diasumsikan. Periksa juga DCR (A.4) — mesin yang ngelitik tidak bisa mencapai BMEP plafon, jadi BMEP tinggi + DCR di atas batas bahan bakarnya = salah satu datanya keliru.
+
+Lihat Tahap 11 §8.6.
 
 ### A.10 Pemuaian termal
 

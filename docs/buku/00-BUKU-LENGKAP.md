@@ -1,7 +1,7 @@
 # ADVANCED ENGINE TUNING
 ## Panduan Membangun Mesin 1 Cylinder Matic
 
-**Dokumen Lengkap — 36.900 kata, 14 bab + Lampiran**
+**Dokumen Lengkap — 38.600 kata, 14 bab + Lampiran**
 
 ---
 
@@ -374,7 +374,34 @@ Sepanjang buku dipakai tiga mesin contoh. Angkanya nyata, diambil dari mesin yan
 
 ---
 
-*Buku ini disusun tanpa gambar. Diagram dan grafik dapat ditambahkan pada revisi berikutnya.*
+## 0.8 Visual diagrams dan interactive guides
+
+**Buku ini kini dilengkapi dengan diagram dan visualisasi interaktif** yang menjelaskan konsep-konsep kompleks dengan visual yang jelas.
+
+### Diagram yang tersedia:
+
+| Diagram | Tahap terkait | File |
+|---|---|---|
+| **Torque vs Power** | Tahap 1 | `visuals/advanced-engine-tuning-visuals.html` |
+| **Engine Cross-Section** | Tahap 2–3 | Artboard: EngineSection |
+| **Valve Timing** | Tahap 4 | Artboard: ValveTiming |
+| **Compression Ratio** | Tahap 5 | Artboard: CompressionRatio |
+| **AFR Curve** | Tahap 6 | Artboard: AFRCurve |
+| **CVT Ratio** | Tahap 9 | Artboard: CVTRatio |
+
+### Cara mengakses:
+
+1. Buka file `../visuals/advanced-engine-tuning-visuals.html` di browser web
+2. Gunakan pan/zoom untuk navigasi antar diagram
+3. Setiap diagram dapat di-ekspor sebagai PNG/PDF untuk presentasi
+
+### Catatan:
+
+Semua diagram dalam canvas ini dapat disesuaikan dengan parameter mesin spesifik Anda (bore, stroke, RPM target, dll.). Lihat `../visuals/README.md` untuk dokumentasi lengkap.
+
+---
+
+*Revisi dengan visual diagrams: Agustus 2026. Diagram interaktif menambah 7 artboard yang menjelaskan konsep-konsep kunci dari Tahap 1 hingga Tahap 9.*
 
 ---
 
@@ -1726,6 +1753,8 @@ Aturan kasar ini cukup akurat untuk perencanaan. CFM di sini adalah flow head pa
 
 **Konsekuensinya:** kalau head-mu mengalirkan 85 CFM, tidak ada cam, exhaust, atau ECU yang bisa membuatnya menghasilkan 50 HP. Plafonnya sekitar 38 HP, titik.
 
+> **Batas domain rumus ini.** Konstanta 0,43–0,50 dikalibrasi pada kelas mesin dengan silinder relatif besar berputar di rpm sedang. Rumus ini **tidak mengandung rpm sama sekali**, sehingga di mesin kecil (< 250cc) yang justru mengejar rpm sangat tinggi, ia bisa memberi angka yang melampaui batas fisika. **Selalu uji hasilnya dengan BMEP** (Tahap 11 §8) sebelum dipercaya — kalau BMEP tersirat di atas ~15 bar (plafon NA bensin), rumus CFM sedang dipakai di luar domainnya, bukan mesinnya yang istimewa.
+
 ---
 
 ## 2. Valve dan batas geometri
@@ -2182,7 +2211,73 @@ Mesin Contoh C (3 valve, luas valve isap/bore cuma 0,262):
 
 Selisih 24° pada rpm yang sama — itu ongkos nyata dari 11% luas valve yang hilang.
 
-### 3.4 Durasi buang
+### 3.4 Konstanta time-area mutlak
+
+Rumus 3.1 di atas cuma berlaku *relatif* — butuh mesin acuan untuk dibandingkan. Ada bentuk mutlaknya:
+
+```
+K = A_throat[mm²] × durasi[°] / (Vd[cc] × rpm)
+```
+
+**K bukan konstanta tunggal.** Ia berbanding terbalik dengan kecepatan port sasaran:
+
+```
+K = 8,0 / v_throat_sasaran
+```
+
+Tervalidasi pada tiga mesin yang sama sekali tidak berhubungan — beda kapasitas, beda jumlah valve, beda tingkat pengembangan:
+
+| Mesin | A_throat | v_throat di peak | K | K × v |
+|---|---|---|---|---|
+| Mesin Contoh A (2 valve, jalanan) | 661 mm² | 86 m/s | 0,0930 | 8,01 |
+| Mesin bore-up 344cc (4 valve, dyno diverifikasi) | 1.077 mm² | 83 m/s | 0,0967 | 8,01 |
+| Mesin balap 224cc (4 valve, kepala dikembangkan) | 726 mm² | 104 m/s | 0,0768 | 8,01 |
+
+Hasil kali `K × v` konstan di **8,0** di ketiganya. Ini bukan kebetulan angka — ini bentuk lain dari time-area yang sudah tidak butuh mesin acuan sama sekali:
+
+```
+rpm_peak = A_throat × durasi × v_throat_sasaran / (8,0 × Vd)
+```
+
+`v_throat_sasaran` sendiri adalah **pilihan rancangan**, bukan sifat alam — kepala jalanan menargetkan ~86 m/s, kepala tertala baik ~97, kepala balap 104–115. Head yang lebih dikembangkan menoleransi kecepatan port lebih tinggi sebelum aliran mulai memburuk, jadi K-nya lebih kecil untuk rpm sasaran yang sama.
+
+> **Cara pakai:** kalau kamu tahu (atau menargetkan) v_throat sebuah kepala, K langsung didapat tanpa perlu mesin acuan yang mirip. Berguna terutama saat mesin acuan yang tersedia terlalu jauh karakternya (lihat Tahap 11 §4).
+
+### 3.5 Kenapa bore-up tanpa upgrade valve tidak menaikkan plafon HP
+
+Ini konsekuensi langsung dari bentuk mutlak di atas, dan sering disalahpahami.
+
+Substitusikan `rpm_peak` dari 3.5 ke rumus tenaga (`HP ∝ BMEP × Vd × rpm`):
+
+```
+HP  ∝  BMEP × Vd × [A_throat × durasi × v / (8,0 × Vd)]
+     =  BMEP × A_throat × durasi × v / 8,0
+```
+
+**Vd habis dibagi.** Selama BMEP dan v_throat tercapai sama, plafon tenaga cuma ditentukan oleh **luas throat dan durasi cam** — kapasitas silinder tidak muncul lagi di rumusnya.
+
+Konsekuensinya, untuk kepala yang sama dibesarkan kapasitasnya (bore atau bore+stroke) **tanpa mengganti valve**:
+
+| Tindakan | Yang terjadi pada peak rpm | Yang terjadi pada plafon HP |
+|---|---|---|
+| Cam dibiarkan | **turun** — mesin kehabisan napas lebih cepat relatif kapasitasnya | tetap, dicapai di rpm lebih rendah |
+| Cam durasi dinaikkan untuk mengembalikan rpm semula | kembali ke titik semula | **tetap juga** — cuma dicapai lagi di rpm semula, bukan lebih tinggi |
+
+Contoh: kepala 2 valve 29/23 di basis 150cc square dibesarkan ke 180cc (bore naik, stroke tetap) dan 200cc (bore dan stroke naik), tanpa ganti valve:
+
+| Kapasitas | Peak rpm (cam tetap) | Durasi yang dibutuhkan untuk kembali ke rpm semula |
+|---|---|---|
+| 150cc | 9.202 (acuan) | 240° (acuan) |
+| 180cc | 7.689 (**−16%**) | 287° (**+47°**) |
+| 200cc | 6.919 (**−25%**) | 319° (**+79°**) |
+
+Plafon HP-nya, dihitung independen lewat rumus CFM (Tahap 3 §1), **sama di ketiga kapasitas** — karena rumus itu juga cuma fungsi luas throat, bukan Vd.
+
+**Yang benar-benar berubah dari bore-up polos:** torsi bawah-tengah naik nyata (Vd lebih besar mengisi lebih banyak udara per siklus di rpm yang belum menyentuh batas throat), dan cam oversize berguna untuk memulihkan titik peak yang bergeser turun akibat mismatch. Tapi cam **tidak bisa mencetak luas throat yang tidak ada** — untuk menaikkan plafon sungguhan, satu-satunya jalan tetap membesarkan valve/port (Tahap 3).
+
+> **Catatan batas model:** turunan ini mengasumsikan BMEP konstan berapapun durasi cam-nya. Di dunia nyata cam yang sangat panjang (200°-an lebih dari acuan) biasanya sedikit menurunkan BMEP puncak karena pengisian dinamis yang kurang efisien di overlap besar — jadi pemulihan plafon lewat cam oversize sedikit di bawah 100% secara praktik, ditambah ongkos nyata di idle dan respons rpm rendah.
+
+### 3.6 Durasi buang
 
 Ditentukan oleh **rasio throat buang/isap** (lihat Tahap 3, bagian 3.4):
 
@@ -5246,6 +5341,42 @@ Untuk kasus di atas:
 
 Cara memilih di antara keduanya ada di bagian berikutnya.
 
+### 8.6 Uji jepitan: BMEP dan kecepatan piston harus lolos BERSAMAAN
+
+BMEP saja kadang tidak cukup untuk memvonis — angka yang lolos BMEP masih bisa mustahil kalau ternyata menuntut kecepatan piston yang tidak masuk akal, atau sebaliknya. Keduanya harus diuji sekaligus, karena satu titik dyno (tenaga @ rpm) menyiratkan keduanya secara bersamaan.
+
+```
+uji 1 (bawah)  :  BMEP  ≤  plafon bahan bakar yang dipakai
+uji 2 (atas)   :  MPS   ≤  plafon mekanis bottom-end
+```
+
+Cari rentang rpm yang memuaskan tiap uji, lalu **irisannya**:
+
+```
+BMEP ≤ B_maks   ⟹   rpm ≥ 4π × B_maks × Vd × 10⁵ / (HP × 0,7457 × 1000 × 2π/60)   [dibalik dari rumus BMEP]
+MPS  ≤ v_maks   ⟹   rpm ≤ v_maks × 60000 / (2 × stroke)
+```
+
+**Kalau irisannya kosong** — batas bawah dari uji BMEP lebih tinggi daripada batas atas dari uji MPS — angka dyno itu **mustahil dengan bahan bakar yang diasumsikan**, titik, tidak peduli seberapa "masuk akal" angkanya kelihatan sendiri-sendiri.
+
+**Contoh kasus nyata:** mesin 224cc, dyno membaca 41 hp @ 11.000 rpm, stroke 72mm.
+
+```
+BMEP tersirat  = 14,86 bar     (di bibir plafon NA bensin, ~15 bar)
+MPS tersirat   = 26,4 m/s      (wilayah balap tingkat tinggi untuk stroke ini)
+```
+
+Diuji dengan bensin oktan tinggi (plafon BMEP ~13,5–15 bar, plafon MPS ~24–25 m/s):
+
+| Syarat | rpm yang dibutuhkan |
+|---|---|
+| BMEP ≤ 13,5 bar | rpm ≥ 12.111 |
+| MPS ≤ 24 m/s | rpm ≤ 10.000 |
+
+**Tidak ada irisan.** Rentang yang dituntut BMEP (≥12.111) dan rentang yang diizinkan MPS (≤10.000) tidak bertemu di rpm manapun. Angka ini cuma bisa berdiri kalau **kedua plafon sekaligus** digeser ke batas ekstremnya (BMEP 15 bar dan MPS 26,4 m/s bersamaan) — jendela yang sangat sempit, dan runtuh total kalau bahan bakarnya ternyata oktan lebih rendah dari yang diasumsikan.
+
+> **Pemicu tambahan yang wajib dicek bersamaan:** kompresi dinamis. Mesin yang ngelitik tidak mungkin mencapai BMEP plafon — detonasi memaksa pengapian dimundurkan, dan itu memotong tenaga sebelum sempat mendekati batas fisiknya. Kalau DCR mesin di atas batas aman bahan bakarnya (Tahap 5), BMEP setinggi hasil uji jepitan di atas **tidak bisa nyata** — salah satu dari data (BMEP, bahan bakar, atau DCR) pasti keliru, dan itu harus diperiksa sebelum mempercayai angka dyno.
+
 ---
 
 ## 9. Membedakan salah kalibrasi dari salah rasio — khusus dyno matic
@@ -5382,31 +5513,35 @@ Perhatikan bahwa kriteria 2 **mengikat volume dan luas inlet bersama-sama**: mem
 
 Hasilnya **rentang, bukan titik.** Itu jawaban yang jujur: di dalam rentang itu volume bukan lagi tuas yang menentukan, dan usaha lebih baik dialihkan ke geometri.
 
-### 10.3 Tumpukan rugi sebagai alat prioritas
+### 10.3 Tumpukan rugi sebagai alat prioritas — dan kenapa satu dimensi yang diasumsikan bisa membalik semuanya
 
-Sebelum memutuskan apa yang dikerjakan, susun semua rugi tekanan di satu tabel, di rpm yang sama, dengan kecepatan aliran di titik masing-masing. Ini mengubah perdebatan selera jadi urutan angka.
+Sebelum memutuskan apa yang dikerjakan, susun semua rugi tekanan di satu tabel, di rpm yang sama, dengan kecepatan aliran di titik masing-masing. Ini mengubah perdebatan selera jadi urutan angka — **tapi cuma kalau geometrinya diukur, bukan diasumsikan.**
 
-Kasus XMAX, **@8.400 rpm, aliran puncak**:
+**Kasus nyata dari sesi yang sama.** Tumpukan rugi pertama untuk pipa XMAX di atas dihitung dengan mengasumsikan pipanya **lurus Ø42,5mm** dari plenum sampai step tajam ke TB Ø36mm:
 
-| Titik | K | v | Δp |
+| Titik (geometri DIASUMSIKAN) | K | v | Δp |
 |---|---|---|---|
-| **Mulut pipa menonjol ke plenum** | 0,9 | 62,9 m/s | **2.108 Pa** |
-| TB butterfly 36mm — tidak diubah | 0,25 | 87,7 m/s | 1.138 Pa |
-| Mulut pipa rata bertepi tajam | 0,5 | 62,9 m/s | 1.171 Pa |
+| Mulut pipa menonjol ke plenum | 0,9 | 62,9 m/s | **2.108 Pa** |
+| TB butterfly 36mm | 0,25 | 87,7 m/s | 1.138 Pa |
 | Penyempitan 42,5→36 tepi tajam | 0,141 | 87,7 m/s | 643 Pa |
-| Slot inlet (aliran sudah diredam boks) | 0,5 | 13,9 m/s | 57 Pa |
-| — setelah diperbaiki — | | | |
-| Mulut pipa **dengan bellmouth** | 0,05 | 62,9 m/s | **117 Pa** |
-| Penyempitan **dikerucutkan** | 0,05 | 87,7 m/s | 228 Pa |
 
-```
-total dapat diperbaiki : ~2.400 Pa  = 2,4% tekanan atmosfer
-rugi TB (tidak diubah) :  1.138 Pa
-```
+Kesimpulannya waktu itu: **mulut pipa di dalam plenum lebih mahal daripada throttle body-nya sendiri.**
 
-**Temuan yang mengejutkan: mulut pipa di dalam plenum lebih mahal daripada throttle body-nya sendiri.** Komponen yang tidak punya nama, tidak dijual sebagai part, dan tidak pernah disebut di forum — mengalahkan komponen yang paling sering diganti orang.
+**Lalu pipanya diukur pakai 3D scan dan CAD.** Ternyata bentuknya sama sekali berbeda dari yang diasumsikan — pipa itu **sudah tirus** dari mulut Ø65,8mm di plenum, mengerucut menerus ke Ø42,5mm di ujung TB, dan TB-nya sendiri punya spigot Ø40mm sepanjang 32mm sebelum sampai ke koin Ø36mm. Bukan silinder lurus dengan satu step tajam — melainkan penampang yang menyempit terus dari mulut sampai koin.
 
-Ini terjadi karena tabel K sangat menghukum mulut yang menonjol ke dalam ruang (K = 0,8–1,0) dibanding mulut beradius (K = 0,05) — beda **20 kali lipat**, jauh lebih besar daripada selisih K antar ukuran TB.
+Dihitung ulang dengan geometri sebenarnya, **@8.400 rpm**:
+
+| Titik (geometri TERUKUR) | v | Δp |
+|---|---|---|
+| Mulut pipa Ø65,8, menonjol | 26,2 m/s | **367 Pa** |
+| TB butterfly 36mm | 87,7 m/s | **1.138 Pa** |
+| Kerucut TB 40→36 | 71,0 m/s | 182 Pa |
+| Step sambungan 42,5→40 | 71,0 m/s | 170 Pa |
+| Gesek sepanjang pipa tirus | — | 100 Pa |
+
+**Kesimpulannya terbalik.** TB tetap yang termahal. Mulut pipa turun dari 2.108 Pa menjadi 367 Pa — bukan karena diperbaiki, tapi karena kecepatan sebenarnya di bore Ø65,8 cuma 26,2 m/s, bukan 62,9 m/s yang dihitung dari asumsi Ø42,5. Rugi berbanding v², jadi selisih kecepatan 2,4× berubah jadi selisih rugi hampir 6×.
+
+> **Pelajarannya, dan ini yang layak dibawa pulang:** tumpukan rugi cuma sebagus geometri di baliknya. **Satu dimensi yang diasumsikan — bukan diukur — bisa membalik seluruh urutan prioritas**, termasuk kesimpulan yang kelihatannya sudah didukung angka rapi dengan dua desimal. Sebelum menyusun tumpukan rugi apapun: telusuri jalur udaranya secara fisik (foto, bongkar, atau scan), jangan hitung dari bayangan "bentuk pipa pada umumnya".
 
 ### 10.4 Ruang bebas mengalahkan volume
 
@@ -5498,6 +5633,9 @@ Sebelum menerima kesimpulan dari data lapangan:
 - [ ] Pada dyno matic, cek apakah ada kolom **`Ratio` tetap** — kalau run tidak memakai *locked ratio pulley*, sumbu rpm dan seluruh kurva torsi tidak bisa dipakai
 - [ ] **Aliran puncak di hilir plenum, aliran mendekati rata-rata di hulu plenum** — jangan pakai puncak di titik yang justru sudah diredam boks
 - [ ] Sebelum meniru angka pabrikan, tanyakan **kendala apa yang sedang dibayar angka itu** — kalau bukan kendalamu, itu bukan sasaranmu
+- [ ] **Uji jepitan BMEP × MPS bersamaan** — cari rentang rpm yang memuaskan keduanya; kalau irisannya kosong, angka dyno-nya mustahil dengan bahan bakar yang diasumsikan
+- [ ] Kalau BMEP tinggi lolos uji tapi **DCR di atas batas aman bahan bakarnya**, curigai datanya — mesin yang ngelitik tidak bisa mencapai BMEP plafon
+- [ ] Sebelum menyusun tumpukan rugi apapun, **telusuri geometrinya secara fisik** — satu dimensi yang diasumsikan bisa membalik seluruh urutan prioritas
 
 ---
 
@@ -5519,7 +5657,10 @@ Sebelum menerima kesimpulan dari data lapangan:
 14. **Pada dyno inersia matic, tenaga selamat tapi rpm dan torsi bisa rusak** — tenaga dihitung dari percepatan roller dan tidak menyentuh rpm mesin. Yang hilang justru *di mana* tenaga itu terjadi, dan itulah yang dibutuhkan untuk menala.
 15. **Angka pabrikan membayar kendala pabrikan** — kebisingan, margin servis, kalibrasi tunggal untuk semua kondisi. Kalau kendalanya bukan kendalamu, angkanya bukan sasaranmu.
 16. **Volume plenum diturunkan dari dekopling dan responsivitas inlet**, dan hasilnya rentang, bukan titik. Di dalam rentang itu, ruang bebas bellmouth lebih menentukan daripada liter.
-17. **Komponen tanpa nama bisa mengalahkan komponen yang paling sering diganti.** Mulut pipa di dalam plenum ternyata lebih mahal daripada throttle body-nya sendiri.
+17. **Tumpukan rugi cuma sebagus geometri di baliknya.** Satu dimensi yang diasumsikan alih-alih diukur bisa membalik seluruh urutan prioritas — termasuk yang kelihatan sudah didukung angka rapi dua desimal.
+18. **Uji dua plafon sekaligus, bukan cuma satu.** BMEP menjepit dari bawah, kecepatan piston menjepit dari atas — kalau tidak ada rpm yang memuaskan keduanya, angka dyno-nya yang salah, bukan mesinnya yang istimewa.
+19. **K × v_throat = 8,0 di titik peak power** — bentuk mutlak time-area yang tidak butuh mesin acuan, tervalidasi di tiga mesin yang sama sekali tidak berhubungan (Tahap 4 §3.4).
+20. **Bore-up tanpa upgrade valve tidak menaikkan plafon HP** — hanya memindahkan di rpm mana plafon itu dicapai. Untuk menaikkan plafon sungguhan, satu-satunya jalan tetap membesarkan valve/port (Tahap 4 §3.5).
 
 **Berikutnya:** Lampiran — rumus ringkas, daftar periksa build, dan data mesin contoh.
 
@@ -5603,6 +5744,18 @@ durasi_baru     = durasi_acuan × (A_thr_acuan / A_thr_baru)
 
 luas overlap/cc = n_valve × π × D_valve × lift_TDC / kapasitas
 ```
+
+**Konstanta time-area mutlak** (tak perlu mesin acuan — Tahap 4 §3.4):
+
+```
+K = A_throat[mm²] × durasi[°] / (Vd[cc] × rpm)   =   8,0 / v_throat_sasaran
+
+rpm_peak = A_throat × durasi × v_throat_sasaran / (8,0 × Vd)
+```
+
+`v_throat_sasaran` adalah pilihan rancangan: ~86 m/s kepala jalanan, ~97 tertala baik, 104–115 kepala balap. Tervalidasi pada tiga mesin tak berhubungan (K × v = 8,01 di ketiganya).
+
+**Konsekuensi:** untuk kepala yang sama dibesarkan kapasitasnya tanpa mengganti valve, plafon HP **tidak ikut naik** — Vd habis dibagi dari rumus tenaga tersubstitusi. Cam oversize cuma memindahkan rpm tempat plafon lama itu dicapai (Tahap 4 §3.5).
 
 ### A.6 Valvetrain
 
@@ -5688,7 +5841,16 @@ Rentang praktis **di peak power**: OEM 10–12 bar, tertala baik 12–13, balap 
 | Konstan di semua titik | salah kalibrasi (inersia, faktor koreksi, satuan) |
 | Membesar ke rpm rendah | salah rasio (dyno matic tanpa *locked ratio pulley*) |
 
-Lihat Tahap 11 §8–§9.
+**Uji jepitan BMEP × MPS** — keduanya harus lolos di rpm yang sama:
+
+```
+BMEP ≤ B_maks(bahan bakar)   ⟹   rpm ≥ ...   (dibalik dari rumus BMEP)
+MPS  ≤ v_maks(mekanis)        ⟹   rpm ≤ v_maks × 60000 / (2 × stroke)
+```
+
+Kalau rentang rpm dari kedua syarat **tidak beririsan**, angka dyno itu mustahil dengan bahan bakar yang diasumsikan. Periksa juga DCR (A.4) — mesin yang ngelitik tidak bisa mencapai BMEP plafon, jadi BMEP tinggi + DCR di atas batas bahan bakarnya = salah satu datanya keliru.
+
+Lihat Tahap 11 §8.6.
 
 ### A.10 Pemuaian termal
 
