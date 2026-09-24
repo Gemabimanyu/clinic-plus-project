@@ -113,7 +113,73 @@ Mesin Contoh C (3 valve, luas valve isap/bore cuma 0,262):
 
 Selisih 24° pada rpm yang sama — itu ongkos nyata dari 11% luas valve yang hilang.
 
-### 3.4 Durasi buang
+### 3.4 Konstanta time-area mutlak
+
+Rumus 3.1 di atas cuma berlaku *relatif* — butuh mesin acuan untuk dibandingkan. Ada bentuk mutlaknya:
+
+```
+K = A_throat[mm²] × durasi[°] / (Vd[cc] × rpm)
+```
+
+**K bukan konstanta tunggal.** Ia berbanding terbalik dengan kecepatan port sasaran:
+
+```
+K = 8,0 / v_throat_sasaran
+```
+
+Tervalidasi pada tiga mesin yang sama sekali tidak berhubungan — beda kapasitas, beda jumlah valve, beda tingkat pengembangan:
+
+| Mesin | A_throat | v_throat di peak | K | K × v |
+|---|---|---|---|---|
+| Mesin Contoh A (2 valve, jalanan) | 661 mm² | 86 m/s | 0,0930 | 8,01 |
+| Mesin bore-up 344cc (4 valve, dyno diverifikasi) | 1.077 mm² | 83 m/s | 0,0967 | 8,01 |
+| Mesin balap 224cc (4 valve, kepala dikembangkan) | 726 mm² | 104 m/s | 0,0768 | 8,01 |
+
+Hasil kali `K × v` konstan di **8,0** di ketiganya. Ini bukan kebetulan angka — ini bentuk lain dari time-area yang sudah tidak butuh mesin acuan sama sekali:
+
+```
+rpm_peak = A_throat × durasi × v_throat_sasaran / (8,0 × Vd)
+```
+
+`v_throat_sasaran` sendiri adalah **pilihan rancangan**, bukan sifat alam — kepala jalanan menargetkan ~86 m/s, kepala tertala baik ~97, kepala balap 104–115. Head yang lebih dikembangkan menoleransi kecepatan port lebih tinggi sebelum aliran mulai memburuk, jadi K-nya lebih kecil untuk rpm sasaran yang sama.
+
+> **Cara pakai:** kalau kamu tahu (atau menargetkan) v_throat sebuah kepala, K langsung didapat tanpa perlu mesin acuan yang mirip. Berguna terutama saat mesin acuan yang tersedia terlalu jauh karakternya (lihat Tahap 11 §4).
+
+### 3.5 Kenapa bore-up tanpa upgrade valve tidak menaikkan plafon HP
+
+Ini konsekuensi langsung dari bentuk mutlak di atas, dan sering disalahpahami.
+
+Substitusikan `rpm_peak` dari 3.5 ke rumus tenaga (`HP ∝ BMEP × Vd × rpm`):
+
+```
+HP  ∝  BMEP × Vd × [A_throat × durasi × v / (8,0 × Vd)]
+     =  BMEP × A_throat × durasi × v / 8,0
+```
+
+**Vd habis dibagi.** Selama BMEP dan v_throat tercapai sama, plafon tenaga cuma ditentukan oleh **luas throat dan durasi cam** — kapasitas silinder tidak muncul lagi di rumusnya.
+
+Konsekuensinya, untuk kepala yang sama dibesarkan kapasitasnya (bore atau bore+stroke) **tanpa mengganti valve**:
+
+| Tindakan | Yang terjadi pada peak rpm | Yang terjadi pada plafon HP |
+|---|---|---|
+| Cam dibiarkan | **turun** — mesin kehabisan napas lebih cepat relatif kapasitasnya | tetap, dicapai di rpm lebih rendah |
+| Cam durasi dinaikkan untuk mengembalikan rpm semula | kembali ke titik semula | **tetap juga** — cuma dicapai lagi di rpm semula, bukan lebih tinggi |
+
+Contoh: kepala 2 valve 29/23 di basis 150cc square dibesarkan ke 180cc (bore naik, stroke tetap) dan 200cc (bore dan stroke naik), tanpa ganti valve:
+
+| Kapasitas | Peak rpm (cam tetap) | Durasi yang dibutuhkan untuk kembali ke rpm semula |
+|---|---|---|
+| 150cc | 9.202 (acuan) | 240° (acuan) |
+| 180cc | 7.689 (**−16%**) | 287° (**+47°**) |
+| 200cc | 6.919 (**−25%**) | 319° (**+79°**) |
+
+Plafon HP-nya, dihitung independen lewat rumus CFM (Tahap 3 §1), **sama di ketiga kapasitas** — karena rumus itu juga cuma fungsi luas throat, bukan Vd.
+
+**Yang benar-benar berubah dari bore-up polos:** torsi bawah-tengah naik nyata (Vd lebih besar mengisi lebih banyak udara per siklus di rpm yang belum menyentuh batas throat), dan cam oversize berguna untuk memulihkan titik peak yang bergeser turun akibat mismatch. Tapi cam **tidak bisa mencetak luas throat yang tidak ada** — untuk menaikkan plafon sungguhan, satu-satunya jalan tetap membesarkan valve/port (Tahap 3).
+
+> **Catatan batas model:** turunan ini mengasumsikan BMEP konstan berapapun durasi cam-nya. Di dunia nyata cam yang sangat panjang (200°-an lebih dari acuan) biasanya sedikit menurunkan BMEP puncak karena pengisian dinamis yang kurang efisien di overlap besar — jadi pemulihan plafon lewat cam oversize sedikit di bawah 100% secara praktik, ditambah ongkos nyata di idle dan respons rpm rendah.
+
+### 3.6 Durasi buang
 
 Ditentukan oleh **rasio throat buang/isap** (lihat Tahap 3, bagian 3.4):
 

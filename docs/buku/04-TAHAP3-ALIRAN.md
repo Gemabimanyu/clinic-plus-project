@@ -16,6 +16,8 @@ Aturan kasar ini cukup akurat untuk perencanaan. CFM di sini adalah flow head pa
 
 **Konsekuensinya:** kalau head-mu mengalirkan 85 CFM, tidak ada cam, exhaust, atau ECU yang bisa membuatnya menghasilkan 50 HP. Plafonnya sekitar 38 HP, titik.
 
+> **Batas domain rumus ini.** Konstanta 0,43–0,50 dikalibrasi pada kelas mesin dengan silinder relatif besar berputar di rpm sedang. Rumus ini **tidak mengandung rpm sama sekali**, sehingga di mesin kecil (< 250cc) yang justru mengejar rpm sangat tinggi, ia bisa memberi angka yang melampaui batas fisika. **Selalu uji hasilnya dengan BMEP** (Tahap 11 §8) sebelum dipercaya — kalau BMEP tersirat di atas ~15 bar (plafon NA bensin), rumus CFM sedang dipakai di luar domainnya, bukan mesinnya yang istimewa.
+
 ---
 
 ## 2. Valve dan batas geometri
