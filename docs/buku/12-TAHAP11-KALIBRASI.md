@@ -104,6 +104,8 @@ selisih = 1,1%
 
 **Selisih 1,1% ini bagus sekali** untuk metode yang cuma butuh data geometri, tanpa CFD atau flowbench. Ini bukan jaminan akurasi segini selalu terjadi — tapi menunjukkan metodenya valid kalau asumsi rasio throat/valve-nya masuk akal (di kasus ini dipakai 0,935, seagresif Mesin Contoh A).
 
+Yang sebenarnya diasumsikan metode ini: **K time-area mesin baru sama dengan K mesin acuan** (Tahap 4 §3.4). Di kasus ini asumsinya kena karena kedua kepala dikembangkan dengan cara yang mirip. Untuk mesin yang wataknya jauh berbeda, K bisa berbeda puluhan persen (§11).
+
 ### 3.3 Throat tidak selalu diketahui — pakai rentang, bukan angka tunggal
 
 Kalau cuma diameter valve yang diketahui (bukan throat aktual), jangan paksa satu angka. Hitung rentang dari beberapa asumsi rasio throat/valve (0,86 konservatif sampai 0,935 agresif) dan laporkan **rentang rpm**, bukan angka tunggal palsu presisi.
@@ -113,6 +115,16 @@ Kalau cuma diameter valve yang diketahui (bukan throat aktual), jangan paksa sat
 | 0,86–0,90 | konservatif, OEM/harian |
 | 0,90–0,92 | balap lazim |
 | 0,935 | agresif, terbukti Mesin Contoh A |
+
+### 3.4 Basis luas harus sama dengan basis kalibrasinya
+
+Kasus nyata dari XMAX bore-up 345cc. Setelah pemilik mengukur port di flange (oval 30 × 34 mm = 801 mm²) yang ternyata lebih kecil dari throat (1.021 mm²), rpm peak dihitung ulang dengan memasukkan **luas port** ke rumus time-area. Hasilnya kecepatan tersirat **111 m/s** — terlihat seperti kepala balap, dan dipakai sebagai "bukti" bahwa port-lah pembatasnya.
+
+Itu salah basis. Semua kalibrasi rumus ini memakai **luas throat**. Dengan luas throat, angka yang sama memberi **87 m/s** — wajar untuk cam 260° jalanan, tanpa anomali apa pun. Angka "balap" tadi muncul semata karena pembaginya diganti, lalu angka besarnya dikagumi.
+
+Kesimpulan bahwa port XMAX memang sempit bertumpu pada bukti lain: MGV di port 121 m/s pada 8.400 rpm, dan luas port per cc turun 15% akibat bore-up. Tapi bukti itu sendiri memakai asumsi yang belum diperiksa: luas 801 mm² dihitung sebagai **elips murni**. Kalau flange-nya oval bersudut (~938 mm²), MGV port cuma 103 m/s — di rentang sehat — dan ukuran porting bergeser besar. Satu dimensi yang diasumsikan, lagi (bandingkan §10.3). **Alasan yang salah tetap pekerjaan yang salah, walaupun kesimpulannya kebetulan benar** — alasan yang salah akan menyesatkan di keputusan berikutnya.
+
+Aturannya: sebelum memasukkan angka ke rumus terkalibrasi, tanyakan **luas apa, durasi dengan konvensi apa, tenaga di roda atau engkol** yang dipakai saat kalibrasi — lalu pakai yang sama.
 
 ---
 
@@ -160,6 +172,14 @@ v_di_TB  = Q_puncak / (A_TB × (1 − blokade_poros))
 Di 6.500 rpm dengan VE diasumsikan 0,90: kecepatan di TB 36mm dihitung **~77 m/s**. Dibandingkan Mesin Contoh A yang terbukti nyaman di 61 m/s, ini sudah masuk zona "sangat agresif" — indikasi TB mulai membatasi.
 
 **Peringatan penting:** cek ini HARUS dilakukan sebelum menyalahkan cam atau valve kalau tenaga mentok. TB yang terlalu kecil menghasilkan gejala yang mirip dengan cam salah durasi (tenaga mendatar sebelum rpm sasaran) — tapi solusinya beda total.
+
+### 5.3 Jangkar kedua dari mesin pabrikan — dan batas hadiahnya
+
+Angka "nyaman di 61 m/s" di atas datang dari satu mesin (Contoh A). Dengan rumus yang sama, Honda CRF450R (TB 46 mm, 449,5 cc, peak 9.300 rpm, durasi diasumsikan 280–300° karena tidak dipublikasi) memakai TB-nya di **~76–82 m/s** di peak. Jadi kecepatan di kisaran 77 m/s **bukan** tanda TB membatasi — mesin balap pabrikan bekerja di situ.
+
+XMAX 345cc dengan TB 36 mm dengan rumus yang sama: **~100 m/s di 8.400 rpm, ~107 di 9.000**. Itu memang di atas CRF, jadi TB-nya relatif kecil. Tapi ada batas yang lebih penting: **hadiah dari TB lebih besar tidak mungkin melebihi total rugi TB itu sendiri.** Rugi TB 36 mm dihitung ~1.138 Pa (§10.3), yang setara paling banyak ~0,26–0,52 hp kalau TB-nya dihapus sama sekali. Naik ke TB 40 mengambil kembali sekitar +0,10–0,20 hp, dengan ongkos di bukaan kecil (resolusi TPS, idle, respons).
+
+Aturan "TB/throat harus 1,0–1,1" atau "TB ≥ throat" **tidak berlaku** — CRF450R memakai TB yang lebih kecil dari total throat-nya (rasio 0,90), dan mesin 200cc 2 valve yang bagus bisa berjalan di rasio 1,86. Ukuran TB dinilai dari kecepatannya dan dari berapa besar rugi yang masih bisa diambil kembali, bukan dari rasio ke throat.
 
 ---
 
@@ -632,6 +652,17 @@ Dihitung ulang dengan geometri sebenarnya, **@8.400 rpm**:
 
 **Kesimpulannya terbalik.** TB tetap yang termahal. Mulut pipa turun dari 2.108 Pa menjadi 367 Pa — bukan karena diperbaiki, tapi karena kecepatan sebenarnya di bore Ø65,8 cuma 26,2 m/s, bukan 62,9 m/s yang dihitung dari asumsi Ø42,5. Rugi berbanding v², jadi selisih kecepatan 2,4× berubah jadi selisih rugi hampir 6×.
 
+**Menerjemahkan Pa ke hp.** Tumpukan rugi baru berguna kalau bisa dibandingkan dengan tuas lain. Skala yang dipakai untuk mesin 345cc ini:
+
+| Tuas | Besaran |
+|---|---|
+| Rugi tekanan saluran | ~**+0,2 hp per 1.000 Pa** yang dihapus (batas atas ~0,4 hp bila rugi dianggap langsung mengurangi densitas muatan) |
+| Suhu udara masuk | tiap +10 K ≈ **−1,3 hp**; boks vs udara kolong jok **−1,3 s/d −3,7 hp** |
+| Orde harmonik yang ditangkap | h2 → h3 ≈ **−1,1 s/d −1,6 hp** |
+| Material manifold (efek sirip) | aluminium → PPS-CF ≈ **+0,17 hp** |
+
+Dengan skala ini, seluruh pekerjaan detail pipa (~520 Pa) bernilai ~0,1–0,2 hp — lebih kecil daripada memastikan boks selalu terpasang.
+
 > **Pelajarannya, dan ini yang layak dibawa pulang:** tumpukan rugi cuma sebagus geometri di baliknya. **Satu dimensi yang diasumsikan — bukan diukur — bisa membalik seluruh urutan prioritas**, termasuk kesimpulan yang kelihatannya sudah didukung angka rapi dengan dua desimal. Sebelum menyusun tumpukan rugi apapun: telusuri jalur udaranya secara fisik (foto, bongkar, atau scan), jangan hitung dari bayangan "bentuk pipa pada umumnya".
 
 ### 10.4 Ruang bebas mengalahkan volume
@@ -705,7 +736,57 @@ Salah asumsi di sini menggelembungkan rugi inlet **5–20×**, dan itu cukup unt
 
 ---
 
-## 11. Daftar periksa kalibrasi
+## 11. Studi pembanding: mesin pabrikan yang spesifikasinya terbuka
+
+### 11.1 Kenapa perlu pembanding dari luar
+
+Semua kalibrasi di tahap ini berputar di sekitar beberapa mesin yang datanya kita kumpulkan sendiri. Itu berisiko: kesalahan yang sama bisa terbawa ke semua angka tanpa ada yang menolak. Pembanding dari luar menguji kerangkanya, bukan cuma angkanya.
+
+Syaratnya ketat: pabrikan harus mempublikasikan **ukuran valve dan TB**, dan harus ada dyno independen. Honda CRF450R 2021 memenuhinya, dan wataknya dekat dengan skutik performa: satu silinder, 4 valve, TB downdraft.
+
+| | Nilai | Sumber |
+|---|---|---|
+| Bore × stroke | 96 × 62,1 mm (449,5 cc) | Honda |
+| Kompresi | 13,5:1 | Honda |
+| Valve isap / buang | 2 × 38 mm Ti / 2 × 31 mm baja | Honda |
+| TB | 46 mm, downdraft | Honda |
+| Tenaga | 57,21 hp @ 9.300 rpm (roda belakang) | dyno Dirt Rider |
+| Torsi | 35,64 lb-ft @ 6.930 rpm (roda belakang) | dyno Dirt Rider |
+
+Tidak dipublikasikan: diameter seat (throat), durasi cam, CSA port, panjang saluran. Throat diasumsikan TR 0,88–0,92.
+
+### 11.2 Perbandingan dengan XMAX 345cc
+
+| | CRF450R | XMAX 345cc |
+|---|---|---|
+| Luas valve isap / bore | 0,313 | 0,271 |
+| **Throat isap per cc** | **4,09 mm²/cc** | **2,96 mm²/cc** |
+| Luas valve buang / isap | 0,666 | 0,646 |
+| TB / throat | 0,90 | 1,00 |
+| TB per cc | 3,70 mm²/cc | 2,95 mm²/cc |
+| MPS di peak power | **19,3 m/s** | **21,3 m/s** |
+| **MGV throat di peak** | **76 m/s** | **95 m/s** |
+| MGV di TB (di peak) | 84 m/s | 95 m/s |
+
+### 11.3 Yang dipelajari
+
+1. **Honda membeli napas lewat luas valve, bukan lewat kecepatan.** Throat per cc 38% lebih besar, dan di peak throat-nya cuma dilewati 76 m/s. Peak CRF tidak ditentukan oleh batas aliran isap. Inilah mesin yang membongkar "konstanta mutlak" K × v = 8 di Tahap 4 §3.4: K-nya 0,114–0,132, jauh di luar rentang mesin lain.
+2. **Aturan rasio TB/throat tidak berlaku.** CRF memasang TB yang lebih kecil dari total throat-nya. Kalau diberi proporsi yang sama dengan Honda (kecepatan TB atau luas TB per cc), TB XMAX setara ~Ø38–40 (§5.3).
+3. **Downdraft tidak salah — tanpa boks yang salah.** CRF memakai TB downdraft **dan** airbox besar. Kerugian downdraft yang dihitung untuk XMAX datang dari hilangnya boks dan tract yang terlalu pendek, bukan dari arahnya.
+4. **Batas struktural XMAX adalah stroke.** CRF mencapai peak di MPS 19,3 m/s; XMAX sudah 21,3 m/s pada 8.400 rpm. Stroke 76 mm memaksa kecepatan piston tinggi di rpm yang bagi CRF masih santai.
+5. **Sisi buang XMAX proporsional.** Rasio buang/isap 0,646 hampir sama dengan Honda (0,666).
+
+### 11.4 Pembanding sebagai alat uji dyno
+
+BMEP CRF di peak power (basis roda, lewat rantai): **12,25 bar**, atau ~13,3 bar di engkol dengan efisiensi rantai ~92%.
+
+XMAX: 40,6 hp di roller **lewat CVT** pada 8.400 rpm = 12,54 bar di roda. Dengan efisiensi CVT 85–88%, itu **14,3–14,8 bar di engkol** — lebih tinggi dari mesin motocross pabrikan berkompresi 13,5:1, padahal XMAX memakai cam 260° jalanan.
+
+Bacaan paling masuk akal: dyno yang dipakai membaca sekitar **8–12% lebih tinggi**. Ini tidak merusak perhitungan yang proporsional (anggaran porting, pergeseran peak), tapi angka absolut hanya berlaku **di dyno yang sama**. Cara memastikannya: ukur satu motor yang tenaganya sudah diketahui di dyno itu.
+
+---
+
+## 12. Daftar periksa kalibrasi
 
 Sebelum menerima kesimpulan dari data lapangan:
 
@@ -727,10 +808,13 @@ Sebelum menerima kesimpulan dari data lapangan:
 - [ ] **Uji jepitan BMEP × MPS bersamaan** — cari rentang rpm yang memuaskan keduanya; kalau irisannya kosong, angka dyno-nya mustahil dengan bahan bakar yang diasumsikan
 - [ ] Kalau BMEP tinggi lolos uji tapi **DCR di atas batas aman bahan bakarnya**, curigai datanya — mesin yang ngelitik tidak bisa mencapai BMEP plafon
 - [ ] Sebelum menyusun tumpukan rugi apapun, **telusuri geometrinya secara fisik** — satu dimensi yang diasumsikan bisa membalik seluruh urutan prioritas
+- [ ] Sebelum memasukkan angka ke rumus terkalibrasi, pastikan **basisnya sama**: luas throat (bukan port), durasi pada konvensi lift yang sama, tenaga di roda atau engkol
+- [ ] Kalau sebuah hubungan "tervalidasi di beberapa mesin", **periksa apakah angkanya dihitung independen** — atau diturunkan dari rumus yang sama sehingga pasti cocok
+- [ ] Uji kerangka dengan **satu mesin pabrikan yang spesifikasinya terbuka**, bukan cuma dengan mesin yang datanya kita kumpulkan sendiri
 
 ---
 
-## 12. Ringkasan Tahap 11
+## 13. Ringkasan Tahap 11
 
 1. **Overlap dalam derajat dan lift-di-TDC dalam mm adalah dua hal berbeda** — jangan tertukar.
 2. **Model harmonik untuk memvalidasi cam, bukan sumber kebenaran mutlak** — cam nyata bisa punya ramp lebih agresif dari `sin²`.
@@ -750,7 +834,9 @@ Sebelum menerima kesimpulan dari data lapangan:
 16. **Volume plenum diturunkan dari dekopling dan responsivitas inlet**, dan hasilnya rentang, bukan titik. Di dalam rentang itu, ruang bebas bellmouth lebih menentukan daripada liter.
 17. **Tumpukan rugi cuma sebagus geometri di baliknya.** Satu dimensi yang diasumsikan alih-alih diukur bisa membalik seluruh urutan prioritas — termasuk yang kelihatan sudah didukung angka rapi dua desimal.
 18. **Uji dua plafon sekaligus, bukan cuma satu.** BMEP menjepit dari bawah, kecepatan piston menjepit dari atas — kalau tidak ada rpm yang memuaskan keduanya, angka dyno-nya yang salah, bukan mesinnya yang istimewa.
-19. **K × v_throat = 8,0 di titik peak power** — bentuk mutlak time-area yang tidak butuh mesin acuan, tervalidasi di tiga mesin yang sama sekali tidak berhubungan (Tahap 4 §3.4).
-20. **Bore-up tanpa upgrade valve tidak menaikkan plafon HP** — hanya memindahkan di rpm mana plafon itu dicapai. Untuk menaikkan plafon sungguhan, satu-satunya jalan tetap membesarkan valve/port (Tahap 4 §3.5).
+19. **K time-area dikalibrasi per mesin.** Edisi lama menyebut `K × v = 8,0` "tervalidasi di tiga mesin" — ternyata identitas aljabar yang cocok untuk mesin apa pun. Mesin pabrikan dengan spesifikasi terbuka (CRF450R) memperlihatkan K bisa berbeda puluhan persen (Tahap 4 §3.4, §11).
+20. **Bore-up tanpa upgrade valve tidak menaikkan plafon HP** — hanya memindahkan di rpm mana plafon itu dicapai — selama mesinnya dibatasi aliran isap di peak (Tahap 4 §3.5).
+21. **Basis kalibrasi harus dibawa utuh.** Mengganti luas throat dengan luas port menghasilkan angka "balap" palsu; kesimpulan benar dengan alasan salah tetap menyesatkan keputusan berikutnya.
+22. **Hadiah dari TB lebih besar dibatasi rugi TB itu sendiri.** Rasio TB/throat bukan aturan.
 
 **Berikutnya:** Lampiran — rumus ringkas, daftar periksa build, dan data mesin contoh.

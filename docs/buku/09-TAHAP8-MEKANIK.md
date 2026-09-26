@@ -20,6 +20,10 @@ MPS = 2 × stroke[m] × rpm / 60
 | 24–26 | ekstrem |
 | 30+ | drag profesional, mesin sekali pakai |
 
+**Stroke panjang menutup rpm lebih dulu.** Stroke 76 mm (XMAX bore-up) sudah di 21,3 m/s pada 8.400 rpm; batas bottom end turunan-standar ~22–23 m/s jatuh di **~8.700–9.000 rpm**. Honda CRF450R (stroke 62,1) mencapai peak di 19,3 m/s — rpm yang bagi mesin stroke panjang sudah mahal, bagi mesin stroke pendek masih santai.
+
+**Kalau rpm dikunci, tinggal satu tuas.** `HP ∝ BMEP × Vd × rpm`. Dengan Vd tetap dan rpm dibatasi, tenaga **cuma bisa naik lewat BMEP**: pengisian di rpm kerja (porting yang ditempatkan dengan benar, Tahap 3 §8.1), sisi buang, penalaan gelombang, rasio kompresi dan bahan bakar, pengapian dan AFR, suhu udara masuk. Menaikkan batas rpm itu sendiri adalah keputusan bottom end (§1.4), bukan keputusan kepala.
+
 ### 1.2 Percepatan piston
 
 ```
@@ -62,6 +66,14 @@ Turun dari 120 ke 80 gram memangkas beban rod **33%** — setara menurunkan rpm 
 
 Kalau mengincar 12.500+ rpm, piston ringan bukan opsi tapi keharusan.
 
+Karena gaya ∝ massa × rpm², massa yang dibutuhkan untuk menaikkan rpm **tanpa menambah beban** bisa dihitung langsung:
+
+```
+m_baru = m_lama × (rpm_lama / rpm_baru)²
+```
+
+Contoh (piston Ø76, paket bolak-balik ~495 g): untuk naik dari 8.400 ke 9.500 rpm dengan beban big end yang sama, massa harus turun ke **387 g** (−108 g). Dengan piston slipper-skirt, pin dinding tipis, dan ring tipis, angka itu bisa dicapai.
+
 ### 1.5 Membandingkan ke mesin yang sudah terbukti
 
 Ini cara paling berguna memakai angka di atas:
@@ -74,6 +86,21 @@ Ini cara paling berguna memakai angka di atas:
 Selisih 0,7%. Artinya 12.000 rpm di Mesin B berada **di dalam amplop yang sudah terbukti**, bukan wilayah baru.
 
 **Selalu bandingkan begini** sebelum memutuskan rpm sasaran. Angka mutlak sulit ditafsirkan; perbandingan ke mesin yang sudah jalan jauh lebih berarti.
+
+### 1.6 Plain bearing bukan pembatas rpm
+
+Crank dengan bantalan plain (metal/shell) sering dianggap kalah dari crank laher (roller) untuk rpm tinggi. Urutannya terbalik: mesin yang paling tinggi putarannya justru memakai plain bearing — Yamaha R6 sampai 16.500 rpm, mesin F1 sampai 20.000. Laher dipakai di skutik karena tahan pelumasan minim dan start dingin, bukan karena lebih kuat di rpm. Crank plain juga biasanya satu keping utuh, lebih kaku daripada crank press yang bisa memuntir di rpm tinggi.
+
+Film oli hidrodinamik memang menebal dengan kecepatan, tapi beban inersia tumbuh dengan rpm², jadi bersihnya kondisi bantalan memburuk seiring rpm. Yang membatasi:
+
+1. **Pasokan oli** — pembunuh nomor satu. Oil cooler, katup pelepas tekanan yang tidak membuang aliran di rpm puncak, oli dengan HTHS ≥ 3,5.
+2. **Beban spesifik bantalan** `= F_TDC / (diameter jurnal × lebar)`. Batas kasar: bi-metal Al-Sn (OEM) ~50–55 MPa, tri-metal ~70–80 MPa, sputter ~100+ MPa.
+3. **Baut rod** — beban belasan sampai puluhan kN; ganti baut kualitas tinggi, torsi dengan metode regang (stretch).
+4. **Clearance** — terlalu rapat mencekik aliran oli di rpm tinggi, terlalu longgar kehilangan film.
+
+Kecepatan permukaan jurnal jarang jadi masalah: jurnal Ø30 di 13.400 rpm cuma ~21 m/s.
+
+Contoh (piston Ø67, stroke 58, jurnal diasumsikan Ø30 × 16 mm): pada 13.400 rpm, paket bolak-balik 340 g memberi ~52 MPa (di batas shell OEM), paket 265 g memberi ~40 MPa (aman). **Bantalannya sama — massanya yang menentukan.** Ukur dimensi jurnal sebenarnya sebelum memakai angka ini; jurnal yang lebih kecil menaikkan seluruh kolom.
 
 ---
 
@@ -95,6 +122,19 @@ Selisih 0,7%. Artinya 12.000 rpm di Mesin B berada **di dalam amplop yang sudah 
 **2618** silikon rendah → lebih ulet, lebih tahan detonasi dan beban kejut → tapi memuai lebih banyak → butuh clearance besar → **berisik saat dingin** dan lebih banyak blowby saat dingin.
 
 **Untuk drag:** 2618 kalau kompresi tinggi dan rpm ekstrem. 4032 kalau mesin juga dipakai jalan.
+
+**"Tempa" tidak berarti ringan.** Piston tempa kelas *street/durability* — yang sering ikut di kit bore-up — umumnya **5–15% lebih berat** dari piston cor OEM yang digantinya: mahkota lebih tebal, skirt penuh, boss pin gemuk. Densitas materialnya hampir sama (hypereutectic justru sedikit lebih ringan karena kandungan silikonnya).
+
+Yang membuat piston ringan adalah **desainnya**: compression height pendek, slipper skirt, mahkota tipis untuk NA, pin dinding tipis, ring tipis. Penempaan adalah **prasyarat** desain itu — penampang tipis butuh material yang ulet terhadap tarikan inersia dan lelah, dan cor tidak sanggup. Jadi urutannya: butuh ringan → butuh penampang tipis → butuh material ulet → tempa.
+
+| Komponen (piston Ø67) | Cor OEM | Tempa "street" | Tempa race-spec |
+|---|---|---|---|
+| Piston telanjang | 200–230 g | 210–250 g | 135–165 g |
+| Pin | 55–70 g | 55–70 g | 35–45 g |
+| Ring set | 12–15 g | 12–15 g | 8–10 g |
+| **Paket** | **270–318 g** | **280–338 g** | **180–222 g** |
+
+Saat memesan, yang disebut bukan kata "tempa", tapi spesifikasi desainnya — dan **minta angka berat aktual sebelum membeli.**
 
 ### 2.3 Clearance piston
 
@@ -580,5 +620,7 @@ Menyeimbangkan 100% cuma **memindahkan** getaran, tidak menghilangkannya.
 10. **Durasi cam lebih pendek butuh spring lebih kuat** — ramp lebih curam.
 11. **Spring yang terlalu kuat juga merugikan.** Pasang yang cukup, bukan yang terkuat.
 12. **Kalau ganti piston ringan, seimbangkan ulang crankshaft.**
+13. **Plain bearing bukan pembatas rpm** — pembatasnya pasokan oli dan massa bolak-balik. `m_baru = m_lama × (rpm_lama/rpm_baru)²`.
+14. **"Tempa" tidak berarti ringan.** Pesan berdasarkan desain dan berat aktual, bukan proses pembuatan.
 
 **Berikutnya:** Tahap 9 — CVT, tempat 20–30% tenaga bisa hilang tanpa disadari.
