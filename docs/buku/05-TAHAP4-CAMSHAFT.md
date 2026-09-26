@@ -149,6 +149,8 @@ Artinya K hanya ditentukan oleh dua hal: **seberapa keras throat dipakai di peak
 
 \* throat diasumsikan dari diameter valve (TR 0,935 dan 0,90). \*\* untuk durasi 260–300°.
 
+Dua catatan kepercayaan: rpm peak XMAX adalah hasil koreksi (sumbu rpm dyno aslinya rusak oleh rasio CVT tetap, Tahap 11 §9). rpm peak mesin 224cc dibaca dari dyno sejenis tanpa locked ratio pulley, dan pasangan tenaga-rpm-nya sendiri gagal uji jepitan (Tahap 11 §8.6) — K 0,077 dari mesin itu belum terverifikasi.
+
 K berkisar 0,077 sampai lebih dari 0,13 — **bukan konstanta**. CRF450R memakai throat-nya jauh lebih santai (76 m/s) dibanding mesin lain: peak-nya tidak ditentukan oleh batas aliran isap, tapi oleh hal lain (knalpot, penalaan, karakter tenaga motocross).
 
 **Yang tetap berlaku, dan cara memakainya:**

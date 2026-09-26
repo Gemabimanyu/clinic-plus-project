@@ -122,7 +122,7 @@ Kasus nyata dari XMAX bore-up 345cc. Setelah pemilik mengukur port di flange (ov
 
 Itu salah basis. Semua kalibrasi rumus ini memakai **luas throat**. Dengan luas throat, angka yang sama memberi **87 m/s** — wajar untuk cam 260° jalanan, tanpa anomali apa pun. Angka "balap" tadi muncul semata karena pembaginya diganti, lalu angka besarnya dikagumi.
 
-Kesimpulan bahwa port XMAX memang sempit ternyata tetap benar, tapi karena bukti lain yang berdiri sendiri: MGV di port 121 m/s pada 8.400 rpm, dan luas port per cc turun 15% akibat bore-up. **Kesimpulan yang benar dengan alasan yang salah tetap pekerjaan yang salah** — alasan yang salah akan menyesatkan di keputusan berikutnya.
+Kesimpulan bahwa port XMAX memang sempit bertumpu pada bukti lain: MGV di port 121 m/s pada 8.400 rpm, dan luas port per cc turun 15% akibat bore-up. Tapi bukti itu sendiri memakai asumsi yang belum diperiksa: luas 801 mm² dihitung sebagai **elips murni**. Kalau flange-nya oval bersudut (~938 mm²), MGV port cuma 103 m/s — di rentang sehat — dan ukuran porting bergeser besar. Satu dimensi yang diasumsikan, lagi (bandingkan §10.3). **Alasan yang salah tetap pekerjaan yang salah, walaupun kesimpulannya kebetulan benar** — alasan yang salah akan menyesatkan di keputusan berikutnya.
 
 Aturannya: sebelum memasukkan angka ke rumus terkalibrasi, tanyakan **luas apa, durasi dengan konvensi apa, tenaga di roda atau engkol** yang dipakai saat kalibrasi — lalu pakai yang sama.
 
@@ -651,6 +651,17 @@ Dihitung ulang dengan geometri sebenarnya, **@8.400 rpm**:
 | Gesek sepanjang pipa tirus | — | 100 Pa |
 
 **Kesimpulannya terbalik.** TB tetap yang termahal. Mulut pipa turun dari 2.108 Pa menjadi 367 Pa — bukan karena diperbaiki, tapi karena kecepatan sebenarnya di bore Ø65,8 cuma 26,2 m/s, bukan 62,9 m/s yang dihitung dari asumsi Ø42,5. Rugi berbanding v², jadi selisih kecepatan 2,4× berubah jadi selisih rugi hampir 6×.
+
+**Menerjemahkan Pa ke hp.** Tumpukan rugi baru berguna kalau bisa dibandingkan dengan tuas lain. Skala yang dipakai untuk mesin 345cc ini:
+
+| Tuas | Besaran |
+|---|---|
+| Rugi tekanan saluran | ~**+0,2 hp per 1.000 Pa** yang dihapus (batas atas ~0,4 hp bila rugi dianggap langsung mengurangi densitas muatan) |
+| Suhu udara masuk | tiap +10 K ≈ **−1,3 hp**; boks vs udara kolong jok **−1,3 s/d −3,7 hp** |
+| Orde harmonik yang ditangkap | h2 → h3 ≈ **−1,1 s/d −1,6 hp** |
+| Material manifold (efek sirip) | aluminium → PPS-CF ≈ **+0,17 hp** |
+
+Dengan skala ini, seluruh pekerjaan detail pipa (~520 Pa) bernilai ~0,1–0,2 hp — lebih kecil daripada memastikan boks selalu terpasang.
 
 > **Pelajarannya, dan ini yang layak dibawa pulang:** tumpukan rugi cuma sebagus geometri di baliknya. **Satu dimensi yang diasumsikan — bukan diukur — bisa membalik seluruh urutan prioritas**, termasuk kesimpulan yang kelihatannya sudah didukung angka rapi dengan dua desimal. Sebelum menyusun tumpukan rugi apapun: telusuri jalur udaranya secara fisik (foto, bongkar, atau scan), jangan hitung dari bayangan "bentuk pipa pada umumnya".
 

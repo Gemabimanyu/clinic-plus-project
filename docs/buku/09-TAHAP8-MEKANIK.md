@@ -20,6 +20,10 @@ MPS = 2 × stroke[m] × rpm / 60
 | 24–26 | ekstrem |
 | 30+ | drag profesional, mesin sekali pakai |
 
+**Stroke panjang menutup rpm lebih dulu.** Stroke 76 mm (XMAX bore-up) sudah di 21,3 m/s pada 8.400 rpm; batas bottom end turunan-standar ~22–23 m/s jatuh di **~8.700–9.000 rpm**. Honda CRF450R (stroke 62,1) mencapai peak di 19,3 m/s — rpm yang bagi mesin stroke panjang sudah mahal, bagi mesin stroke pendek masih santai.
+
+**Kalau rpm dikunci, tinggal satu tuas.** `HP ∝ BMEP × Vd × rpm`. Dengan Vd tetap dan rpm dibatasi, tenaga **cuma bisa naik lewat BMEP**: pengisian di rpm kerja (porting yang ditempatkan dengan benar, Tahap 3 §8.1), sisi buang, penalaan gelombang, rasio kompresi dan bahan bakar, pengapian dan AFR, suhu udara masuk. Menaikkan batas rpm itu sendiri adalah keputusan bottom end (§1.4), bukan keputusan kepala.
+
 ### 1.2 Percepatan piston
 
 ```

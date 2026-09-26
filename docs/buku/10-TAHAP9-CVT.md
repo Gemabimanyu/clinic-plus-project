@@ -57,6 +57,28 @@ CVT harus **benar-benar mampu** menahan mesin di titik itu. CVT yang salah setel
 
 Inilah kenapa banyak mesin yang bagus di dyno mengecewakan di lintasan.
 
+### 2.4 Motor harian: dataran, bukan satu titik
+
+"Satu titik" berlaku penuh untuk drag. Di jalan, rpm tahan CVT bergeser naik-turun mengikuti beban — tanjakan, angin, boncengan, gas setengah. Untuk motor yang juga dipakai harian, "powerband lebar" berarti tiga hal:
+
+1. **Dataran rata ±500 rpm** di sekitar rpm tahan CVT, supaya pergeseran itu tidak terasa.
+2. **Torsi cukup di rpm kopling mulai mencengkeram**, untuk start dan buka gas dari kecepatan rendah.
+3. **Part-throttle yang bersih** — tanpa "ngorok" di bukaan kecil.
+
+Tuas yang membentuk dataran itu, dari yang paling murah:
+
+| Tuas | Cara kerjanya |
+|---|---|
+| **Penalaan berlapis** | Harmonik isap yang berbeda menopang titik berbeda: h3 di rpm kopling, h2 sedikit **di bawah** peak, porting menopang sisi atas. Menumpuk h2 tepat di peak membuat puncak sedikit lebih tinggi tapi band lebih sempit |
+| **Knalpot ditala ke rpm berbeda dari isap** | Mengisi celah di antara dua harmonik isap. Isap dan buang ditala ke rpm yang sama = puncak runcing |
+| **Boks selalu terpasang** | Udara dingin, dan tekanan di mulut pipa yang stabil di bukaan kecil |
+| **Ukuran pinch port** | Pinch lebih kecil menjaga kecepatan di rpm rendah-menengah (Tahap 3 §8.1) |
+| **Pengapian dan AFR di rpm tengah** | Sering tertinggal karena peta disetel untuk peak |
+| **Waktu cam (ICL), bukan durasi** | Dimajukan: tengah lebih kuat; dimundurkan: atas lebih kuat. Durasi lebih panjang justru mempersempit band |
+| **Rasio kompresi** | Menaikkan BMEP di semua rpm, paling terasa bawah-tengah |
+
+**CVT disetel terakhir**, di atas kurva hasil dyno: kopling masuk di rpm yang sudah bertorsi (dekat h3), rpm tahan di **tengah dataran** (bukan tepat di peak), dan per CVT untuk respons kickdown. Contoh angka lengkap: build spec XMAX §8.
+
 ---
 
 ## 3. Menyetel CVT

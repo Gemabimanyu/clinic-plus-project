@@ -24,6 +24,8 @@ Penampang oval   : CSA ≈ 0,92 × lebar × tinggi
 ```
 Faktor 0,92 untuk bentuk superelips — di antara elips murni (0,785) dan kotak (1,00). Port hasil porting biasanya mendekati angka ini.
 
+**Dua sumbu tidak menentukan luas.** Oval 30 × 34 bisa 801 mm² (elips) sampai 938 mm² (superelips) — selisih 17%, cukup untuk membalik keputusan porting (contoh XMAX, build spec §5.2). Untuk kepala yang belum diporting, ukur luasnya dari scan atau cetakan; jangan menebak bentuknya.
+
 **Diukur di mana:** di **titik tersempit** sepanjang saluran, bukan di flange dan bukan di bowl. Titik tersempit inilah yang menentukan kecepatan gas dan menjadi pembatas.
 
 Untuk port bercabang (4 valve), yang dipakai adalah CSA **runner bersama** sebelum pecah dua — bukan CSA tiap cabang.

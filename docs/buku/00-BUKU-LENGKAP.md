@@ -1,7 +1,7 @@
 # ADVANCED ENGINE TUNING
 ## Panduan Membangun Mesin 1 Cylinder Matic
 
-**Dokumen Lengkap — 42.000 kata, 14 bab + Lampiran**
+**Dokumen Lengkap — 46.000 kata, 14 bab + Lampiran**
 
 ---
 
@@ -430,6 +430,8 @@ Penampang bundar : CSA = π/4 × D²
 Penampang oval   : CSA ≈ 0,92 × lebar × tinggi
 ```
 Faktor 0,92 untuk bentuk superelips — di antara elips murni (0,785) dan kotak (1,00). Port hasil porting biasanya mendekati angka ini.
+
+**Dua sumbu tidak menentukan luas.** Oval 30 × 34 bisa 801 mm² (elips) sampai 938 mm² (superelips) — selisih 17%, cukup untuk membalik keputusan porting (contoh XMAX, build spec §5.2). Untuk kepala yang belum diporting, ukur luasnya dari scan atau cetakan; jangan menebak bentuknya.
 
 **Diukur di mana:** di **titik tersempit** sepanjang saluran, bukan di flange dan bukan di bowl. Titik tersempit inilah yang menentukan kecepatan gas dan menjadi pembatas.
 
@@ -1805,9 +1807,11 @@ rasio = n_valve × (D_valve / bore)²
 rasio luas = (n_ex × D_ex²) / (n_in × D_in²)
 ```
 
-Nilai lazim 0,70–0,80.
+Nilai lazim 0,70–0,80 untuk 2 valve. Kepala 4 valve pabrikan sering lebih rendah: Honda CRF450R 0,666 (2 × 38 / 2 × 31), XMAX 0,646 (2 × 28 / 2 × 22,5). Itu bukan tanda sisi buang kekecilan — pada 4 valve, dua valve buang kecil punya keliling tirai yang besar relatif terhadap luasnya (§4.2).
 
 Tapi yang lebih menentukan keputusan cam bukan rasio valve, melainkan **rasio throat** — dibahas di 3.4.
+
+**Ada ruang untuk valve buang lebih besar bukan berarti harus dipakai.** Valve buang yang lebih besar menambah massa di komponen yang paling panas dan paling sering gagal, dan menipiskan jembatan antar-seat (sisakan minimal ~4 mm — jalur retak termal klasik). Sebelum membesarkannya: pastikan sisi buang memang pembatas (§5.5), dan ukur dulu port buangnya — valve yang dibesarkan di belakang port buang yang sempit tidak memberi apa-apa.
 
 ---
 
@@ -1962,7 +1966,7 @@ Mesin Contoh A: 1,035 — port sedikit lebih besar. Ini kondisi yang benar.
 
 Pada Mesin Contoh B, CSA 615 mm² memberi rasio 0,96 (melebar) sementara 665 mm² memberi 1,04 (menyempit). Ini alasan kuat untuk condong ke **ujung atas rentang**.
 
-**Rasio < 1 bukan otomatis cacat.** Di bawah lift kritis (§4), tirai valve yang membatasi, bukan throat — throat baru "terpakai" di lift tinggi. Karena itu kepala produksi sering sengaja memakai port lebih kecil dari throat demi kecepatan gas di rpm rendah-menengah. Contoh terukur: XMAX 4 valve, port siamese di flange 30 × 34 mm (801 mm²) terhadap throat 2 × Ø25,5 (1.021 mm²) → **rasio 0,78**. Konsekuensinya jelas:
+**Rasio < 1 bukan otomatis cacat.** Di bawah lift kritis (§4), tirai valve yang membatasi, bukan throat — throat baru "terpakai" di lift tinggi. Karena itu kepala produksi sering sengaja memakai port lebih kecil dari throat demi kecepatan gas di rpm rendah-menengah. Contoh terukur: XMAX 4 valve, port siamese di flange 30 × 34 mm (801 mm² kalau elips) terhadap throat 2 × Ø25,5 (1.021 mm²) → **rasio 0,78**. Perhatikan: dua sumbu tidak menentukan luas. Oval yang bersudut bisa ~938 mm² (faktor 0,92, lihat Kamus CSA), rasio jadi 0,92 — kesimpulan dan seluruh ukuran porting bergeser. **Ukur luasnya dari scan atau cetakan, jangan dari dua sumbu.** Konsekuensinya jelas:
 
 - Port menjadi **titik tersempit** saluran; MGV di port 121 m/s pada 8.400 rpm.
 - Ukuran port (atau pinch-nya) menjadi **tuas penempat rpm peak**: makin mendekati 1,0, makin tinggi peak. Pada kepala yang dibatasi rpm, rasio ini sengaja **tidak** dibawa ke 1,0 — lihat build spec XMAX, pinch ~0,86.
@@ -1986,6 +1990,43 @@ Perhatikan: port buang 29 mm hampir sama besar dengan port isap 29,5 mm, walau v
 Kecepatan gas buang 101 m/s hampir identik dengan port isap 97 m/s — konsistensi yang bagus dan bisa dipakai sebagai jangkar.
 
 **Untuk Mesin Contoh B:** dua jangkar memberi 594–653 mm², atau sekitar **28 mm diameter setara**.
+
+**Membandingkan sisi buang dengan sisi isap — pakai basis yang sama.** Bandingkan kecepatan di throat buang dengan kecepatan di **penampang tersempit sisi isap** (port kalau port lebih kecil dari throat, §5.4), karena sisi buang harus mengeluarkan massa yang benar-benar dimasukkan sisi isap. Jangkar terkalibrasi: Mesin Contoh A berjalan di **~1,5×** (throat buang 149 m/s terhadap port isap 97 m/s).
+
+| Mesin | v throat buang | v titik tersempit isap | Rasio |
+|---|---|---|---|
+| Mesin Contoh A | 149 m/s | 97 m/s (port) | 1,54 |
+| XMAX, valve buang 22,5 (TR 0,90) @8.400 | 150 m/s | 121 m/s (port) | 1,24 |
+
+XMAX berada jauh di bawah jangkar — sisi buangnya lega. Dalam konsultasi sempat dipakai sasaran 1,15–1,20; angka itu **tidak didukung** mesin terkalibrasi mana pun dan tidak dipakai.
+
+**Sisi buang adalah tuas yang aman di bawah batas rpm.** rpm peak ditentukan sisi isap (Tahap 4 §3.4). Selama sisi buang bukan pembatas, perbaikannya menurunkan rugi pemompaan dan gas sisa — menaikkan BMEP — **tanpa menggeser peak**. Pada mesin yang rpm-nya dibatasi, sisi buang boleh digarap agresif sementara sisi isap harus hemat.
+
+### 5.6 Rantai penampang: luas setara-aliran
+
+Mata uang untuk menilai saluran adalah **kecepatan**, bukan diameter. Supaya stasiun sebelum dan sesudah percabangan bisa dibandingkan, luas di stasiun yang bercabang dikalikan jumlah cabangnya (**luas setara-aliran**). Contoh terukur, XMAX 4 valve:
+
+| Stasiun | Luas setara-aliran | MGV @8.400 |
+|---|---|---|
+| Throttle body Ø36 | 1.018 mm² | 95 m/s |
+| Port di flange 30 × 34 (dianggap elips) | **801** | **121** |
+| Throat 2 × Ø25,5 | 1.021 | 95 |
+| Tirai @8,5 mm (2 valve) | 1.495 | 65 |
+
+Deretnya menyempit rapi sampai port, lalu **membesar** di throat: aliran dipercepat ke 121 m/s lalu dilepas melambat. Itu yang dimaksud §5.4 dengan port sebagai pinch.
+
+Dua bentuk yang sah:
+
+1. **Kecepatan rata sampai throat**, lalu tirai valve yang melakukan percepatan akhir. Di XMAX kebetulan TB (1.018) ≈ total throat (1.021) — saluran yang benar adalah ~1.020 mm² dari TB sampai throat. Ini arah kepala balap.
+2. **Pinch yang disengaja**, lalu mekar landai ke throat (setengah-sudut jauh di bawah 7°). Ini memilih kecepatan di rpm rendah-menengah dan membatasi rpm peak — lihat §8.1.
+
+**Perkiraan kasar dua hambatan seri** (masing-masing dianggap satu lubang dengan K sama):
+
+```
+1 / A_eff² = 1 / A₁² + 1 / A₂²
+```
+
+XMAX (flange dianggap elips): port 801 + throat 1.021 → A_eff 630 mm²; port dibuka ke 1.021 → 722 mm² (+14,6%). Model ini **melebih-lebihkan** — dipakai untuk urutan besar, dan angka sebenarnya dari flow bench.
 
 ---
 
@@ -2123,6 +2164,33 @@ Urutan ini penting — mengerjakan dengan urutan terbalik bisa merusak yang suda
 
 **Aturan emas porting:** **material bisa dibuang, tidak bisa dikembalikan.** Kalau ragu, kerjakan setengahnya dulu, ukur, baru lanjutkan.
 
+**Finishing:** port isap cukup **60–80 grit, arah silang — jangan dipoles**. Permukaan isap yang mengilap membuat bahan bakar turun dari suspensi. Port buang justru boleh dipoles: tidak ada bahan bakar dalam suspensi, dan permukaan halus mengurangi lengketnya karbon.
+
+### 8.1 Porting dengan batas rpm
+
+Kalau rpm peak dibatasi (oleh stroke, bottom end, atau pilihan), porting punya **anggaran**, bukan sekadar "sebesar mungkin".
+
+**Anggaran dari kalibrasi mesin itu sendiri** (Tahap 4 §3.4): pada K yang sama, rpm peak berbanding lurus dengan aliran efektif isap.
+
+```
+anggaran aliran = rpm_batas / rpm_peak_sekarang − 1
+```
+
+Contoh XMAX: peak 8.400 → batas 9.000 → anggaran **+7,1%**.
+
+**Kerja kualitas ikut memakan anggaran.** Short turn, bowl, dan boss yang dirapikan menaikkan koefisien alir, dan di mata mesin itu sama dengan menambah luas. Porting rapi di kepala OEM lazim memberi 5–15% — **merapikan saja bisa menghabiskan seluruh anggaran**, tanpa menyentuh CSA.
+
+**Urutan yang aman, karena over-porting tidak bisa dibatalkan:**
+
+1. Petakan CSA sepanjang port (cetakan silikon + 3D scan kalau ada).
+2. Kerjakan item kualitas dulu, dengan CSA dibiarkan atau dibuka secara konservatif.
+3. Flow bench sebelum-sesudah per valve, atau dyno — catat di rpm berapa peak mendarat.
+4. Buka sedikit demi sedikit sampai anggaran habis, lalu berhenti.
+
+**Pinch di bagian yang bisa diganti.** Kalau manifold dibuat sendiri (cetak 3D, fabrikasi), buat **ujung manifold sebagai pinch** dan kepala dibuka sekali ke ukuran sedikit lebih besar. rpm peak lalu disetel dengan mengganti manifold — murah dan bisa dibatalkan — bukan dengan menggerinda kepala berulang-ulang. Step di sambungan itu sekaligus berfungsi sebagai anti-reversion (§6.5). Contoh angka lengkap: build spec XMAX §5.
+
+**Port dulu, cam belakangan.** Port permanen; cam bisa diganti. Kerjakan port berdasarkan prinsip, ukur hasilnya, baru pilih durasi cam yang menempatkan peak di rpm yang diinginkan. Contoh (flange XMAX dianggap elips 801 mm²): port dibuka penuh ke 1.021 mm² (+14,6% aliran) dengan cam ~243° memberi peak yang sama (9.000) dengan geometri port yang benar — plafon tenaganya sama dengan port setengah jadi + cam 260°, tapi port yang benar menolong di semua rpm dan overlap yang lebih kecil memperbaiki putaran bawah.
+
 ---
 
 ## 9. Ringkasan Tahap 3
@@ -2137,6 +2205,9 @@ Urutan ini penting — mengerjakan dengan urutan terbalik bisa merusak yang suda
 8. **Mulut port di flange sering lebih berpengaruh** daripada bentuk port di dalamnya.
 9. **Kerjakan seat dan throat dulu**, badan port terakhir.
 10. **Boss guide lebih mahal daripada batang valve.** Keluarkan boss dari bowl, dan hitung luas cabang port secara bersih.
+11. **Nilai saluran dengan luas setara-aliran dan kecepatan**, bukan diameter.
+12. **Di bawah batas rpm, porting punya anggaran** — dan kerja kualitas ikut memakannya. Taruh pinch di bagian yang bisa diganti; port dulu, cam belakangan.
+13. **Sisi buang tuas yang aman** di mesin yang rpm-nya dibatasi: menaikkan BMEP tanpa menggeser peak.
 
 **Berikutnya:** Tahap 4 — camshaft, yang menentukan di putaran berapa plafon ini tercapai.
 
@@ -2292,6 +2363,8 @@ Artinya K hanya ditentukan oleh dua hal: **seberapa keras throat dipakai di peak
 | Honda CRF450R 2021 (4 valve, pabrikan) | 1.837 mm²* | tidak dipublikasi | 9.300 | **76 m/s** | 0,114–0,132** |
 
 \* throat diasumsikan dari diameter valve (TR 0,935 dan 0,90). \*\* untuk durasi 260–300°.
+
+Dua catatan kepercayaan: rpm peak XMAX adalah hasil koreksi (sumbu rpm dyno aslinya rusak oleh rasio CVT tetap, Tahap 11 §9). rpm peak mesin 224cc dibaca dari dyno sejenis tanpa locked ratio pulley, dan pasangan tenaga-rpm-nya sendiri gagal uji jepitan (Tahap 11 §8.6) — K 0,077 dari mesin itu belum terverifikasi.
 
 K berkisar 0,077 sampai lebih dari 0,13 — **bukan konstanta**. CRF450R memakai throat-nya jauh lebih santai (76 m/s) dibanding mesin lain: peak-nya tidak ditentukan oleh batas aliran isap, tapi oleh hal lain (knalpot, penalaan, karakter tenaga motocross).
 
@@ -3545,6 +3618,8 @@ Aturan umum menyebut 105 m/s. Mesin Contoh A berjalan di **61 m/s** dan tidak be
 
 **Kenapa aturan umum meleset:** ditulis untuk mesin bertransmisi gear yang butuh respons part-throttle. Pada CVT yang selalu WOT, respons tidak relevan — yang dikejar restriksi minimum.
 
+**Jangkar kedua dari mesin pabrikan:** dengan rumus 1.1 yang sama, Honda CRF450R (TB 46 mm) bekerja di **~76–82 m/s** saat peak. Jadi rentang yang terbukti nyaman adalah **~60–80 m/s**. Di atas itu TB mulai relatif kecil — tapi hadiah dari membesarkannya **dibatasi total rugi TB itu sendiri** (untuk TB 36 mm di mesin 345cc cuma ~0,26–0,52 hp kalau TB dihapus sama sekali). Aturan "TB ≥ throat" atau rasio TB/throat tertentu tidak berlaku — CRF memakai TB yang lebih kecil dari total throat-nya. Lihat Tahap 11 §5.3 dan §11.
+
 ### 1.3 Kenapa mengecilkan TB TIDAK menaikkan kecepatan gas
 
 Ini kesalahpahaman yang paling sering merugikan.
@@ -3666,6 +3741,22 @@ Ditala saat `f_H / f_engine ≈ K`.
 
 Model ini memberi jawaban berbeda dari model gelombang. Pakai keduanya sebagai **rentang**, bukan satu angka pasti.
 
+### 2.8 Downdraft: jalur lurus, tapi panjang yang tersedia menentukan harmonik
+
+TB downdraft menghapus tikungan manifold dan memberi jalur paling lurus ke valve. Tapi di skutik, ruang di atasnya terbatas — dan panjang itulah yang menentukan harmonik mana yang bisa ditangkap.
+
+Contoh XMAX (durasi 260°): klep → ujung TB 200 mm, velocity stack maksimal 80 mm, TB Ø43:
+
+| Stack | L efektif | h2 | h3 |
+|---|---|---|---|
+| 0 mm | 218 mm | 17.718 | 11.812 |
+| 69 mm | 287 mm | 13.463 | **8.975** |
+| 80 mm | 298 mm | 12.966 | 8.644 |
+
+Untuk h2 di 9.000 rpm dibutuhkan ~430 mm efektif; yang tersedia paling panjang ~298. Downdraft di sini **cuma bisa menangkap h3**, yang denyutnya jauh lebih lemah — penalti ~1,1–1,6 hp dibanding setup samping dengan pipa yang menangkap h2.
+
+**Downdraft sendiri tidak salah.** Honda CRF450R memakai TB downdraft **dengan airbox besar**. Kerugian terbesar downdraft di skutik biasanya bukan arahnya, tapi hilangnya boks (udara panas kolong jok) dan tract yang terlalu pendek. Kalau downdraft tetap dipilih: stack disetel untuk h3 tepat di rpm sasaran, dan mulut stack diberi **corong udara dingin tertutup** dari luar bodi lengkap dengan filter — bukan filter pod langsung di stack, yang merusak aliran bellmouth.
+
 ---
 
 ## 3. Velocity stack, plenum, dan manifold
@@ -3701,6 +3792,19 @@ R_bellmouth ≥ 0,15–0,20 × diameter saluran
 
 Di bawah 0,10 koefisien flow turun cepat. Di atas 0,25 hasilnya jenuh — menambah radius tidak menambah apa-apa.
 
+**Diameter acuan (datum)** adalah bore di **titik singgung** tempat radius mulai — bukan diameter mulut terluar. Diameter mulut terluar = D + 2R. Kalau pipa ditambah bellmouth yang dicetak menyatu, panjang pipa bertambah sepanjang bagian lengkungnya; hitung ulang panjang efektif (§3.1).
+
+**Ruang bebas di sekeliling mulut.** Bellmouth yang berdiri bebas di dalam boks butuh ruang agar udara bisa masuk dari segala arah. Patokan yang diturunkan dari rasio luas tirai masuk ~2,5 × luas bore: **celah radial ≥ 0,5 × D** dan **celah depan ≥ 1,0 × D**. Hitungan berbasis luas memberi angka lebih kecil daripada menjumlahkan diameter secara linier — contoh mulut Ø65,8: ~135 mm lebar kotak minimum, bukan 152.
+
+Kalau ruang tidak cukup (misalnya bagian depan boks cuma 100 mm karena mentok rangka), ada dua jalan:
+
+| Opsi | Bentuk | Catatan |
+|---|---|---|
+| **Oval dengan CSA tetap** | pipa bertransisi ke oval yang luasnya sama (mis. Ø65,8 → 50 × 86,6), bellmouth ikut oval | kecepatan dan penalaan tidak berubah; ongkos cuma gesek tambahan dari keliling yang lebih panjang (~+6 Pa pada rasio 1,73:1). Periksa angkanya: 50 × 106,6 bukan CSA-setara (+23% luas, taper jadi 8,3°) |
+| **Bellmouth menyatu ke dinding boks** (flanged inlet) | mulut pipa menjadi lubang ber-radius di dinding boks, tanpa ruang kosong di belakangnya | **lebih baik** secara aerodinamis: tidak ada bibir untuk diputari udara, dan aturan ruang bebas tidak berlaku. Rugi masuk turun ke ~16 Pa, dan ukurannya lebih kecil daripada bellmouth berdiri bebas |
+
+Untuk ruang sempit, opsi kedua bukan kompromi — itu konfigurasi yang lebih baik.
+
 ### 3.3 Susunan pelebaran yang benar
 
 Pertanyaan yang sering muncul: apakah port di head, manifold, TB, dan velocity stack harus sama besar lalu melebar di stack saja, atau melebar bertahap?
@@ -3725,6 +3829,10 @@ Sekali ada **pelebaran di tengah jalan**, aliran melambat, lapisan batas menebal
 
 **JANGAN** membuat TB lebih kecil daripada port lalu melebar lagi di stack. Itu menciptakan penyempitan-pelebaran yang merugikan dua kali.
 
+**Batas sudut taper: setengah-sudut ≤ 7°.** Pipa yang mengerucut ke arah valve aman untuk aliran maju — aliran sedang dipercepat. Tapi gelombang balik (reversion) melihat kerucut yang sama sebagai **difuser**, dan di atas ~7° aliran balik itu lepas dari dinding. Contoh: pipa XMAX 227 mm dari mulut Ø65,8 ke Ø40 → 3,3° (aman).
+
+**Pengecualian yang disengaja:** pada kepala yang rpm-nya dibatasi, pinch bisa sengaja ditempatkan sebelum throat (Tahap 3 §5.4, §5.6, §8.1). Sesudah pinch itu penampang boleh mekar lagi ke throat asal sangat landai — jauh di bawah 7°. Bandingkan luas di stasiun bercabang sebagai **luas setara-aliran** (luas satu cabang × jumlah cabang).
+
 ### 3.4 Volume plenum
 
 ```
@@ -3732,6 +3840,8 @@ V_plenum ≈ 1,0–1,5 × kapasitas mesin
 ```
 
 Untuk mesin 1 cylinder di drag, ujung atas rentang — atau **tanpa plenum sama sekali**, dengan velocity stack terbuka ke atmosfer. Ini lazim dan efektif, selama udara yang dihisap tidak panas.
+
+**Aturan ini untuk plenum balap, bukan airbox skutik.** Membandingkan airbox skutik dengan 1,0–1,5 × kapasitas adalah salah kelas komponen — kesalahan yang pernah terjadi dalam konsultasi dan membuat boks 3–4,5 L terlihat "kebesaran" padahal tidak. Untuk airbox, volume diturunkan dari kriteria dekopling dan responsivitas inlet (Tahap 11 §10.2).
 
 ### 3.5 Sambungan yang sering merusak
 
@@ -3742,10 +3852,39 @@ Yang harus diperiksa:
 - [ ] Manifold dan head benar-benar **sebidang** — tidak ada step
 - [ ] Gasket tidak menonjol ke dalam saluran
 - [ ] Tepi mulut port diberi **radius**, bukan dibiarkan tajam
-- [ ] Diameter manifold sama atau sedikit lebih besar daripada port head
+- [ ] Ujung manifold **sama atau sedikit lebih kecil** (0,4–0,7 mm per sisi) daripada mulut port head — **jangan lebih besar**
 - [ ] Tidak ada celah di sambungan yang bisa menghisap udara palsu
 
 **Ini perbaikan paling murah yang paling sering diabaikan.** Sambungan yang meleset 1 mm bisa memakan lebih banyak flow daripada short-turn radius yang digerus berjam-jam.
+
+> **Koreksi:** edisi sebelumnya menulis manifold "sama atau sedikit lebih besar" daripada port. Itu terbalik. Manifold yang lebih besar menyisakan tepi port yang menghadang aliran maju. Manifold yang sedikit lebih kecil membuat aliran maju cuma melewati step mundur kecil, sementara gelombang balik menabrak dinding — step anti-reversion (Tahap 3 §6.5).
+
+### 3.6 Material saluran dan suhu udara masuk
+
+Udara yang lebih panas lebih renggang. Dua sumber panas yang sering dicampuradukkan:
+
+**1. Panas dari head yang merambat lewat dinding manifold.** Manifold bekerja seperti sirip pendingin. Panjang rambatannya:
+
+```
+L_c = √( k × A_penampang_dinding / (h × keliling) )
+```
+
+| Material | k (W/m·K) | Panjang rambat panas |
+|---|---|---|
+| Aluminium | ~150–200 | **~97 mm** ke hilir |
+| PPS-CF (cetak 3D) | ~0,3–1 | **~6 mm** |
+
+Manifold aluminium menyebarkan panas head hampir sepanjang saluran; manifold polimer menghentikannya di dekat flange. Efek pada suhu udara: **~1–3 K**. Pada XMAX 345cc itu ~1,3 K, setara **~+0,17 hp**.
+
+**2. Dari mana udara diambil.** Udara dari dalam boks yang mengambil dari luar dibanding udara dari kolong jok/ruang mesin berbeda **10–30 K**. Itu **sekitar 10× lebih besar** dari efek material dinding — setara **−1,3 sampai −3,7 hp** di mesin 345cc. Karena itu melepas boks demi "aliran lebih lancar" hampir selalu rugi, dan boks selalu terpasang adalah langkah pertama sebelum soal material.
+
+**Pilihan material untuk bagian cetak:**
+
+| Material | Untuk |
+|---|---|
+| **PPS-CF** | bagian yang menempel head (manifold), dan versi permanen pipa — tahan suhu tinggi, stabil dimensi, tahan bahan bakar |
+| PETG | prototipe bentuk saja — melunak ~80°C, terlalu dekat suhu ruang mesin |
+| ABS | hindari di saluran bahan bakar — diserang uap bensin dari reversion |
 
 ---
 
@@ -3868,11 +4007,14 @@ Kalau harmonik header meleset, pembilasan hilang tepat di rpm puncak, dan tidak 
 4. **Runner standar sangat pendek** (43 mm terukur). Sasaran 12.000 rpm butuh ~155 mm.
 5. **Pakai suhu dalam runner** untuk kecepatan suara, bukan ambient.
 6. **Harmonik tidak bisa ditentukan dari teori** — ukur mesin yang sudah terbukti.
-7. **Luas saluran harus melebar terus-menerus** dari throat ke mulut stack. Jangan ada pelebaran di tengah.
-8. **Radius bellmouth 0,15–0,20 × diameter**, di atas itu jenuh.
-9. **Sambungan manifold yang tidak sebidang** bisa memakan lebih banyak flow daripada porting berjam-jam.
+7. **Luas saluran harus melebar terus-menerus** dari throat ke mulut stack. Jangan ada pelebaran di tengah — kecuali pinch yang disengaja pada kepala yang rpm-nya dibatasi, dengan mekar sangat landai. Setengah-sudut taper ≤ 7°.
+8. **Radius bellmouth 0,15–0,20 × diameter**, di atas itu jenuh. Kalau ruang sempit, bellmouth yang menyatu ke dinding boks lebih baik daripada yang berdiri bebas.
+9. **Sambungan manifold yang tidak sebidang** bisa memakan lebih banyak flow daripada porting berjam-jam. Ujung manifold sedikit lebih kecil dari port, jangan lebih besar.
 10. **Port buang 1,49× throat-nya** — jauh lebih besar daripada sisi isap.
 11. **Panjang header adalah tersangka utama** kalau hasil jauh di bawah potensi head.
+12. **TB nyaman di ~60–80 m/s**, dan hadiah dari membesarkannya dibatasi rugi TB itu sendiri.
+13. **Downdraft di ruang sempit cuma menangkap h3.** Arahnya tidak salah; yang mahal hilangnya boks dan panjangnya.
+14. **Sumber udara mengalahkan material saluran ~10×.** Boks selalu terpasang dulu, baru soal material.
 
 **Berikutnya:** Tahap 8 — mekanik dan material, supaya yang sudah dibangun tidak jebol.
 
@@ -3899,6 +4041,10 @@ MPS = 2 × stroke[m] × rpm / 60
 | 22–24 | sangat tinggi, butuh part serius |
 | 24–26 | ekstrem |
 | 30+ | drag profesional, mesin sekali pakai |
+
+**Stroke panjang menutup rpm lebih dulu.** Stroke 76 mm (XMAX bore-up) sudah di 21,3 m/s pada 8.400 rpm; batas bottom end turunan-standar ~22–23 m/s jatuh di **~8.700–9.000 rpm**. Honda CRF450R (stroke 62,1) mencapai peak di 19,3 m/s — rpm yang bagi mesin stroke panjang sudah mahal, bagi mesin stroke pendek masih santai.
+
+**Kalau rpm dikunci, tinggal satu tuas.** `HP ∝ BMEP × Vd × rpm`. Dengan Vd tetap dan rpm dibatasi, tenaga **cuma bisa naik lewat BMEP**: pengisian di rpm kerja (porting yang ditempatkan dengan benar, Tahap 3 §8.1), sisi buang, penalaan gelombang, rasio kompresi dan bahan bakar, pengapian dan AFR, suhu udara masuk. Menaikkan batas rpm itu sendiri adalah keputusan bottom end (§1.4), bukan keputusan kepala.
 
 ### 1.2 Percepatan piston
 
@@ -4562,6 +4708,28 @@ CVT harus **benar-benar mampu** menahan mesin di titik itu. CVT yang salah setel
 
 Inilah kenapa banyak mesin yang bagus di dyno mengecewakan di lintasan.
 
+### 2.4 Motor harian: dataran, bukan satu titik
+
+"Satu titik" berlaku penuh untuk drag. Di jalan, rpm tahan CVT bergeser naik-turun mengikuti beban — tanjakan, angin, boncengan, gas setengah. Untuk motor yang juga dipakai harian, "powerband lebar" berarti tiga hal:
+
+1. **Dataran rata ±500 rpm** di sekitar rpm tahan CVT, supaya pergeseran itu tidak terasa.
+2. **Torsi cukup di rpm kopling mulai mencengkeram**, untuk start dan buka gas dari kecepatan rendah.
+3. **Part-throttle yang bersih** — tanpa "ngorok" di bukaan kecil.
+
+Tuas yang membentuk dataran itu, dari yang paling murah:
+
+| Tuas | Cara kerjanya |
+|---|---|
+| **Penalaan berlapis** | Harmonik isap yang berbeda menopang titik berbeda: h3 di rpm kopling, h2 sedikit **di bawah** peak, porting menopang sisi atas. Menumpuk h2 tepat di peak membuat puncak sedikit lebih tinggi tapi band lebih sempit |
+| **Knalpot ditala ke rpm berbeda dari isap** | Mengisi celah di antara dua harmonik isap. Isap dan buang ditala ke rpm yang sama = puncak runcing |
+| **Boks selalu terpasang** | Udara dingin, dan tekanan di mulut pipa yang stabil di bukaan kecil |
+| **Ukuran pinch port** | Pinch lebih kecil menjaga kecepatan di rpm rendah-menengah (Tahap 3 §8.1) |
+| **Pengapian dan AFR di rpm tengah** | Sering tertinggal karena peta disetel untuk peak |
+| **Waktu cam (ICL), bukan durasi** | Dimajukan: tengah lebih kuat; dimundurkan: atas lebih kuat. Durasi lebih panjang justru mempersempit band |
+| **Rasio kompresi** | Menaikkan BMEP di semua rpm, paling terasa bawah-tengah |
+
+**CVT disetel terakhir**, di atas kurva hasil dyno: kopling masuk di rpm yang sudah bertorsi (dekat h3), rpm tahan di **tengah dataran** (bukan tepat di peak), dan per CVT untuk respons kickdown. Contoh angka lengkap: build spec XMAX §8.
+
 ---
 
 ## 3. Menyetel CVT
@@ -5188,7 +5356,7 @@ Kasus nyata dari XMAX bore-up 345cc. Setelah pemilik mengukur port di flange (ov
 
 Itu salah basis. Semua kalibrasi rumus ini memakai **luas throat**. Dengan luas throat, angka yang sama memberi **87 m/s** — wajar untuk cam 260° jalanan, tanpa anomali apa pun. Angka "balap" tadi muncul semata karena pembaginya diganti, lalu angka besarnya dikagumi.
 
-Kesimpulan bahwa port XMAX memang sempit ternyata tetap benar, tapi karena bukti lain yang berdiri sendiri: MGV di port 121 m/s pada 8.400 rpm, dan luas port per cc turun 15% akibat bore-up. **Kesimpulan yang benar dengan alasan yang salah tetap pekerjaan yang salah** — alasan yang salah akan menyesatkan di keputusan berikutnya.
+Kesimpulan bahwa port XMAX memang sempit bertumpu pada bukti lain: MGV di port 121 m/s pada 8.400 rpm, dan luas port per cc turun 15% akibat bore-up. Tapi bukti itu sendiri memakai asumsi yang belum diperiksa: luas 801 mm² dihitung sebagai **elips murni**. Kalau flange-nya oval bersudut (~938 mm²), MGV port cuma 103 m/s — di rentang sehat — dan ukuran porting bergeser besar. Satu dimensi yang diasumsikan, lagi (bandingkan §10.3). **Alasan yang salah tetap pekerjaan yang salah, walaupun kesimpulannya kebetulan benar** — alasan yang salah akan menyesatkan di keputusan berikutnya.
 
 Aturannya: sebelum memasukkan angka ke rumus terkalibrasi, tanyakan **luas apa, durasi dengan konvensi apa, tenaga di roda atau engkol** yang dipakai saat kalibrasi — lalu pakai yang sama.
 
@@ -5718,6 +5886,17 @@ Dihitung ulang dengan geometri sebenarnya, **@8.400 rpm**:
 
 **Kesimpulannya terbalik.** TB tetap yang termahal. Mulut pipa turun dari 2.108 Pa menjadi 367 Pa — bukan karena diperbaiki, tapi karena kecepatan sebenarnya di bore Ø65,8 cuma 26,2 m/s, bukan 62,9 m/s yang dihitung dari asumsi Ø42,5. Rugi berbanding v², jadi selisih kecepatan 2,4× berubah jadi selisih rugi hampir 6×.
 
+**Menerjemahkan Pa ke hp.** Tumpukan rugi baru berguna kalau bisa dibandingkan dengan tuas lain. Skala yang dipakai untuk mesin 345cc ini:
+
+| Tuas | Besaran |
+|---|---|
+| Rugi tekanan saluran | ~**+0,2 hp per 1.000 Pa** yang dihapus (batas atas ~0,4 hp bila rugi dianggap langsung mengurangi densitas muatan) |
+| Suhu udara masuk | tiap +10 K ≈ **−1,3 hp**; boks vs udara kolong jok **−1,3 s/d −3,7 hp** |
+| Orde harmonik yang ditangkap | h2 → h3 ≈ **−1,1 s/d −1,6 hp** |
+| Material manifold (efek sirip) | aluminium → PPS-CF ≈ **+0,17 hp** |
+
+Dengan skala ini, seluruh pekerjaan detail pipa (~520 Pa) bernilai ~0,1–0,2 hp — lebih kecil daripada memastikan boks selalu terpasang.
+
 > **Pelajarannya, dan ini yang layak dibawa pulang:** tumpukan rugi cuma sebagus geometri di baliknya. **Satu dimensi yang diasumsikan — bukan diukur — bisa membalik seluruh urutan prioritas**, termasuk kesimpulan yang kelihatannya sudah didukung angka rapi dengan dua desimal. Sebelum menyusun tumpukan rugi apapun: telusuri jalur udaranya secara fisik (foto, bongkar, atau scan), jangan hitung dari bayangan "bentuk pipa pada umumnya".
 
 ### 10.4 Ruang bebas mengalahkan volume
@@ -5949,6 +6128,22 @@ K_penyempitan_mendadak = 0,5 × (1 − A_kecil/A_besar)   [step MENYEMPIT; pakai
 
 **Aliran puncak vs rata-rata:** `Q_puncak` berlaku di saluran yang tersambung langsung ke klep. Di **hulu plenum**, pulsa sudah diredam — pakai aliran mendekati rata-rata (≈1–2× `Q_rata2`). Titik pemisahnya adalah plenum itu sendiri. Lihat Tahap 11 §10.6.
 
+**Rantai penampang** (Tahap 3 §5.6):
+
+```
+A_setara_aliran  = A_satu_cabang × jumlah_cabang          [supaya stasiun bercabang bisa dibandingkan]
+MGV_stasiun      = Vd[cc] × rpm / (30 × A_setara[mm²])     [m/s]
+1/A_eff²         = 1/A₁² + 1/A₂² + …                      [hambatan seri, perkiraan kasar — melebih-lebihkan]
+Cabang port      : hitung luas BERSIH dari boss guide & batang valve (Tahap 3 §6.6)
+Sisi buang vs isap: bandingkan v throat buang dengan v titik tersempit isap; jangkar Contoh A ≈ 1,5×
+```
+
+**Anggaran porting di bawah batas rpm** (Tahap 3 §8.1):
+
+```
+anggaran_aliran  = rpm_batas / rpm_peak_sekarang − 1       [pada K yang sama; kerja kualitas ikut memakannya]
+```
+
 ### A.4 Kompresi
 
 ```
@@ -6038,6 +6233,21 @@ Radius bellmouth        R = 0,15–0,20 × D             [Tahap 7 §3.2]
 ```
 
 > Aturan `V_plenum ≈ 1,0–1,5 × Vd` di Tahap 7 §3.4 berlaku untuk **plenum balap** yang menyuapi runner pendek. Airbox OEM berada di 8–15 × Vd karena membayar kendala lain — kebisingan, margin filter kotor, kalibrasi tunggal. Jangan campur keduanya. Lihat Tahap 11 §10.1.
+
+### A.7c Saluran: taper, sambungan, material
+
+```
+Setengah-sudut taper       ≤ 7°                        [reversion melihat kerucut sebagai difuser]
+Datum bellmouth            = bore di titik singgung;  mulut terluar = D + 2R
+Bellmouth menyatu dinding  aturan ruang bebas tidak berlaku; rugi masuk ~16 Pa (lebih baik dari berdiri bebas)
+Oval CSA-setara            kecepatan & penalaan sama; ongkos cuma gesek keliling (~+6 Pa @1,73:1)
+Step manifold → port       ujung manifold 0,4–0,7 mm/sisi LEBIH KECIL dari port (anti-reversion)
+Rambatan panas dinding     L_c = √(k × A_dinding / (h × keliling))   [Al ~97 mm; PPS-CF ~6 mm]
+Suhu udara masuk           +10 K ≈ −1,3 hp (345cc); sumber udara ~10× lebih berpengaruh dari material dinding
+Rugi tekanan → tenaga      ≈ +0,2 hp per 1.000 Pa dihapus (345cc; batas atas ~0,4)
+Downdraft                  panjang tersedia menentukan harmonik — tract pendek cuma menangkap h3 (Tahap 7 §2.8)
+TB                         nyaman ~60–80 m/s (rumus Tahap 7 §1.1); hadiah membesarkan ≤ total rugi TB
+```
 
 ### A.8 Bahan bakar dan pengapian
 
@@ -6315,6 +6525,120 @@ Semua ada di direktori `tools/`, ditulis dengan Python. Tiap berkas punya `_self
 | Potensi flow (valve maks) | 89 CFM @28" |
 | Potensi tenaga | ~40 HP |
 | CR disarankan | 12,5–13:1 (bukan 14, karena spark plug menepi) |
+
+**Data terukur dari pembaca (kepala standar):**
+
+| Parameter | Nilai | Tanda |
+|---|---|---|
+| Throat isap | Ø18 mm × 2 = 509 mm² | [UKUR] |
+| Throat buang | Ø19 mm × 1 = 284 mm² | [UKUR] |
+| Port isap | oval 21 × 31,7 mm = 523 mm² | [UKUR] |
+| Rasio port/throat isap | 1,03 | [HITUNG] |
+| Throat per cc | 3,29 mm²/cc (setara Mesin Contoh A) | [HITUNG] |
+| **Rasio throat ex/in** | **0,557** | [HITUNG] |
+| MGV throat / port @7.750 (peak standar) | 79 / 77 m/s | [HITUNG] |
+
+Rasio throat ex/in terukur **0,557** jauh di bawah angka 0,679 di atas (yang dihitung dari ukuran valve maksimum yang muat, bukan dari kepala standar). Di bawah 0,63, Tahap 4 §3.6 menyarankan durasi buang **8–12° lebih panjang** dari durasi isap.
+
+Panjang saluran efektif (klep → ujung terbuka) untuk durasi isap 270°, c = 357 m/s [HITUNG]:
+
+| RPM | h2 | h3 | h4 |
+|---|---|---|---|
+| 8.000 | 502 mm | 335 | 251 |
+| 9.000 | 446 | 298 | 223 |
+| 10.000 | 402 | 268 | 201 |
+| 11.000 | 365 | 243 | 183 |
+
+rpm sasarannya sendiri harus diturunkan dari K yang dikalibrasi (Tahap 4 §3.4), bukan dipilih dari tabel ini.
+
+### D.4 Vespa 3 valve 204cc — rancangan balap trek 1,5 km
+
+Bore-up dari kepala 3 valve (Mesin Contoh C) ke 67 × 58 mm. Rancangan, belum dibangun.
+
+| Parameter | Nilai |
+|---|---|
+| Bore × stroke | 67 × 58 mm = 204,5 cc |
+| Valve isap ideal (rasio luas 0,262 seperti Contoh C) | Ø24,25 × 2 |
+| **Valve isap yang tersedia** | **Ø23 × 2** (rasio 0,236 — di bawah jangkar) |
+| Throat isap | TR 0,935 → Ø21,5 → **726 mm²** (−2,9% dari ideal di TR 0,90); TR 0,90 → 673 mm² (−10%) |
+| Tuas penyelamat | naikkan TR ke 0,935: seat 1,0–1,2 mm tiga sudut, bowl dibuka sampai Ø21,5 |
+| Valve buang | Ø26,7 × 1 (luas buang/isap ~0,675) |
+| Lift kritis isap | 5,03 mm |
+| Bantalan big end | plain (metal), bantalan utama perlu dicek |
+
+**Plafon tenaga per bahan bakar** (`HP = BMEP × Vd × rpm`, dari BMEP plafon):
+
+| BMEP | 11.000 | 12.000 | 12.500 | 13.400 |
+|---|---|---|---|---|
+| 13,5 bar (RON98) | 33,9 hp | 37,0 | 38,6 | 41,3 |
+| 17 bar (metanol) | 42,7 | 46,6 | 48,6 | 52,1 |
+| 19 bar (nitro) | 47,8 | 52,1 | 54,3 | 58,2 |
+
+**Durasi → rpm peak** memakai K **pinjaman** dari mesin balap 224cc (0,0768, belum terverifikasi — lihat D.5), throat 726 mm²:
+
+| Durasi isap | Peak | MPS |
+|---|---|---|
+| 250° | ~11.560 | 22,3 |
+| 260° | ~12.020 | 23,2 |
+| **270°** | **~12.480** | **24,1** |
+| 280° | ~12.940 | 25,0 |
+| 290° | ~13.410 | 25,9 |
+
+**Beban spesifik big end** (jurnal diasumsikan Ø30 × 16 mm, rod 105 mm — ukur yang sebenarnya):
+
+| Massa bolak-balik | 12.000 | 12.500 | 13.400 |
+|---|---|---|---|
+| 340 g (piston cor/"street") | 41 MPa | 45 | **52** — di batas shell OEM |
+| 265 g (race-spec) | 32 | 35 | 40 |
+| 225 g (ekstrem) | 27 | 30 | 34 |
+
+**Rekomendasi:** durasi ~270°, peak ~12.500 rpm, ~48,6 hp metanol (kalau K pinjaman itu berlaku). Piston race-spec ringan wajib — di plain bearing, massanya yang menentukan, bukan bantalannya. Oil cooler, baut rod berkualitas, balans ulang. MPS 24,1 m/s sudah tinggi; jangan tambah stroke atau rpm. Kalau ruang kepala yang membatasi Ø23 (bukan ketersediaan part), **konversi 4 valve** di bore 67 memberi valve isap ~Ø26 × 2 dan throat ~857 mm² (+27%) — lompatan jauh lebih besar daripada yang bisa diberikan cam.
+
+### D.5 Aerox 224cc — terukur, tapi datanya perlu diverifikasi
+
+| Parameter | Nilai | Tanda |
+|---|---|---|
+| Bore × stroke | 63 × 72 mm = 224,4 cc | [UKUR] |
+| Valve isap / buang | 23 / 20 mm, 4 valve | [UKUR] |
+| TB | 40 mm | [UKUR] |
+| Cam | isap 261° / buang 270° (konvensi lift tidak diketahui) | [UKUR] |
+| CR statis | 14:1 | [UKUR] |
+| Bahan bakar | Pertamax Turbo (RON98) | [UKUR] |
+| Dyno | 41 hp @ 11.000 rpm (Leads) | [UKUR] |
+| Throat isap | 673 (TR 0,90) – 726 mm² (TR 0,935) | [ASUMSI] |
+| MGV throat @11.000 | 113–122 m/s | [HITUNG] |
+| MPS @11.000 | **26,4 m/s** | [HITUNG] |
+| BMEP tersirat | **14,86 bar** | [HITUNG] |
+| K time-area | 0,071–0,077 | [HITUNG] |
+| Luas valve buang/isap | 0,756 | [HITUNG] |
+
+Pasangan 41 hp @ 11.000 **gagal uji jepitan** di RON98 (Tahap 11 §8.6): BMEP menuntut rpm ≥ 12.100, MPS mengizinkan ≤ 10.000. Dyno-nya dari merek yang sama dengan kasus XMAX, yang sumbu rpm-nya rusak karena rasio CVT tetap (Tahap 11 §9). Sampai ada run dengan locked ratio pulley atau rpm dari pickup pengapian, **rpm peak dan K mesin ini belum terverifikasi** — dan itu ikut berlaku untuk rancangan D.4 yang meminjam K-nya.
+
+Catatan: rasio buang/isap 0,756 sudah lega (>0,72, Tahap 4 §3.6), tapi durasi buangnya justru 9° lebih panjang dari isap.
+
+### D.6 XMAX 345cc — terukur
+
+Ringkasan; rincian dan spesifikasi kerja di `build/XMAX-344-BUILD-SPEC.md`.
+
+| Parameter | Nilai | Tanda |
+|---|---|---|
+| Bore × stroke | 76 × 76 mm = 344,8 cc (basis XMAX 300) | [UKUR] |
+| Valve isap / buang | 28 / 22,5 mm, 4 valve SOHC | [UKUR] |
+| Throat isap | Ø25,5 × 2 = 1.021 mm² (TR 0,911) | [UKUR] |
+| Port isap di flange | oval 30 × 34, siamese — 801 mm² kalau elips, sampai ~938 kalau oval bersudut | [UKUR] sumbu / [ASUMSI] luas |
+| TB | 36 mm | [UKUR] |
+| Cam | 260° | [UKUR] |
+| Saluran | klep → TB 206 mm + pipa tirus 227 mm (Ø65,8 → 40), ~460 mm efektif | [UKUR] |
+| Boks | 4,5 L | [UKUR] |
+| Dyno | 40,6 hp (Leads, CVT); peak sebenarnya 7.800–8.800 rpm | [UKUR]/[HITUNG] |
+| Rasio port/throat | 0,78–0,92 | [HITUNG] |
+| MGV throat / port @8.400 | 95 / 103–121 m/s | [HITUNG] |
+| K time-area | 0,092 | [HITUNG] |
+| MPS @8.400 | 21,3 m/s | [HITUNG] |
+| Harmonik isap | h2 ~8.400, h3 ~5.600 rpm | [HITUNG] |
+| Batas peak yang dipilih | 9.000 rpm (MPS 22,8) | — |
+
+Dibanding Honda CRF450R, BMEP-nya terbaca 14,3–14,8 bar di engkol — dyno kemungkinan membaca ~8–12% tinggi (Tahap 11 §11.4).
 
 ---
 

@@ -29,11 +29,13 @@ Terakhir diperbarui: 26 September 2026 — revisi setelah pengukuran seat klep d
 | Diameter seat isap (throat) | **Ø25,5 mm** → rasio throat/klep **0,911** |
 | **Luas throat isap total** | **1.021 mm²** |
 | Batang klep | Ø5 mm (3,8% luas throat) |
-| Port isap di flange | **oval 30 × 34 mm = 801 mm²**, siamese (satu lubang untuk dua klep) |
-| Rasio port/throat | **0,78** — port adalah penampang tersempit saluran |
+| Port isap di flange | **oval 30 × 34 mm**, siamese (satu lubang untuk dua klep) — **801 mm² kalau elips murni; 887–938 mm² kalau oval bersudut** (lihat peringatan di bawah) |
+| Rasio port/throat | **0,78–0,92** tergantung bentuk flange — port tetap penampang tersempit |
 | Luas klep isap / bore | 0,271 (2 × (28/76)²) |
 | Luas klep buang / isap | 0,646 |
 | Porting | standar — rencana di §5 |
+
+> **⚠ Peringatan — bentuk flange belum diukur.** Dua sumbu 30 × 34 tidak cukup untuk menentukan luas. Semua angka di dokumen ini memakai **elips murni** (`π/4 × 30 × 34 = 801 mm²`). Buku ini sendiri (Kamus, CSA) memakai faktor **0,92 × lebar × tinggi** untuk port oval hasil porting yang bersudut. Kalau flange XMAX berbentuk seperti itu, luasnya **~938 mm²** — dan hampir semua angka porting di §5 bergeser (lihat §5.2). **Ukur luas flange dari scan/CAD sebelum menggerinda atau mencetak manifold.**
 
 > **Koreksi:** versi sebelumnya menulis rasio throat/klep 0,935 dan luas throat 1.077 mm². Itu asumsi, bukan ukuran; seat terukur Ø25,5 memberi 1.021 mm² (−5,1%). Baris "rasio klep/bore 0,368" sebelumnya adalah rasio diameter satu klep (28/76), bukan rasio luas.
 
@@ -137,7 +139,7 @@ Perhitungan proporsional di dokumen ini (anggaran porting, pergeseran peak) tida
 |---|---|---|---|
 | TB butterfly 36 mm | 87,7 m/s | **1.138 Pa** | ❌ TB tetap standar |
 | Mulut pipa Ø65,8, menonjol ke plenum | 26,2 m/s | 367 Pa | ✅ radius |
-| Pemuaian port 801 → throat 1.021 di dalam kepala (bila mendadak) | 111,5 m/s | ~342 Pa | ✅ blending bowl (§5) |
+| Pemuaian port 801 → throat 1.021 di dalam kepala (bila mendadak; port dianggap elips) | 111,5 m/s | ~342 Pa | ✅ blending bowl (§5) |
 | Kerucut TB 40→36 (spigot 32mm) | 71,0 m/s | 182 Pa | ✅ dihaluskan |
 | Step sambungan 42,5→40 | 71,0 m/s | 170 Pa | ✅ dihapus (revisi ujung pipa) |
 | Gesek sepanjang pipa tirus | — | 100 Pa | tetap |
@@ -208,6 +210,22 @@ Kerja kualitas (short turn, bowl, boss) juga menaikkan koefisien alir dan **ikut
 
 ### 5.2 Rantai penampang sasaran
 
+**Semua angka di bagian ini bergantung pada luas flange yang sebenarnya (A₀).** Pinch sasaran dihitung dari A₀ yang terukur, bukan dari dua sumbu:
+
+```
+A_eff0      = 1 / √(1/A₀² + 1/1.021²)
+A_eff_sasar = A_eff0 × rpm_sasaran / 8.400
+pinch       = 1 / √(1/A_eff_sasar² − 1/1.021²)
+```
+
+| Bentuk flange 30 × 34 | A₀ | MGV port @8.400 | Pinch untuk peak 8.800 | Pinch untuk peak 9.000 |
+|---|---|---|---|---|
+| elips murni (0,785) | 801 mm² | 121 m/s | 865 | 900 |
+| oval agak bersudut (0,87) | 887 | 109 | 966 | 1.009 |
+| oval bersudut (0,92) | 938 | 103 | 1.026 | 1.075 |
+
+Kalau flange ternyata oval bersudut, port-nya hampir sebesar throat, MGV-nya sudah di rentang sehat, dan **pinch 860–882 di bawah ini justru akan mengecilkan saluran** — peak turun di bawah 8.400. Tabel di bawah ini dan di §5.3 dihitung untuk kasus **elips murni**; untuk kasus lain, geser semua ukuran mengikuti tabel di atas.
+
 | Stasiun | Luas | MGV @9.000 |
 |---|---|---|
 | TB Ø36 | 1.018 mm² | 102 m/s |
@@ -249,8 +267,8 @@ Klep buang **tetap 22,5** — rasio buang/isap 0,646 hampir sama dengan Honda CR
 
 ### 5.6 Urutan kerja
 
-1. Cetakan silikon port → 3D scan → peta CSA sepanjang jalur
-2. Buka flange ke 32,0 × 37,0; kerjakan interior sampai tidak ada titik < ujung manifold
+1. Cetakan silikon port → 3D scan → **luas flange A₀ yang sebenarnya** dan peta CSA sepanjang jalur. Hitung ulang pinch dari A₀ (§5.2) sebelum langkah berikutnya — ini yang menentukan apakah flange perlu dibuka sama sekali
+2. Buka flange ke luas pinch + step (untuk kasus elips: 32,0 × 37,0); kerjakan interior sampai tidak ada titik < ujung manifold
 3. Semua item kualitas (§5.4) + sisi buang (§5.5)
 4. Cetak manifold dengan ujung **860 dan 870**
 5. Flow bench per klep kalau ada; dyno — catat di rpm berapa peak mendarat
@@ -259,7 +277,7 @@ Klep buang **tetap 22,5** — rasio buang/isap 0,646 hampir sama dengan Honda CR
 
 ### 5.7 Kalau suatu saat mengincar 9.500 rpm
 
-Butuh massa bolak-balik ≤ **387 g** (dari ~495 g) supaya beban big end sama dengan hari ini (Tahap 8 §1.4). Profil porting tinggal diteruskan: pinch ~995, flange ~1.030 — semua potongan di atas searah dengan tahap itu.
+Butuh massa bolak-balik ≤ **387 g** (dari ~495 g) supaya beban big end sama dengan hari ini (Tahap 8 §1.4). Profil porting tinggal diteruskan: pinch ~995, flange ~1.030 (kasus flange elips; hitung ulang dari A₀ terukur) — semua potongan di atas searah dengan tahap itu.
 
 ---
 
@@ -273,7 +291,7 @@ Butuh massa bolak-balik ≤ **387 g** (dari ~495 g) supaya beban big end sama de
 | Membesarkan volume plenum | sudah lolos kedua kriteria di 4,5 L |
 | Cam durasi lebih panjang | menggeser peak melewati batas 9.000; plafon HP dikunci luas throat (Tahap 4 §3.5) |
 | Memperbesar throat / TR 0,935 | throat sudah lebih besar dari port; dikunci pemilik |
-| Klep buang Ø25 | kebesaran untuk isap yang dibatasi 9.000; Ø24 hanya relevan bila port isap dibuka jauh lebih besar |
+| Klep buang Ø24–25 | tidak dibutuhkan: throat buang 22,5 dilewati ~1,24× kecepatan titik tersempit isap, jauh di bawah jangkar Mesin Contoh A (~1,5×) — sisi buang sudah lega, juga setelah porting (Tahap 3 §5.5). Sasaran 1,15–1,20 yang sempat dipakai dalam konsultasi tidak didukung data |
 | Memendekkan tract ke 430 mm | h2 bertumpuk di peak, band menyempit |
 
 ---
@@ -313,7 +331,7 @@ Di CVT, "lebar" berarti: dataran rata ±500 rpm di rpm tahan CVT, torsi cukup di
 
 | # | Yang diukur | Cara | Mengunci apa |
 |---|---|---|---|
-| 1 | **CSA sepanjang port isap** | cetakan silikon + 3D scan | di mana pinch sebenarnya; apakah flange 930 cukup |
+| 1 | **Luas flange isap (A₀) dan CSA sepanjang port** — WAJIB sebelum porting | cetakan silikon + 3D scan | seluruh ukuran porting §5 (801 vs 938 mm² menggeser pinch dari 900 ke 1.075) |
 | 2 | **Rpm tahan CVT** saat akselerasi penuh | tacho yang bisa dibaca saat jalan (Tahap 9 §3.1) | setelan roller/per |
 | 3 | **Run dyno dengan locked ratio pulley** | atau umpankan rpm asli dari pickup pengapian | sumbu rpm dan kurva torsi |
 | 4 | **Motor acuan di dyno yang sama** | satu motor yang tenaganya diketahui | seberapa tinggi dyno membaca (§2.6) |

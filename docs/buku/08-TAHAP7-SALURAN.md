@@ -25,6 +25,8 @@ Aturan umum menyebut 105 m/s. Mesin Contoh A berjalan di **61 m/s** dan tidak be
 
 **Kenapa aturan umum meleset:** ditulis untuk mesin bertransmisi gear yang butuh respons part-throttle. Pada CVT yang selalu WOT, respons tidak relevan — yang dikejar restriksi minimum.
 
+**Jangkar kedua dari mesin pabrikan:** dengan rumus 1.1 yang sama, Honda CRF450R (TB 46 mm) bekerja di **~76–82 m/s** saat peak. Jadi rentang yang terbukti nyaman adalah **~60–80 m/s**. Di atas itu TB mulai relatif kecil — tapi hadiah dari membesarkannya **dibatasi total rugi TB itu sendiri** (untuk TB 36 mm di mesin 345cc cuma ~0,26–0,52 hp kalau TB dihapus sama sekali). Aturan "TB ≥ throat" atau rasio TB/throat tertentu tidak berlaku — CRF memakai TB yang lebih kecil dari total throat-nya. Lihat Tahap 11 §5.3 dan §11.
+
 ### 1.3 Kenapa mengecilkan TB TIDAK menaikkan kecepatan gas
 
 Ini kesalahpahaman yang paling sering merugikan.
@@ -146,6 +148,22 @@ Ditala saat `f_H / f_engine ≈ K`.
 
 Model ini memberi jawaban berbeda dari model gelombang. Pakai keduanya sebagai **rentang**, bukan satu angka pasti.
 
+### 2.8 Downdraft: jalur lurus, tapi panjang yang tersedia menentukan harmonik
+
+TB downdraft menghapus tikungan manifold dan memberi jalur paling lurus ke valve. Tapi di skutik, ruang di atasnya terbatas — dan panjang itulah yang menentukan harmonik mana yang bisa ditangkap.
+
+Contoh XMAX (durasi 260°): klep → ujung TB 200 mm, velocity stack maksimal 80 mm, TB Ø43:
+
+| Stack | L efektif | h2 | h3 |
+|---|---|---|---|
+| 0 mm | 218 mm | 17.718 | 11.812 |
+| 69 mm | 287 mm | 13.463 | **8.975** |
+| 80 mm | 298 mm | 12.966 | 8.644 |
+
+Untuk h2 di 9.000 rpm dibutuhkan ~430 mm efektif; yang tersedia paling panjang ~298. Downdraft di sini **cuma bisa menangkap h3**, yang denyutnya jauh lebih lemah — penalti ~1,1–1,6 hp dibanding setup samping dengan pipa yang menangkap h2.
+
+**Downdraft sendiri tidak salah.** Honda CRF450R memakai TB downdraft **dengan airbox besar**. Kerugian terbesar downdraft di skutik biasanya bukan arahnya, tapi hilangnya boks (udara panas kolong jok) dan tract yang terlalu pendek. Kalau downdraft tetap dipilih: stack disetel untuk h3 tepat di rpm sasaran, dan mulut stack diberi **corong udara dingin tertutup** dari luar bodi lengkap dengan filter — bukan filter pod langsung di stack, yang merusak aliran bellmouth.
+
 ---
 
 ## 3. Velocity stack, plenum, dan manifold
@@ -181,6 +199,19 @@ R_bellmouth ≥ 0,15–0,20 × diameter saluran
 
 Di bawah 0,10 koefisien flow turun cepat. Di atas 0,25 hasilnya jenuh — menambah radius tidak menambah apa-apa.
 
+**Diameter acuan (datum)** adalah bore di **titik singgung** tempat radius mulai — bukan diameter mulut terluar. Diameter mulut terluar = D + 2R. Kalau pipa ditambah bellmouth yang dicetak menyatu, panjang pipa bertambah sepanjang bagian lengkungnya; hitung ulang panjang efektif (§3.1).
+
+**Ruang bebas di sekeliling mulut.** Bellmouth yang berdiri bebas di dalam boks butuh ruang agar udara bisa masuk dari segala arah. Patokan yang diturunkan dari rasio luas tirai masuk ~2,5 × luas bore: **celah radial ≥ 0,5 × D** dan **celah depan ≥ 1,0 × D**. Hitungan berbasis luas memberi angka lebih kecil daripada menjumlahkan diameter secara linier — contoh mulut Ø65,8: ~135 mm lebar kotak minimum, bukan 152.
+
+Kalau ruang tidak cukup (misalnya bagian depan boks cuma 100 mm karena mentok rangka), ada dua jalan:
+
+| Opsi | Bentuk | Catatan |
+|---|---|---|
+| **Oval dengan CSA tetap** | pipa bertransisi ke oval yang luasnya sama (mis. Ø65,8 → 50 × 86,6), bellmouth ikut oval | kecepatan dan penalaan tidak berubah; ongkos cuma gesek tambahan dari keliling yang lebih panjang (~+6 Pa pada rasio 1,73:1). Periksa angkanya: 50 × 106,6 bukan CSA-setara (+23% luas, taper jadi 8,3°) |
+| **Bellmouth menyatu ke dinding boks** (flanged inlet) | mulut pipa menjadi lubang ber-radius di dinding boks, tanpa ruang kosong di belakangnya | **lebih baik** secara aerodinamis: tidak ada bibir untuk diputari udara, dan aturan ruang bebas tidak berlaku. Rugi masuk turun ke ~16 Pa, dan ukurannya lebih kecil daripada bellmouth berdiri bebas |
+
+Untuk ruang sempit, opsi kedua bukan kompromi — itu konfigurasi yang lebih baik.
+
 ### 3.3 Susunan pelebaran yang benar
 
 Pertanyaan yang sering muncul: apakah port di head, manifold, TB, dan velocity stack harus sama besar lalu melebar di stack saja, atau melebar bertahap?
@@ -205,6 +236,10 @@ Sekali ada **pelebaran di tengah jalan**, aliran melambat, lapisan batas menebal
 
 **JANGAN** membuat TB lebih kecil daripada port lalu melebar lagi di stack. Itu menciptakan penyempitan-pelebaran yang merugikan dua kali.
 
+**Batas sudut taper: setengah-sudut ≤ 7°.** Pipa yang mengerucut ke arah valve aman untuk aliran maju — aliran sedang dipercepat. Tapi gelombang balik (reversion) melihat kerucut yang sama sebagai **difuser**, dan di atas ~7° aliran balik itu lepas dari dinding. Contoh: pipa XMAX 227 mm dari mulut Ø65,8 ke Ø40 → 3,3° (aman).
+
+**Pengecualian yang disengaja:** pada kepala yang rpm-nya dibatasi, pinch bisa sengaja ditempatkan sebelum throat (Tahap 3 §5.4, §5.6, §8.1). Sesudah pinch itu penampang boleh mekar lagi ke throat asal sangat landai — jauh di bawah 7°. Bandingkan luas di stasiun bercabang sebagai **luas setara-aliran** (luas satu cabang × jumlah cabang).
+
 ### 3.4 Volume plenum
 
 ```
@@ -212,6 +247,8 @@ V_plenum ≈ 1,0–1,5 × kapasitas mesin
 ```
 
 Untuk mesin 1 cylinder di drag, ujung atas rentang — atau **tanpa plenum sama sekali**, dengan velocity stack terbuka ke atmosfer. Ini lazim dan efektif, selama udara yang dihisap tidak panas.
+
+**Aturan ini untuk plenum balap, bukan airbox skutik.** Membandingkan airbox skutik dengan 1,0–1,5 × kapasitas adalah salah kelas komponen — kesalahan yang pernah terjadi dalam konsultasi dan membuat boks 3–4,5 L terlihat "kebesaran" padahal tidak. Untuk airbox, volume diturunkan dari kriteria dekopling dan responsivitas inlet (Tahap 11 §10.2).
 
 ### 3.5 Sambungan yang sering merusak
 
@@ -222,10 +259,39 @@ Yang harus diperiksa:
 - [ ] Manifold dan head benar-benar **sebidang** — tidak ada step
 - [ ] Gasket tidak menonjol ke dalam saluran
 - [ ] Tepi mulut port diberi **radius**, bukan dibiarkan tajam
-- [ ] Diameter manifold sama atau sedikit lebih besar daripada port head
+- [ ] Ujung manifold **sama atau sedikit lebih kecil** (0,4–0,7 mm per sisi) daripada mulut port head — **jangan lebih besar**
 - [ ] Tidak ada celah di sambungan yang bisa menghisap udara palsu
 
 **Ini perbaikan paling murah yang paling sering diabaikan.** Sambungan yang meleset 1 mm bisa memakan lebih banyak flow daripada short-turn radius yang digerus berjam-jam.
+
+> **Koreksi:** edisi sebelumnya menulis manifold "sama atau sedikit lebih besar" daripada port. Itu terbalik. Manifold yang lebih besar menyisakan tepi port yang menghadang aliran maju. Manifold yang sedikit lebih kecil membuat aliran maju cuma melewati step mundur kecil, sementara gelombang balik menabrak dinding — step anti-reversion (Tahap 3 §6.5).
+
+### 3.6 Material saluran dan suhu udara masuk
+
+Udara yang lebih panas lebih renggang. Dua sumber panas yang sering dicampuradukkan:
+
+**1. Panas dari head yang merambat lewat dinding manifold.** Manifold bekerja seperti sirip pendingin. Panjang rambatannya:
+
+```
+L_c = √( k × A_penampang_dinding / (h × keliling) )
+```
+
+| Material | k (W/m·K) | Panjang rambat panas |
+|---|---|---|
+| Aluminium | ~150–200 | **~97 mm** ke hilir |
+| PPS-CF (cetak 3D) | ~0,3–1 | **~6 mm** |
+
+Manifold aluminium menyebarkan panas head hampir sepanjang saluran; manifold polimer menghentikannya di dekat flange. Efek pada suhu udara: **~1–3 K**. Pada XMAX 345cc itu ~1,3 K, setara **~+0,17 hp**.
+
+**2. Dari mana udara diambil.** Udara dari dalam boks yang mengambil dari luar dibanding udara dari kolong jok/ruang mesin berbeda **10–30 K**. Itu **sekitar 10× lebih besar** dari efek material dinding — setara **−1,3 sampai −3,7 hp** di mesin 345cc. Karena itu melepas boks demi "aliran lebih lancar" hampir selalu rugi, dan boks selalu terpasang adalah langkah pertama sebelum soal material.
+
+**Pilihan material untuk bagian cetak:**
+
+| Material | Untuk |
+|---|---|
+| **PPS-CF** | bagian yang menempel head (manifold), dan versi permanen pipa — tahan suhu tinggi, stabil dimensi, tahan bahan bakar |
+| PETG | prototipe bentuk saja — melunak ~80°C, terlalu dekat suhu ruang mesin |
+| ABS | hindari di saluran bahan bakar — diserang uap bensin dari reversion |
 
 ---
 
@@ -348,10 +414,13 @@ Kalau harmonik header meleset, pembilasan hilang tepat di rpm puncak, dan tidak 
 4. **Runner standar sangat pendek** (43 mm terukur). Sasaran 12.000 rpm butuh ~155 mm.
 5. **Pakai suhu dalam runner** untuk kecepatan suara, bukan ambient.
 6. **Harmonik tidak bisa ditentukan dari teori** — ukur mesin yang sudah terbukti.
-7. **Luas saluran harus melebar terus-menerus** dari throat ke mulut stack. Jangan ada pelebaran di tengah.
-8. **Radius bellmouth 0,15–0,20 × diameter**, di atas itu jenuh.
-9. **Sambungan manifold yang tidak sebidang** bisa memakan lebih banyak flow daripada porting berjam-jam.
+7. **Luas saluran harus melebar terus-menerus** dari throat ke mulut stack. Jangan ada pelebaran di tengah — kecuali pinch yang disengaja pada kepala yang rpm-nya dibatasi, dengan mekar sangat landai. Setengah-sudut taper ≤ 7°.
+8. **Radius bellmouth 0,15–0,20 × diameter**, di atas itu jenuh. Kalau ruang sempit, bellmouth yang menyatu ke dinding boks lebih baik daripada yang berdiri bebas.
+9. **Sambungan manifold yang tidak sebidang** bisa memakan lebih banyak flow daripada porting berjam-jam. Ujung manifold sedikit lebih kecil dari port, jangan lebih besar.
 10. **Port buang 1,49× throat-nya** — jauh lebih besar daripada sisi isap.
 11. **Panjang header adalah tersangka utama** kalau hasil jauh di bawah potensi head.
+12. **TB nyaman di ~60–80 m/s**, dan hadiah dari membesarkannya dibatasi rugi TB itu sendiri.
+13. **Downdraft di ruang sempit cuma menangkap h3.** Arahnya tidak salah; yang mahal hilangnya boks dan panjangnya.
+14. **Sumber udara mengalahkan material saluran ~10×.** Boks selalu terpasang dulu, baru soal material.
 
 **Berikutnya:** Tahap 8 — mekanik dan material, supaya yang sudah dibangun tidak jebol.
