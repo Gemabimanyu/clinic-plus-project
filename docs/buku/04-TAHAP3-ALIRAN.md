@@ -211,6 +211,14 @@ Mesin Contoh A: 1,035 — port sedikit lebih besar. Ini kondisi yang benar.
 
 Pada Mesin Contoh B, CSA 615 mm² memberi rasio 0,96 (melebar) sementara 665 mm² memberi 1,04 (menyempit). Ini alasan kuat untuk condong ke **ujung atas rentang**.
 
+**Rasio < 1 bukan otomatis cacat.** Di bawah lift kritis (§4), tirai valve yang membatasi, bukan throat — throat baru "terpakai" di lift tinggi. Karena itu kepala produksi sering sengaja memakai port lebih kecil dari throat demi kecepatan gas di rpm rendah-menengah. Contoh terukur: XMAX 4 valve, port siamese di flange 30 × 34 mm (801 mm²) terhadap throat 2 × Ø25,5 (1.021 mm²) → **rasio 0,78**. Konsekuensinya jelas:
+
+- Port menjadi **titik tersempit** saluran; MGV di port 121 m/s pada 8.400 rpm.
+- Ukuran port (atau pinch-nya) menjadi **tuas penempat rpm peak**: makin mendekati 1,0, makin tinggi peak. Pada kepala yang dibatasi rpm, rasio ini sengaja **tidak** dibawa ke 1,0 — lihat build spec XMAX, pinch ~0,86.
+- Aturan ">1,0 itu benar" di atas berlaku untuk kepala balap yang mengejar peak setinggi-tingginya.
+
+Untuk port bercabang, bandingkan CSA runner bersama dengan **jumlah** luas throat kedua valve, dan hitung luas cabang **bersih** dari boss guide dan batang valve (§6.6).
+
 ### 5.5 Port buang
 
 Port buang jauh lebih besar relatif terhadap throat-nya dibanding port isap, karena gas buang panas volumenya berlipat.
@@ -286,6 +294,29 @@ Sambungan manifold ke head yang **tidak sebidang** atau **bertepi tajam** bisa m
 - Tepi mulut port diberi radius, bukan dibiarkan tajam
 - Gasket tidak menonjol ke dalam saluran
 
+**Step anti-reversion yang disengaja:** kalau ada step, arahnya harus benar. Ujung manifold dibuat **0,4–0,7 mm per sisi lebih kecil** dari mulut port — aliran maju cuma melewati step mundur kecil (rugi diabaikan), gelombang balik menabrak dinding. Kebalikannya (manifold lebih besar dari port) adalah bibir yang menghadang aliran maju. Hati-hati: step ini memakan luas, jadi ujung manifold bisa diam-diam menjadi pinch saluran. Itu bisa dijadikan fitur — lihat build spec XMAX, di mana ujung manifold cetak sengaja dijadikan pinch yang bisa diganti.
+
+### 6.6 Batang valve dan boss guide
+
+Batang valve melintas di throat dan bowl. Pengaruhnya lewat tiga jalur yang besarnya jauh berbeda (contoh: batang Ø5 pada throat Ø25,5):
+
+| Jalur | Besaran |
+|---|---|
+| Batang memakan luas throat | 19,6 mm² = **3,8%** |
+| Boss guide OD 9–11 mm yang menonjol ke bowl | 64–95 mm² = **12,5–18,6%** |
+| Wake di belakang boss yang jatuh ke bowl tepat sebelum seat | kerugian terbesar — flow bench mencatat **3–6%** saat boss dirapikan |
+
+Hambatan langsung batang yang melintang di cabang port kecil (orde 40–230 Pa). Yang mahal adalah jejak alirannya, karena jatuh di tempat aliran sedang berbelok ke valve.
+
+**Untuk perhitungan:** rumus time-area tetap memakai luas throat **kotor** (Tahap 4 §3.4) — batang sudah ada di mesin acuan, jadi sudah terserap. Tapi **luas cabang port harus dihitung bersih**: boss yang melintang miring memotong penampang lebih dari luas lingkarannya (batang saja ~24 mm², boss OD 9–10 mm ~78–96 mm² per cabang). Cabang yang digerinda ke angka kotor bisa diam-diam menjadi pinch baru.
+
+**Aturan kerja:**
+
+1. Pendekkan boss sampai **tidak masuk ke bowl** — di bowl cuma boleh ada batang polos.
+2. Ujung boss yang tersisa dibentuk **tetesan air atau pisau** menghadap hulu.
+3. Yang digerinda hanya cor boss-nya, **bukan guide-nya**. Sisakan dinding 1,5–2 mm.
+4. Ukur penampang cabang **di titik boss**, bukan di titik yang bersih.
+
 ---
 
 ## 7. Memperkirakan flow tanpa flowbench
@@ -350,9 +381,10 @@ Urutan ini penting — mengerjakan dengan urutan terbalik bisa merusak yang suda
 3. **Throat adalah pembatas sesungguhnya**, dan membesarkannya adalah satu-satunya cara menaikkan plafon.
 4. **Batas throat adalah lebar seat**, bukan rasio. 0,9 mm untuk isap, lebih lebar untuk buang.
 5. **CSA port ditentukan dengan dua jangkar.** Kalau berbeda jauh, ada asumsi yang salah.
-6. **Rasio port/throat sebaiknya > 1,0** — port sedikit lebih besar daripada throat.
+6. **Rasio port/throat > 1,0 untuk kepala balap yang mengejar peak tertinggi.** Di bawah 1,0 port menjadi pinch dan rasionya menjadi tuas penempat rpm peak — pilihan sah untuk kepala yang dibatasi rpm.
 7. **Short-turn radius minimum 0,40 × tinggi port.** Menggerusnya terlalu tajam adalah kesalahan paling umum.
 8. **Mulut port di flange sering lebih berpengaruh** daripada bentuk port di dalamnya.
 9. **Kerjakan seat dan throat dulu**, badan port terakhir.
+10. **Boss guide lebih mahal daripada batang valve.** Keluarkan boss dari bowl, dan hitung luas cabang port secara bersih.
 
 **Berikutnya:** Tahap 4 — camshaft, yang menentukan di putaran berapa plafon ini tercapai.

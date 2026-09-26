@@ -77,17 +77,28 @@ durasi_baru     = durasi_acuan × (A_thr_acuan / A_thr_baru)
 luas overlap/cc = n_valve × π × D_valve × lift_TDC / kapasitas
 ```
 
-**Konstanta time-area mutlak** (tak perlu mesin acuan — Tahap 4 §3.4):
+**Kalibrasi time-area per mesin** (Tahap 4 §3.4):
 
 ```
-K = A_throat[mm²] × durasi[°] / (Vd[cc] × rpm)   =   8,0 / v_throat_sasaran
-
-rpm_peak = A_throat × durasi × v_throat_sasaran / (8,0 × Vd)
+K               = A_throat[mm²] × durasi[°] / (Vd[cc] × rpm_peak)     — dikalibrasi dari satu titik terukur
+rpm_peak_baru   = A_baru × durasi_baru / (K × Vd)                       — mesin/kepala yang sama
+MGV_throat      = Vd[cc] × rpm / (30 × A_throat[mm²])     [m/s]
+K × MGV_throat  = durasi / 30                                           — identitas
 ```
 
-`v_throat_sasaran` adalah pilihan rancangan: ~86 m/s kepala jalanan, ~97 tertala baik, 104–115 kepala balap. Tervalidasi pada tiga mesin tak berhubungan (K × v = 8,01 di ketiganya).
+K **bukan konstanta universal** (rentang terukur 0,077–0,13). Klaim lama `K × v = 8,0 tervalidasi` adalah identitas aljabar. Basis wajib konsisten: luas throat kotor, konvensi durasi yang sama.
 
-**Konsekuensi:** untuk kepala yang sama dibesarkan kapasitasnya tanpa mengganti valve, plafon HP **tidak ikut naik** — Vd habis dibagi dari rumus tenaga tersubstitusi. Cam oversize cuma memindahkan rpm tempat plafon lama itu dicapai (Tahap 4 §3.5).
+**Konsekuensi:** untuk kepala yang sama dibesarkan kapasitasnya tanpa mengganti valve, plafon HP **tidak ikut naik** (`HP ∝ BMEP × A_throat × durasi / K`, Vd habis dibagi) — selama mesin dibatasi aliran isap di peak. Cam oversize cuma memindahkan rpm tempat plafon lama itu dicapai (Tahap 4 §3.5).
+
+**Kepenuhan lobe** (Tahap 4 §3.7):
+
+```
+A_efektif(θ)    = min(n_valve × π × D_valve × L(θ), A_throat)
+Φ               = ∫ A_efektif dθ / (A_throat × durasi)          (realistis 0,65–0,85)
+durasi_efektif  = durasi × Φ / Φ_acuan
+```
+
+Konvensi durasi: advertised → @1 mm ≈ −15 s/d −25°; → @0,050" ≈ −20 s/d −30°. Selisih 20° ≈ 7% rpm peak.
 
 ### A.6 Valvetrain
 
@@ -418,12 +429,17 @@ Semua dihitung dengan definisi yang sama dari spesifikasi bore/stroke/rpm publik
 | F1 V6 turbo 1.6L | 23,0 | 0,289 | 98 | 89 | 562* |
 | MotoGP 1000 I4 (18.000 rpm) | 29,1 | 0,296 | 121 | 112 | 290 |
 | Drag V8 8,2L NA 2 valve (10.500 rpm) | 32,0 | 0,297 | 133 | 106 | 165 |
-| Mesin Contoh A | 21,3 | 0,242 | 109 | 105 | ~140 |
+| Mesin Contoh A | 21,3 | 0,242 | 100 | 97 | ~140 |
 | Mesin Contoh B | 23,2 | 0,295 | 97 | 94 | ~274 |
+| **Honda CRF450R 2021** (9.300 rpm)† | 19,3 | **0,313** | **76** | — | 127 (roda) |
 
 *\*turbo — tidak sebanding dengan yang NA*
 
-**Pengamatan pokok:** kecepatan port semua mesin jatuh di **89–112 m/s**, dan rasio valve/bore semua mesin 4 valve jatuh di **0,289–0,297**.
+*†satu-satunya baris dengan ukuran valve dari pabrikan (2 × 38 mm) dan dyno independen; throat diasumsikan TR 0,90. Lihat Tahap 11 §11.*
+
+*Koreksi: baris Mesin Contoh A sebelumnya tertulis 109/105 m/s — dihitung dengan tebakan throat lama (0,86). Dengan throat terukur (0,935) menjadi 100/97.*
+
+**Pengamatan pokok:** kecepatan port semua mesin jatuh di **89–112 m/s**, dan rasio valve/bore semua mesin 4 valve jatuh di **0,289–0,297** — kecuali CRF450R, yang memakai valve lebih besar (0,313) dan membiarkan throat-nya dilewati jauh lebih pelan di peak (76 m/s). Kecepatan gas di peak adalah **pilihan rancangan**, bukan hukum: mesin motocross yang dikejar torsinya berhenti jauh sebelum batas aliran isapnya.
 
 Batas geometri dan batas mekanisnya universal. Yang membedakan F1 bukan kecepatan gasnya, tapi **stroke pendek** yang memungkinkan rpm tinggi pada kecepatan piston yang sama.
 

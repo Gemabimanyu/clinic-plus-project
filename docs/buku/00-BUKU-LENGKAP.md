@@ -1,7 +1,7 @@
 # ADVANCED ENGINE TUNING
 ## Panduan Membangun Mesin 1 Cylinder Matic
 
-**Dokumen Lengkap — 38.600 kata, 14 bab + Lampiran**
+**Dokumen Lengkap — 42.000 kata, 14 bab + Lampiran**
 
 ---
 
@@ -573,6 +573,8 @@ MGV = (luas piston / CSA) × MPS
 
 Buku ini memakai **konvensi port** kecuali disebut lain.
 
+Di konvensi throat, bentuk praktisnya `MGV_throat = Vd[cc] × rpm / (30 × A_throat[mm²])`. Rentang 95–135 m/s adalah kebiasaan mesin balap yang mengejar peak; mesin motocross pabrikan (CRF450R) di peak cuma ~76 m/s — kecepatan gas di peak adalah pilihan rancangan, bukan hukum.
+
 **Kenapa penting:** MGV menentukan **momentum muatan** yang masuk cylinder. Momentum itu yang terus mengisi cylinder bahkan setelah piston melewati BDC — efek ram yang menaikkan efisiensi volumetrik.
 
 Terlalu rendah: momentum tidak cukup, pengisian lemah.
@@ -862,6 +864,10 @@ durasi_baru = durasi_acuan × (A_thr_acuan / A_thr_baru)
 
 *Mengira rpm tinggi selalu butuh durasi panjang.* Yang benar: rpm tinggi **dan luas valve tetap** butuh durasi panjang. Mesin Contoh B butuh durasi **lebih pendek** (261° vs 281°) walau rpm-nya lebih tinggi, karena head-nya bernapas 29% lebih lega per cc.
 
+*Menyebut durasi tanpa lift acuannya.* Durasi advertised, @1 mm, dan @0,050" bisa berbeda 15–30° untuk cam yang sama. Semua perbandingan harus memakai konvensi yang sama.
+
+*Menganggap durasi sama berarti napas sama.* Lobe "gendut" dan "kurus" dengan durasi dan lift identik bisa berbeda puluhan derajat **durasi efektif** — lihat Kepenuhan lobe di bawah Lift Kritis.
+
 ---
 
 ### Overlap
@@ -986,6 +992,12 @@ lift_kritis = A_throat / (n_valve × π × D_valve)
 | 4 valve | 4,64 mm | 3,68 mm | valve buang butuh lift **lebih rendah** |
 | 3 valve | 4,59 mm | 5,03 mm | valve buang butuh lift **lebih tinggi** |
 
+**Kepenuhan lobe (Φ)** — seberapa lama lobe menahan valve di atas lift kritis:
+```
+Φ = ∫ min(n × π × D_valve × L(θ), A_throat) dθ / (A_throat × durasi)
+```
+Nilai realistis 0,65–0,85. Dua cam dengan durasi sama tapi Φ berbeda bernapas seperti cam dengan durasi berbeda (Tahap 4 §3.7). Kenaikan Φ dari lift tambahan cepat melandai di atas ~1,7× lift kritis.
+
 ---
 
 ### Time-Area
@@ -1000,6 +1012,8 @@ time-area ∝ (A_throat × durasi) / (kapasitas × rpm)
 **Kesalahpahaman yang umum:**
 
 *Membandingkan durasi antar mesin berbeda.* Durasi 280° di mesin throat kecil tidak setara dengan 280° di mesin throat besar. Yang setara adalah time-area-nya.
+
+*Menganggap ada konstanta time-area universal.* Angka `K = A × durasi / (Vd × rpm_peak)` dikalibrasi **per mesin** dari satu titik terukur. Rentang nyatanya 0,077–0,13 tergantung seberapa keras throat dipakai di peak (Tahap 4 §3.4).
 
 ---
 
@@ -1948,6 +1962,14 @@ Mesin Contoh A: 1,035 — port sedikit lebih besar. Ini kondisi yang benar.
 
 Pada Mesin Contoh B, CSA 615 mm² memberi rasio 0,96 (melebar) sementara 665 mm² memberi 1,04 (menyempit). Ini alasan kuat untuk condong ke **ujung atas rentang**.
 
+**Rasio < 1 bukan otomatis cacat.** Di bawah lift kritis (§4), tirai valve yang membatasi, bukan throat — throat baru "terpakai" di lift tinggi. Karena itu kepala produksi sering sengaja memakai port lebih kecil dari throat demi kecepatan gas di rpm rendah-menengah. Contoh terukur: XMAX 4 valve, port siamese di flange 30 × 34 mm (801 mm²) terhadap throat 2 × Ø25,5 (1.021 mm²) → **rasio 0,78**. Konsekuensinya jelas:
+
+- Port menjadi **titik tersempit** saluran; MGV di port 121 m/s pada 8.400 rpm.
+- Ukuran port (atau pinch-nya) menjadi **tuas penempat rpm peak**: makin mendekati 1,0, makin tinggi peak. Pada kepala yang dibatasi rpm, rasio ini sengaja **tidak** dibawa ke 1,0 — lihat build spec XMAX, pinch ~0,86.
+- Aturan ">1,0 itu benar" di atas berlaku untuk kepala balap yang mengejar peak setinggi-tingginya.
+
+Untuk port bercabang, bandingkan CSA runner bersama dengan **jumlah** luas throat kedua valve, dan hitung luas cabang **bersih** dari boss guide dan batang valve (§6.6).
+
 ### 5.5 Port buang
 
 Port buang jauh lebih besar relatif terhadap throat-nya dibanding port isap, karena gas buang panas volumenya berlipat.
@@ -2023,6 +2045,29 @@ Sambungan manifold ke head yang **tidak sebidang** atau **bertepi tajam** bisa m
 - Tepi mulut port diberi radius, bukan dibiarkan tajam
 - Gasket tidak menonjol ke dalam saluran
 
+**Step anti-reversion yang disengaja:** kalau ada step, arahnya harus benar. Ujung manifold dibuat **0,4–0,7 mm per sisi lebih kecil** dari mulut port — aliran maju cuma melewati step mundur kecil (rugi diabaikan), gelombang balik menabrak dinding. Kebalikannya (manifold lebih besar dari port) adalah bibir yang menghadang aliran maju. Hati-hati: step ini memakan luas, jadi ujung manifold bisa diam-diam menjadi pinch saluran. Itu bisa dijadikan fitur — lihat build spec XMAX, di mana ujung manifold cetak sengaja dijadikan pinch yang bisa diganti.
+
+### 6.6 Batang valve dan boss guide
+
+Batang valve melintas di throat dan bowl. Pengaruhnya lewat tiga jalur yang besarnya jauh berbeda (contoh: batang Ø5 pada throat Ø25,5):
+
+| Jalur | Besaran |
+|---|---|
+| Batang memakan luas throat | 19,6 mm² = **3,8%** |
+| Boss guide OD 9–11 mm yang menonjol ke bowl | 64–95 mm² = **12,5–18,6%** |
+| Wake di belakang boss yang jatuh ke bowl tepat sebelum seat | kerugian terbesar — flow bench mencatat **3–6%** saat boss dirapikan |
+
+Hambatan langsung batang yang melintang di cabang port kecil (orde 40–230 Pa). Yang mahal adalah jejak alirannya, karena jatuh di tempat aliran sedang berbelok ke valve.
+
+**Untuk perhitungan:** rumus time-area tetap memakai luas throat **kotor** (Tahap 4 §3.4) — batang sudah ada di mesin acuan, jadi sudah terserap. Tapi **luas cabang port harus dihitung bersih**: boss yang melintang miring memotong penampang lebih dari luas lingkarannya (batang saja ~24 mm², boss OD 9–10 mm ~78–96 mm² per cabang). Cabang yang digerinda ke angka kotor bisa diam-diam menjadi pinch baru.
+
+**Aturan kerja:**
+
+1. Pendekkan boss sampai **tidak masuk ke bowl** — di bowl cuma boleh ada batang polos.
+2. Ujung boss yang tersisa dibentuk **tetesan air atau pisau** menghadap hulu.
+3. Yang digerinda hanya cor boss-nya, **bukan guide-nya**. Sisakan dinding 1,5–2 mm.
+4. Ukur penampang cabang **di titik boss**, bukan di titik yang bersih.
+
 ---
 
 ## 7. Memperkirakan flow tanpa flowbench
@@ -2087,10 +2132,11 @@ Urutan ini penting — mengerjakan dengan urutan terbalik bisa merusak yang suda
 3. **Throat adalah pembatas sesungguhnya**, dan membesarkannya adalah satu-satunya cara menaikkan plafon.
 4. **Batas throat adalah lebar seat**, bukan rasio. 0,9 mm untuk isap, lebih lebar untuk buang.
 5. **CSA port ditentukan dengan dua jangkar.** Kalau berbeda jauh, ada asumsi yang salah.
-6. **Rasio port/throat sebaiknya > 1,0** — port sedikit lebih besar daripada throat.
+6. **Rasio port/throat > 1,0 untuk kepala balap yang mengejar peak tertinggi.** Di bawah 1,0 port menjadi pinch dan rasionya menjadi tuas penempat rpm peak — pilihan sah untuk kepala yang dibatasi rpm.
 7. **Short-turn radius minimum 0,40 × tinggi port.** Menggerusnya terlalu tajam adalah kesalahan paling umum.
 8. **Mulut port di flange sering lebih berpengaruh** daripada bentuk port di dalamnya.
 9. **Kerjakan seat dan throat dulu**, badan port terakhir.
+10. **Boss guide lebih mahal daripada batang valve.** Keluarkan boss dari bowl, dan hitung luas cabang port secara bersih.
 
 **Berikutnya:** Tahap 4 — camshaft, yang menentukan di putaran berapa plafon ini tercapai.
 
@@ -2211,50 +2257,64 @@ Mesin Contoh C (3 valve, luas valve isap/bore cuma 0,262):
 
 Selisih 24° pada rpm yang sama — itu ongkos nyata dari 11% luas valve yang hilang.
 
-### 3.4 Konstanta time-area mutlak
+### 3.4 Kalibrasi time-area per mesin — dan koreksi atas "konstanta mutlak"
 
-Rumus 3.1 di atas cuma berlaku *relatif* — butuh mesin acuan untuk dibandingkan. Ada bentuk mutlaknya:
-
-```
-K = A_throat[mm²] × durasi[°] / (Vd[cc] × rpm)
-```
-
-**K bukan konstanta tunggal.** Ia berbanding terbalik dengan kecepatan port sasaran:
+Rumus 3.1 bisa diringkas jadi satu angka per mesin:
 
 ```
-K = 8,0 / v_throat_sasaran
+K = A_throat[mm²] × durasi[°] / (Vd[cc] × rpm_peak)
 ```
 
-Tervalidasi pada tiga mesin yang sama sekali tidak berhubungan — beda kapasitas, beda jumlah valve, beda tingkat pengembangan:
+Dua mesin dengan K yang sama berada di titik time-area yang sama. Rumus 3.1 sebenarnya cuma mengatakan: **anggap K mesin baru sama dengan K mesin acuan.**
 
-| Mesin | A_throat | v_throat di peak | K | K × v |
-|---|---|---|---|---|
-| Mesin Contoh A (2 valve, jalanan) | 661 mm² | 86 m/s | 0,0930 | 8,01 |
-| Mesin bore-up 344cc (4 valve, dyno diverifikasi) | 1.077 mm² | 83 m/s | 0,0967 | 8,01 |
-| Mesin balap 224cc (4 valve, kepala dikembangkan) | 726 mm² | 104 m/s | 0,0768 | 8,01 |
+> **Koreksi.** Edisi sebelumnya menulis `K = 8,0 / v_throat_sasaran` dan menyebutnya "tervalidasi pada tiga mesin" karena `K × v` keluar 8,01 di ketiganya. Klaim itu **salah**. Kolom v di tabel itu dihitung sebagai `MGV_throat × 240/durasi`, sehingga:
+>
+> ```
+> K × v = [A·dur / (Vd·rpm)] × [Vd·rpm·240 / (30·A·dur)] = 240/30 = 8
+> ```
+>
+> Hasilnya 8 **untuk mesin apa pun**. Itu identitas aljabar, bukan temuan — tidak ada yang tervalidasi. Kesalahan ini baru ketahuan saat rumusnya dicoba ke mesin keempat yang datanya dipublikasikan pabrikan (Tahap 11 §11).
 
-Hasil kali `K × v` konstan di **8,0** di ketiganya. Ini bukan kebetulan angka — ini bentuk lain dari time-area yang sudah tidak butuh mesin acuan sama sekali:
+Hubungan yang jujur — juga sebuah identitas, tapi tidak menyamar sebagai hukum:
 
 ```
-rpm_peak = A_throat × durasi × v_throat_sasaran / (8,0 × Vd)
+MGV_throat = Vd[cc] × rpm / (30 × A_throat[mm²])      [m/s]   (= luas piston / A_throat × MPS)
+K × MGV_throat = durasi / 30
 ```
 
-`v_throat_sasaran` sendiri adalah **pilihan rancangan**, bukan sifat alam — kepala jalanan menargetkan ~86 m/s, kepala tertala baik ~97, kepala balap 104–115. Head yang lebih dikembangkan menoleransi kecepatan port lebih tinggi sebelum aliran mulai memburuk, jadi K-nya lebih kecil untuk rpm sasaran yang sama.
+Artinya K hanya ditentukan oleh dua hal: **seberapa keras throat dipakai di peak** (MGV throat, lihat Kamus) dan **durasi cam**. Empat mesin:
 
-> **Cara pakai:** kalau kamu tahu (atau menargetkan) v_throat sebuah kepala, K langsung didapat tanpa perlu mesin acuan yang mirip. Berguna terutama saat mesin acuan yang tersedia terlalu jauh karakternya (lihat Tahap 11 §4).
+| Mesin | A_throat | Durasi | rpm peak | MGV throat | K |
+|---|---|---|---|---|---|
+| Mesin Contoh A (2 valve, drag) | 661 mm² | 281° | 10.000 | 101 m/s | 0,093 |
+| XMAX bore-up 345cc (4 valve, seat terukur) | 1.021 mm² | 260° | ~8.400 | 95 m/s | 0,092 |
+| Mesin balap 224cc (4 valve) | 726 mm²* | 261° | 11.000 | 113 m/s | 0,077 |
+| Honda CRF450R 2021 (4 valve, pabrikan) | 1.837 mm²* | tidak dipublikasi | 9.300 | **76 m/s** | 0,114–0,132** |
+
+\* throat diasumsikan dari diameter valve (TR 0,935 dan 0,90). \*\* untuk durasi 260–300°.
+
+K berkisar 0,077 sampai lebih dari 0,13 — **bukan konstanta**. CRF450R memakai throat-nya jauh lebih santai (76 m/s) dibanding mesin lain: peak-nya tidak ditentukan oleh batas aliran isap, tapi oleh hal lain (knalpot, penalaan, karakter tenaga motocross).
+
+**Yang tetap berlaku, dan cara memakainya:**
+
+1. **Kalibrasi per mesin.** Dari satu titik terukur (throat, durasi, rpm peak dyno) didapat K mesin itu. Perubahan pada mesin yang sama lalu dihitung dengan `rpm_peak_baru = A_baru × durasi_baru / (K × Vd)`. Sah selama karakter kepalanya tidak berubah dan mesin masih dibatasi aliran isap di peak.
+2. **Meminjam K mesin lain** sama dengan memakai rumus 3.1. Sah hanya bila karakter kepalanya mirip — bisa tepat sampai 1,1% (Tahap 11 §3.2), bisa meleset jauh (Tahap 11 §4).
+3. **Basis harus konsisten.** `A` selalu luas throat kotor (tanpa dikurangi batang valve — batang sudah ikut terserap di kalibrasi). Durasi selalu pada konvensi lift yang sama (§3.7). Mengganti A dengan luas port pada mesin yang dikalibrasi dengan luas throat merusak seluruh angka (Tahap 11 §3.4).
 
 ### 3.5 Kenapa bore-up tanpa upgrade valve tidak menaikkan plafon HP
 
-Ini konsekuensi langsung dari bentuk mutlak di atas, dan sering disalahpahami.
+Ini konsekuensi langsung dari kalibrasi per mesin di atas, dan sering disalahpahami.
 
-Substitusikan `rpm_peak` dari 3.5 ke rumus tenaga (`HP ∝ BMEP × Vd × rpm`):
+Untuk kepala yang sama, K-nya tetap. Substitusikan `rpm_peak = A × durasi / (K × Vd)` dari §3.4 ke rumus tenaga (`HP ∝ BMEP × Vd × rpm`):
 
 ```
-HP  ∝  BMEP × Vd × [A_throat × durasi × v / (8,0 × Vd)]
-     =  BMEP × A_throat × durasi × v / 8,0
+HP  ∝  BMEP × Vd × [A_throat × durasi / (K × Vd)]
+     =  BMEP × A_throat × durasi / K
 ```
 
-**Vd habis dibagi.** Selama BMEP dan v_throat tercapai sama, plafon tenaga cuma ditentukan oleh **luas throat dan durasi cam** — kapasitas silinder tidak muncul lagi di rumusnya.
+**Vd habis dibagi.** Selama BMEP dan K kepala itu tidak berubah, plafon tenaga cuma ditentukan oleh **luas throat dan durasi cam** — kapasitas silinder tidak muncul lagi di rumusnya.
+
+**Syaratnya:** mesin harus **dibatasi aliran isap** di peak-nya. Mesin yang throat-nya masih longgar di peak (MGV throat rendah, seperti CRF450R di §3.4) peak-nya diatur hal lain, dan teorema ini tidak berlaku untuknya.
 
 Konsekuensinya, untuk kepala yang sama dibesarkan kapasitasnya (bore atau bore+stroke) **tanpa mengganti valve**:
 
@@ -2288,6 +2348,60 @@ Ditentukan oleh **rasio throat buang/isap** (lihat Tahap 3, bagian 3.4):
 | > 0,72 | sisi buang lega |
 
 Mesin Contoh A (rasio 0,671) berjalan simetris 281/281. Mesin Contoh B (rasio 0,685) juga simetris 261/261.
+
+### 3.7 Konvensi durasi dan kepenuhan lobe
+
+Semua rumus di atas memakai satu angka durasi. Satu angka itu menyembunyikan dua hal yang bisa menggeser hasil lebih besar daripada seluruh perhitungannya.
+
+**Konvensi lift.** Durasi tanpa keterangan lift acuan adalah angka setengah jadi. Tabel Mesin Contoh B di §3.3 memakai **@1 mm**. Banyak pembuat cam aftermarket mengutip durasi *advertised* (seat-to-seat, sekitar 0,15–0,25 mm). Konversi kasar dari advertised:
+
+| Konvensi | Selisih dari advertised | Tergantung ramp |
+|---|---|---|
+| @1,00 mm | −15 s/d −25° | ramp landai −25 s/d −35°, ramp agresif −10 s/d −18° |
+| @0,050" (1,27 mm, SAE) | −20 s/d −30° | idem |
+
+Selisih 20° kira-kira setara **7% rpm peak**. Tabel ini hanya perkiraan — bentuk ramp tiap cam berbeda. Aturan praktisnya: **kalibrasi K (§3.4) dan semua perbandingan harus memakai konvensi yang sama.** Kalau durasi sebuah data tidak jelas konvensinya, anggap K dari data itu cuma berlaku untuk cam dengan sumber angka yang sama.
+
+**Kepenuhan lobe.** Dua cam dengan durasi dan lift maksimum identik bisa bernapas sangat berbeda: yang satu "gendut" (cepat naik, lama di atas), yang lain "kurus". Ukurannya:
+
+```
+A_efektif(θ) = min( n_valve × π × D_valve × L(θ) ,  A_throat )
+Φ = ∫ A_efektif(θ) dθ  /  ( A_throat × durasi )
+durasi_efektif = durasi × Φ / Φ_acuan
+```
+
+`A_efektif` berhenti naik begitu lift melewati **lift kritis** (Tahap 3 §4) — di atas titik itu throat yang membatasi. Φ selalu ≤ 1; nilai realistis cam motor sekitar 0,65–0,85.
+
+Ilustrasi (valve 2 × 23, throat Ø21,5 → lift kritis 5,03 mm; tiga bentuk lobe dengan durasi 280° dan lift 8,5 mm yang sama):
+
+| Bentuk lobe | Derajat di atas lift kritis | Φ | Durasi efektif |
+|---|---|---|---|
+| gendut | 210° | 0,912 | **317°** |
+| sedang (acuan) | 168° | 0,806 | 280° |
+| kurus | 134° | 0,687 | **239°** |
+
+Selisih 78° durasi efektif — jauh lebih besar daripada perdebatan konvensi. Angka Φ di atas dari bentuk lobe teoretis; nilai 0,912 menuntut akselerasi valvetrain yang sangat ekstrem.
+
+**Lift tinggi melandai hasilnya.** Tahap 3 §4 menjelaskan kenapa mesin balap memakai lift jauh di atas lift kritis: valve bertahan lebih lama di luas penuh. Φ memperlihatkan seberapa cepat manfaat itu mengecil (lobe sedang, 280°, lift kritis 5,03 mm):
+
+| Lift maks | Kelipatan lift kritis | Φ |
+|---|---|---|
+| 6,0 mm | 1,2× | 0,713 |
+| 7,0 | 1,4× | 0,760 |
+| 8,5 | 1,7× | 0,806 |
+| 10,0 | 2,0× | 0,836 |
+| 12,0 | 2,4× | 0,865 |
+
+Dari 6 ke 7 mm Φ naik 0,047; dari 10 ke 12 mm cuma 0,029, dengan ongkos valvetrain jauh lebih besar. Di atas ~1,7× lift kritis, anggaran valvetrain lebih bernilai dipakai untuk **ramp yang lebih cepat** daripada puncak yang lebih tinggi.
+
+**Mengukur Φ sendiri** (degree wheel + dial indicator, satu sore):
+
+1. Baca lift tiap 5° sepanjang durasi, rapatkan jadi 2° di daerah ramp.
+2. Tiap baris: `A_eff = min(n × π × D_valve × L, A_throat)`.
+3. Jumlahkan dengan trapesium: `∫ ≈ Σ A_eff × 5°`.
+4. `Φ = ∫ / (A_throat × durasi)`.
+
+**Proksi lapangan:** selisih antara durasi advertised dan @1 mm. Selisih kecil (10–18°) berarti ramp curam dan lobe gendut; selisih besar (28–35°) berarti lobe kurus. Pembuat cam yang cuma mau menyebut satu angka durasi sudah memberi sinyal tersendiri.
 
 ---
 
@@ -2488,6 +2602,8 @@ Yang harus disebutkan ke pembuat cam:
 
 **Yang paling sering menimbulkan salah paham: acuan lift durasi.** Selalu sebutkan eksplisit.
 
+**Lebih baik lagi: minta tabel lift vs derajat** dari lobe yang ditawarkan. Dari tabel itu kepenuhan lobe (§3.7) dan durasi efektifnya bisa dihitung sendiri dalam lima menit — tanpa bergantung pada satu angka di brosur.
+
 ---
 
 ## 8. Ringkasan Tahap 4
@@ -2501,6 +2617,9 @@ Yang harus disebutkan ke pembuat cam:
 7. **ICL bisa disetel dengan sprocket, LSA tidak.**
 8. **Kantong valve dihitung sebelum menghitung dome piston** — kantong ikut menambah volume ruang bakar.
 9. **Cek clay wajib.** Perhitungan tidak menggantikannya.
+10. **K time-area dikalibrasi per mesin**, bukan diambil dari konstanta universal. "Validasi K × v = 8" di edisi lama adalah identitas aljabar.
+11. **Basis harus konsisten:** luas throat kotor, dan durasi pada konvensi lift yang sama.
+12. **Bentuk lobe (Φ) bisa menggeser durasi efektif puluhan derajat** — lebih besar dari perdebatan konvensi. Minta tabel lift, bukan satu angka durasi.
 
 **Berikutnya:** Tahap 5 — kompresi dan bahan bakar, yang tidak bisa ditentukan sebelum cam final.
 
@@ -3823,6 +3942,14 @@ Turun dari 120 ke 80 gram memangkas beban rod **33%** — setara menurunkan rpm 
 
 Kalau mengincar 12.500+ rpm, piston ringan bukan opsi tapi keharusan.
 
+Karena gaya ∝ massa × rpm², massa yang dibutuhkan untuk menaikkan rpm **tanpa menambah beban** bisa dihitung langsung:
+
+```
+m_baru = m_lama × (rpm_lama / rpm_baru)²
+```
+
+Contoh (piston Ø76, paket bolak-balik ~495 g): untuk naik dari 8.400 ke 9.500 rpm dengan beban big end yang sama, massa harus turun ke **387 g** (−108 g). Dengan piston slipper-skirt, pin dinding tipis, dan ring tipis, angka itu bisa dicapai.
+
 ### 1.5 Membandingkan ke mesin yang sudah terbukti
 
 Ini cara paling berguna memakai angka di atas:
@@ -3835,6 +3962,21 @@ Ini cara paling berguna memakai angka di atas:
 Selisih 0,7%. Artinya 12.000 rpm di Mesin B berada **di dalam amplop yang sudah terbukti**, bukan wilayah baru.
 
 **Selalu bandingkan begini** sebelum memutuskan rpm sasaran. Angka mutlak sulit ditafsirkan; perbandingan ke mesin yang sudah jalan jauh lebih berarti.
+
+### 1.6 Plain bearing bukan pembatas rpm
+
+Crank dengan bantalan plain (metal/shell) sering dianggap kalah dari crank laher (roller) untuk rpm tinggi. Urutannya terbalik: mesin yang paling tinggi putarannya justru memakai plain bearing — Yamaha R6 sampai 16.500 rpm, mesin F1 sampai 20.000. Laher dipakai di skutik karena tahan pelumasan minim dan start dingin, bukan karena lebih kuat di rpm. Crank plain juga biasanya satu keping utuh, lebih kaku daripada crank press yang bisa memuntir di rpm tinggi.
+
+Film oli hidrodinamik memang menebal dengan kecepatan, tapi beban inersia tumbuh dengan rpm², jadi bersihnya kondisi bantalan memburuk seiring rpm. Yang membatasi:
+
+1. **Pasokan oli** — pembunuh nomor satu. Oil cooler, katup pelepas tekanan yang tidak membuang aliran di rpm puncak, oli dengan HTHS ≥ 3,5.
+2. **Beban spesifik bantalan** `= F_TDC / (diameter jurnal × lebar)`. Batas kasar: bi-metal Al-Sn (OEM) ~50–55 MPa, tri-metal ~70–80 MPa, sputter ~100+ MPa.
+3. **Baut rod** — beban belasan sampai puluhan kN; ganti baut kualitas tinggi, torsi dengan metode regang (stretch).
+4. **Clearance** — terlalu rapat mencekik aliran oli di rpm tinggi, terlalu longgar kehilangan film.
+
+Kecepatan permukaan jurnal jarang jadi masalah: jurnal Ø30 di 13.400 rpm cuma ~21 m/s.
+
+Contoh (piston Ø67, stroke 58, jurnal diasumsikan Ø30 × 16 mm): pada 13.400 rpm, paket bolak-balik 340 g memberi ~52 MPa (di batas shell OEM), paket 265 g memberi ~40 MPa (aman). **Bantalannya sama — massanya yang menentukan.** Ukur dimensi jurnal sebenarnya sebelum memakai angka ini; jurnal yang lebih kecil menaikkan seluruh kolom.
 
 ---
 
@@ -3856,6 +3998,19 @@ Selisih 0,7%. Artinya 12.000 rpm di Mesin B berada **di dalam amplop yang sudah 
 **2618** silikon rendah → lebih ulet, lebih tahan detonasi dan beban kejut → tapi memuai lebih banyak → butuh clearance besar → **berisik saat dingin** dan lebih banyak blowby saat dingin.
 
 **Untuk drag:** 2618 kalau kompresi tinggi dan rpm ekstrem. 4032 kalau mesin juga dipakai jalan.
+
+**"Tempa" tidak berarti ringan.** Piston tempa kelas *street/durability* — yang sering ikut di kit bore-up — umumnya **5–15% lebih berat** dari piston cor OEM yang digantinya: mahkota lebih tebal, skirt penuh, boss pin gemuk. Densitas materialnya hampir sama (hypereutectic justru sedikit lebih ringan karena kandungan silikonnya).
+
+Yang membuat piston ringan adalah **desainnya**: compression height pendek, slipper skirt, mahkota tipis untuk NA, pin dinding tipis, ring tipis. Penempaan adalah **prasyarat** desain itu — penampang tipis butuh material yang ulet terhadap tarikan inersia dan lelah, dan cor tidak sanggup. Jadi urutannya: butuh ringan → butuh penampang tipis → butuh material ulet → tempa.
+
+| Komponen (piston Ø67) | Cor OEM | Tempa "street" | Tempa race-spec |
+|---|---|---|---|
+| Piston telanjang | 200–230 g | 210–250 g | 135–165 g |
+| Pin | 55–70 g | 55–70 g | 35–45 g |
+| Ring set | 12–15 g | 12–15 g | 8–10 g |
+| **Paket** | **270–318 g** | **280–338 g** | **180–222 g** |
+
+Saat memesan, yang disebut bukan kata "tempa", tapi spesifikasi desainnya — dan **minta angka berat aktual sebelum membeli.**
 
 ### 2.3 Clearance piston
 
@@ -4341,6 +4496,8 @@ Menyeimbangkan 100% cuma **memindahkan** getaran, tidak menghilangkannya.
 10. **Durasi cam lebih pendek butuh spring lebih kuat** — ramp lebih curam.
 11. **Spring yang terlalu kuat juga merugikan.** Pasang yang cukup, bukan yang terkuat.
 12. **Kalau ganti piston ringan, seimbangkan ulang crankshaft.**
+13. **Plain bearing bukan pembatas rpm** — pembatasnya pasokan oli dan massa bolak-balik. `m_baru = m_lama × (rpm_lama/rpm_baru)²`.
+14. **"Tempa" tidak berarti ringan.** Pesan berdasarkan desain dan berat aktual, bukan proses pembuatan.
 
 **Berikutnya:** Tahap 9 — CVT, tempat 20–30% tenaga bisa hilang tanpa disadari.
 
@@ -5013,6 +5170,8 @@ selisih = 1,1%
 
 **Selisih 1,1% ini bagus sekali** untuk metode yang cuma butuh data geometri, tanpa CFD atau flowbench. Ini bukan jaminan akurasi segini selalu terjadi — tapi menunjukkan metodenya valid kalau asumsi rasio throat/valve-nya masuk akal (di kasus ini dipakai 0,935, seagresif Mesin Contoh A).
 
+Yang sebenarnya diasumsikan metode ini: **K time-area mesin baru sama dengan K mesin acuan** (Tahap 4 §3.4). Di kasus ini asumsinya kena karena kedua kepala dikembangkan dengan cara yang mirip. Untuk mesin yang wataknya jauh berbeda, K bisa berbeda puluhan persen (§11).
+
 ### 3.3 Throat tidak selalu diketahui — pakai rentang, bukan angka tunggal
 
 Kalau cuma diameter valve yang diketahui (bukan throat aktual), jangan paksa satu angka. Hitung rentang dari beberapa asumsi rasio throat/valve (0,86 konservatif sampai 0,935 agresif) dan laporkan **rentang rpm**, bukan angka tunggal palsu presisi.
@@ -5022,6 +5181,16 @@ Kalau cuma diameter valve yang diketahui (bukan throat aktual), jangan paksa sat
 | 0,86–0,90 | konservatif, OEM/harian |
 | 0,90–0,92 | balap lazim |
 | 0,935 | agresif, terbukti Mesin Contoh A |
+
+### 3.4 Basis luas harus sama dengan basis kalibrasinya
+
+Kasus nyata dari XMAX bore-up 345cc. Setelah pemilik mengukur port di flange (oval 30 × 34 mm = 801 mm²) yang ternyata lebih kecil dari throat (1.021 mm²), rpm peak dihitung ulang dengan memasukkan **luas port** ke rumus time-area. Hasilnya kecepatan tersirat **111 m/s** — terlihat seperti kepala balap, dan dipakai sebagai "bukti" bahwa port-lah pembatasnya.
+
+Itu salah basis. Semua kalibrasi rumus ini memakai **luas throat**. Dengan luas throat, angka yang sama memberi **87 m/s** — wajar untuk cam 260° jalanan, tanpa anomali apa pun. Angka "balap" tadi muncul semata karena pembaginya diganti, lalu angka besarnya dikagumi.
+
+Kesimpulan bahwa port XMAX memang sempit ternyata tetap benar, tapi karena bukti lain yang berdiri sendiri: MGV di port 121 m/s pada 8.400 rpm, dan luas port per cc turun 15% akibat bore-up. **Kesimpulan yang benar dengan alasan yang salah tetap pekerjaan yang salah** — alasan yang salah akan menyesatkan di keputusan berikutnya.
+
+Aturannya: sebelum memasukkan angka ke rumus terkalibrasi, tanyakan **luas apa, durasi dengan konvensi apa, tenaga di roda atau engkol** yang dipakai saat kalibrasi — lalu pakai yang sama.
 
 ---
 
@@ -5069,6 +5238,14 @@ v_di_TB  = Q_puncak / (A_TB × (1 − blokade_poros))
 Di 6.500 rpm dengan VE diasumsikan 0,90: kecepatan di TB 36mm dihitung **~77 m/s**. Dibandingkan Mesin Contoh A yang terbukti nyaman di 61 m/s, ini sudah masuk zona "sangat agresif" — indikasi TB mulai membatasi.
 
 **Peringatan penting:** cek ini HARUS dilakukan sebelum menyalahkan cam atau valve kalau tenaga mentok. TB yang terlalu kecil menghasilkan gejala yang mirip dengan cam salah durasi (tenaga mendatar sebelum rpm sasaran) — tapi solusinya beda total.
+
+### 5.3 Jangkar kedua dari mesin pabrikan — dan batas hadiahnya
+
+Angka "nyaman di 61 m/s" di atas datang dari satu mesin (Contoh A). Dengan rumus yang sama, Honda CRF450R (TB 46 mm, 449,5 cc, peak 9.300 rpm, durasi diasumsikan 280–300° karena tidak dipublikasi) memakai TB-nya di **~76–82 m/s** di peak. Jadi kecepatan di kisaran 77 m/s **bukan** tanda TB membatasi — mesin balap pabrikan bekerja di situ.
+
+XMAX 345cc dengan TB 36 mm dengan rumus yang sama: **~100 m/s di 8.400 rpm, ~107 di 9.000**. Itu memang di atas CRF, jadi TB-nya relatif kecil. Tapi ada batas yang lebih penting: **hadiah dari TB lebih besar tidak mungkin melebihi total rugi TB itu sendiri.** Rugi TB 36 mm dihitung ~1.138 Pa (§10.3), yang setara paling banyak ~0,26–0,52 hp kalau TB-nya dihapus sama sekali. Naik ke TB 40 mengambil kembali sekitar +0,10–0,20 hp, dengan ongkos di bukaan kecil (resolusi TPS, idle, respons).
+
+Aturan "TB/throat harus 1,0–1,1" atau "TB ≥ throat" **tidak berlaku** — CRF450R memakai TB yang lebih kecil dari total throat-nya (rasio 0,90), dan mesin 200cc 2 valve yang bagus bisa berjalan di rasio 1,86. Ukuran TB dinilai dari kecepatannya dan dari berapa besar rugi yang masih bisa diambil kembali, bukan dari rasio ke throat.
 
 ---
 
@@ -5614,7 +5791,57 @@ Salah asumsi di sini menggelembungkan rugi inlet **5–20×**, dan itu cukup unt
 
 ---
 
-## 11. Daftar periksa kalibrasi
+## 11. Studi pembanding: mesin pabrikan yang spesifikasinya terbuka
+
+### 11.1 Kenapa perlu pembanding dari luar
+
+Semua kalibrasi di tahap ini berputar di sekitar beberapa mesin yang datanya kita kumpulkan sendiri. Itu berisiko: kesalahan yang sama bisa terbawa ke semua angka tanpa ada yang menolak. Pembanding dari luar menguji kerangkanya, bukan cuma angkanya.
+
+Syaratnya ketat: pabrikan harus mempublikasikan **ukuran valve dan TB**, dan harus ada dyno independen. Honda CRF450R 2021 memenuhinya, dan wataknya dekat dengan skutik performa: satu silinder, 4 valve, TB downdraft.
+
+| | Nilai | Sumber |
+|---|---|---|
+| Bore × stroke | 96 × 62,1 mm (449,5 cc) | Honda |
+| Kompresi | 13,5:1 | Honda |
+| Valve isap / buang | 2 × 38 mm Ti / 2 × 31 mm baja | Honda |
+| TB | 46 mm, downdraft | Honda |
+| Tenaga | 57,21 hp @ 9.300 rpm (roda belakang) | dyno Dirt Rider |
+| Torsi | 35,64 lb-ft @ 6.930 rpm (roda belakang) | dyno Dirt Rider |
+
+Tidak dipublikasikan: diameter seat (throat), durasi cam, CSA port, panjang saluran. Throat diasumsikan TR 0,88–0,92.
+
+### 11.2 Perbandingan dengan XMAX 345cc
+
+| | CRF450R | XMAX 345cc |
+|---|---|---|
+| Luas valve isap / bore | 0,313 | 0,271 |
+| **Throat isap per cc** | **4,09 mm²/cc** | **2,96 mm²/cc** |
+| Luas valve buang / isap | 0,666 | 0,646 |
+| TB / throat | 0,90 | 1,00 |
+| TB per cc | 3,70 mm²/cc | 2,95 mm²/cc |
+| MPS di peak power | **19,3 m/s** | **21,3 m/s** |
+| **MGV throat di peak** | **76 m/s** | **95 m/s** |
+| MGV di TB (di peak) | 84 m/s | 95 m/s |
+
+### 11.3 Yang dipelajari
+
+1. **Honda membeli napas lewat luas valve, bukan lewat kecepatan.** Throat per cc 38% lebih besar, dan di peak throat-nya cuma dilewati 76 m/s. Peak CRF tidak ditentukan oleh batas aliran isap. Inilah mesin yang membongkar "konstanta mutlak" K × v = 8 di Tahap 4 §3.4: K-nya 0,114–0,132, jauh di luar rentang mesin lain.
+2. **Aturan rasio TB/throat tidak berlaku.** CRF memasang TB yang lebih kecil dari total throat-nya. Kalau diberi proporsi yang sama dengan Honda (kecepatan TB atau luas TB per cc), TB XMAX setara ~Ø38–40 (§5.3).
+3. **Downdraft tidak salah — tanpa boks yang salah.** CRF memakai TB downdraft **dan** airbox besar. Kerugian downdraft yang dihitung untuk XMAX datang dari hilangnya boks dan tract yang terlalu pendek, bukan dari arahnya.
+4. **Batas struktural XMAX adalah stroke.** CRF mencapai peak di MPS 19,3 m/s; XMAX sudah 21,3 m/s pada 8.400 rpm. Stroke 76 mm memaksa kecepatan piston tinggi di rpm yang bagi CRF masih santai.
+5. **Sisi buang XMAX proporsional.** Rasio buang/isap 0,646 hampir sama dengan Honda (0,666).
+
+### 11.4 Pembanding sebagai alat uji dyno
+
+BMEP CRF di peak power (basis roda, lewat rantai): **12,25 bar**, atau ~13,3 bar di engkol dengan efisiensi rantai ~92%.
+
+XMAX: 40,6 hp di roller **lewat CVT** pada 8.400 rpm = 12,54 bar di roda. Dengan efisiensi CVT 85–88%, itu **14,3–14,8 bar di engkol** — lebih tinggi dari mesin motocross pabrikan berkompresi 13,5:1, padahal XMAX memakai cam 260° jalanan.
+
+Bacaan paling masuk akal: dyno yang dipakai membaca sekitar **8–12% lebih tinggi**. Ini tidak merusak perhitungan yang proporsional (anggaran porting, pergeseran peak), tapi angka absolut hanya berlaku **di dyno yang sama**. Cara memastikannya: ukur satu motor yang tenaganya sudah diketahui di dyno itu.
+
+---
+
+## 12. Daftar periksa kalibrasi
 
 Sebelum menerima kesimpulan dari data lapangan:
 
@@ -5636,10 +5863,13 @@ Sebelum menerima kesimpulan dari data lapangan:
 - [ ] **Uji jepitan BMEP × MPS bersamaan** — cari rentang rpm yang memuaskan keduanya; kalau irisannya kosong, angka dyno-nya mustahil dengan bahan bakar yang diasumsikan
 - [ ] Kalau BMEP tinggi lolos uji tapi **DCR di atas batas aman bahan bakarnya**, curigai datanya — mesin yang ngelitik tidak bisa mencapai BMEP plafon
 - [ ] Sebelum menyusun tumpukan rugi apapun, **telusuri geometrinya secara fisik** — satu dimensi yang diasumsikan bisa membalik seluruh urutan prioritas
+- [ ] Sebelum memasukkan angka ke rumus terkalibrasi, pastikan **basisnya sama**: luas throat (bukan port), durasi pada konvensi lift yang sama, tenaga di roda atau engkol
+- [ ] Kalau sebuah hubungan "tervalidasi di beberapa mesin", **periksa apakah angkanya dihitung independen** — atau diturunkan dari rumus yang sama sehingga pasti cocok
+- [ ] Uji kerangka dengan **satu mesin pabrikan yang spesifikasinya terbuka**, bukan cuma dengan mesin yang datanya kita kumpulkan sendiri
 
 ---
 
-## 12. Ringkasan Tahap 11
+## 13. Ringkasan Tahap 11
 
 1. **Overlap dalam derajat dan lift-di-TDC dalam mm adalah dua hal berbeda** — jangan tertukar.
 2. **Model harmonik untuk memvalidasi cam, bukan sumber kebenaran mutlak** — cam nyata bisa punya ramp lebih agresif dari `sin²`.
@@ -5659,8 +5889,10 @@ Sebelum menerima kesimpulan dari data lapangan:
 16. **Volume plenum diturunkan dari dekopling dan responsivitas inlet**, dan hasilnya rentang, bukan titik. Di dalam rentang itu, ruang bebas bellmouth lebih menentukan daripada liter.
 17. **Tumpukan rugi cuma sebagus geometri di baliknya.** Satu dimensi yang diasumsikan alih-alih diukur bisa membalik seluruh urutan prioritas — termasuk yang kelihatan sudah didukung angka rapi dua desimal.
 18. **Uji dua plafon sekaligus, bukan cuma satu.** BMEP menjepit dari bawah, kecepatan piston menjepit dari atas — kalau tidak ada rpm yang memuaskan keduanya, angka dyno-nya yang salah, bukan mesinnya yang istimewa.
-19. **K × v_throat = 8,0 di titik peak power** — bentuk mutlak time-area yang tidak butuh mesin acuan, tervalidasi di tiga mesin yang sama sekali tidak berhubungan (Tahap 4 §3.4).
-20. **Bore-up tanpa upgrade valve tidak menaikkan plafon HP** — hanya memindahkan di rpm mana plafon itu dicapai. Untuk menaikkan plafon sungguhan, satu-satunya jalan tetap membesarkan valve/port (Tahap 4 §3.5).
+19. **K time-area dikalibrasi per mesin.** Edisi lama menyebut `K × v = 8,0` "tervalidasi di tiga mesin" — ternyata identitas aljabar yang cocok untuk mesin apa pun. Mesin pabrikan dengan spesifikasi terbuka (CRF450R) memperlihatkan K bisa berbeda puluhan persen (Tahap 4 §3.4, §11).
+20. **Bore-up tanpa upgrade valve tidak menaikkan plafon HP** — hanya memindahkan di rpm mana plafon itu dicapai — selama mesinnya dibatasi aliran isap di peak (Tahap 4 §3.5).
+21. **Basis kalibrasi harus dibawa utuh.** Mengganti luas throat dengan luas port menghasilkan angka "balap" palsu; kesimpulan benar dengan alasan salah tetap menyesatkan keputusan berikutnya.
+22. **Hadiah dari TB lebih besar dibatasi rugi TB itu sendiri.** Rasio TB/throat bukan aturan.
 
 **Berikutnya:** Lampiran — rumus ringkas, daftar periksa build, dan data mesin contoh.
 
@@ -5745,17 +5977,28 @@ durasi_baru     = durasi_acuan × (A_thr_acuan / A_thr_baru)
 luas overlap/cc = n_valve × π × D_valve × lift_TDC / kapasitas
 ```
 
-**Konstanta time-area mutlak** (tak perlu mesin acuan — Tahap 4 §3.4):
+**Kalibrasi time-area per mesin** (Tahap 4 §3.4):
 
 ```
-K = A_throat[mm²] × durasi[°] / (Vd[cc] × rpm)   =   8,0 / v_throat_sasaran
-
-rpm_peak = A_throat × durasi × v_throat_sasaran / (8,0 × Vd)
+K               = A_throat[mm²] × durasi[°] / (Vd[cc] × rpm_peak)     — dikalibrasi dari satu titik terukur
+rpm_peak_baru   = A_baru × durasi_baru / (K × Vd)                       — mesin/kepala yang sama
+MGV_throat      = Vd[cc] × rpm / (30 × A_throat[mm²])     [m/s]
+K × MGV_throat  = durasi / 30                                           — identitas
 ```
 
-`v_throat_sasaran` adalah pilihan rancangan: ~86 m/s kepala jalanan, ~97 tertala baik, 104–115 kepala balap. Tervalidasi pada tiga mesin tak berhubungan (K × v = 8,01 di ketiganya).
+K **bukan konstanta universal** (rentang terukur 0,077–0,13). Klaim lama `K × v = 8,0 tervalidasi` adalah identitas aljabar. Basis wajib konsisten: luas throat kotor, konvensi durasi yang sama.
 
-**Konsekuensi:** untuk kepala yang sama dibesarkan kapasitasnya tanpa mengganti valve, plafon HP **tidak ikut naik** — Vd habis dibagi dari rumus tenaga tersubstitusi. Cam oversize cuma memindahkan rpm tempat plafon lama itu dicapai (Tahap 4 §3.5).
+**Konsekuensi:** untuk kepala yang sama dibesarkan kapasitasnya tanpa mengganti valve, plafon HP **tidak ikut naik** (`HP ∝ BMEP × A_throat × durasi / K`, Vd habis dibagi) — selama mesin dibatasi aliran isap di peak. Cam oversize cuma memindahkan rpm tempat plafon lama itu dicapai (Tahap 4 §3.5).
+
+**Kepenuhan lobe** (Tahap 4 §3.7):
+
+```
+A_efektif(θ)    = min(n_valve × π × D_valve × L(θ), A_throat)
+Φ               = ∫ A_efektif dθ / (A_throat × durasi)          (realistis 0,65–0,85)
+durasi_efektif  = durasi × Φ / Φ_acuan
+```
+
+Konvensi durasi: advertised → @1 mm ≈ −15 s/d −25°; → @0,050" ≈ −20 s/d −30°. Selisih 20° ≈ 7% rpm peak.
 
 ### A.6 Valvetrain
 
@@ -6086,12 +6329,17 @@ Semua dihitung dengan definisi yang sama dari spesifikasi bore/stroke/rpm publik
 | F1 V6 turbo 1.6L | 23,0 | 0,289 | 98 | 89 | 562* |
 | MotoGP 1000 I4 (18.000 rpm) | 29,1 | 0,296 | 121 | 112 | 290 |
 | Drag V8 8,2L NA 2 valve (10.500 rpm) | 32,0 | 0,297 | 133 | 106 | 165 |
-| Mesin Contoh A | 21,3 | 0,242 | 109 | 105 | ~140 |
+| Mesin Contoh A | 21,3 | 0,242 | 100 | 97 | ~140 |
 | Mesin Contoh B | 23,2 | 0,295 | 97 | 94 | ~274 |
+| **Honda CRF450R 2021** (9.300 rpm)† | 19,3 | **0,313** | **76** | — | 127 (roda) |
 
 *\*turbo — tidak sebanding dengan yang NA*
 
-**Pengamatan pokok:** kecepatan port semua mesin jatuh di **89–112 m/s**, dan rasio valve/bore semua mesin 4 valve jatuh di **0,289–0,297**.
+*†satu-satunya baris dengan ukuran valve dari pabrikan (2 × 38 mm) dan dyno independen; throat diasumsikan TR 0,90. Lihat Tahap 11 §11.*
+
+*Koreksi: baris Mesin Contoh A sebelumnya tertulis 109/105 m/s — dihitung dengan tebakan throat lama (0,86). Dengan throat terukur (0,935) menjadi 100/97.*
+
+**Pengamatan pokok:** kecepatan port semua mesin jatuh di **89–112 m/s**, dan rasio valve/bore semua mesin 4 valve jatuh di **0,289–0,297** — kecuali CRF450R, yang memakai valve lebih besar (0,313) dan membiarkan throat-nya dilewati jauh lebih pelan di peak (76 m/s). Kecepatan gas di peak adalah **pilihan rancangan**, bukan hukum: mesin motocross yang dikejar torsinya berhenti jauh sebelum batas aliran isapnya.
 
 Batas geometri dan batas mekanisnya universal. Yang membedakan F1 bukan kecepatan gasnya, tapi **stroke pendek** yang memungkinkan rpm tinggi pada kecepatan piston yang sama.
 

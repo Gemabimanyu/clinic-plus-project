@@ -166,6 +166,8 @@ MGV = (luas piston / CSA) × MPS
 
 Buku ini memakai **konvensi port** kecuali disebut lain.
 
+Di konvensi throat, bentuk praktisnya `MGV_throat = Vd[cc] × rpm / (30 × A_throat[mm²])`. Rentang 95–135 m/s adalah kebiasaan mesin balap yang mengejar peak; mesin motocross pabrikan (CRF450R) di peak cuma ~76 m/s — kecepatan gas di peak adalah pilihan rancangan, bukan hukum.
+
 **Kenapa penting:** MGV menentukan **momentum muatan** yang masuk cylinder. Momentum itu yang terus mengisi cylinder bahkan setelah piston melewati BDC — efek ram yang menaikkan efisiensi volumetrik.
 
 Terlalu rendah: momentum tidak cukup, pengisian lemah.
@@ -455,6 +457,10 @@ durasi_baru = durasi_acuan × (A_thr_acuan / A_thr_baru)
 
 *Mengira rpm tinggi selalu butuh durasi panjang.* Yang benar: rpm tinggi **dan luas valve tetap** butuh durasi panjang. Mesin Contoh B butuh durasi **lebih pendek** (261° vs 281°) walau rpm-nya lebih tinggi, karena head-nya bernapas 29% lebih lega per cc.
 
+*Menyebut durasi tanpa lift acuannya.* Durasi advertised, @1 mm, dan @0,050" bisa berbeda 15–30° untuk cam yang sama. Semua perbandingan harus memakai konvensi yang sama.
+
+*Menganggap durasi sama berarti napas sama.* Lobe "gendut" dan "kurus" dengan durasi dan lift identik bisa berbeda puluhan derajat **durasi efektif** — lihat Kepenuhan lobe di bawah Lift Kritis.
+
 ---
 
 ### Overlap
@@ -579,6 +585,12 @@ lift_kritis = A_throat / (n_valve × π × D_valve)
 | 4 valve | 4,64 mm | 3,68 mm | valve buang butuh lift **lebih rendah** |
 | 3 valve | 4,59 mm | 5,03 mm | valve buang butuh lift **lebih tinggi** |
 
+**Kepenuhan lobe (Φ)** — seberapa lama lobe menahan valve di atas lift kritis:
+```
+Φ = ∫ min(n × π × D_valve × L(θ), A_throat) dθ / (A_throat × durasi)
+```
+Nilai realistis 0,65–0,85. Dua cam dengan durasi sama tapi Φ berbeda bernapas seperti cam dengan durasi berbeda (Tahap 4 §3.7). Kenaikan Φ dari lift tambahan cepat melandai di atas ~1,7× lift kritis.
+
 ---
 
 ### Time-Area
@@ -593,6 +605,8 @@ time-area ∝ (A_throat × durasi) / (kapasitas × rpm)
 **Kesalahpahaman yang umum:**
 
 *Membandingkan durasi antar mesin berbeda.* Durasi 280° di mesin throat kecil tidak setara dengan 280° di mesin throat besar. Yang setara adalah time-area-nya.
+
+*Menganggap ada konstanta time-area universal.* Angka `K = A × durasi / (Vd × rpm_peak)` dikalibrasi **per mesin** dari satu titik terukur. Rentang nyatanya 0,077–0,13 tergantung seberapa keras throat dipakai di peak (Tahap 4 §3.4).
 
 ---
 
